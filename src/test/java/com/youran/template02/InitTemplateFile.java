@@ -36,7 +36,7 @@ public class InitTemplateFile {
 
     public static final String REMOTE_URL = "https://github.com/PanJiaChen/vue-admin-template.git";
     public static final String BRANCH_TO_CLONE = "master";
-    public static final String RESOURCES_DIR = "D:/workspace_cbb/youran/youran-template-02/src/main/resources";
+    public static final String RESOURCES_DIR = "D:/workspace_cbb/youran-template-02/src/main/resources";
     public static final String FTL_DIR = RESOURCES_DIR + "/ftl";
     public static final String TEMPLATE_JSON_FILE_PATH = RESOURCES_DIR + "/template.json";
     public static final String[] ASSETS_EXTS = {
@@ -182,7 +182,8 @@ public class InitTemplateFile {
      * @return
      */
     private String convertFtlContent(String content) {
-        return content.replaceAll("\\$\\{","\\${r'\\$'}{");
+        return content.replaceAll("\\$\\{","\\${r'\\$'}{")
+            .replaceAll("#\\{","\\${r'#'}{");
     }
 
     /**
