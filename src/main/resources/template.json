@@ -6,6 +6,42 @@
   "sysDefault" : true,
   "remark" : "标准vue前端模板",
   "templateFiles" : [ {
+    "fileName" : "mock-util.js.ftl",
+    "fileDir" : "/mock",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/components/Pagination",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "home.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "common-plugin.js.ftl",
+    "fileDir" : "/src/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "scroll-to.js.ftl",
+    "fileDir" : "/src/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/views/home",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
     "fileName" : ".editorconfig.ftl",
     "fileDir" : "/",
     "contextType" : 1,
