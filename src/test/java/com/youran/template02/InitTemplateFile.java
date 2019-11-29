@@ -47,7 +47,11 @@ public class InitTemplateFile {
     public static final String[] BINARY_FILE_NAME = {
     };
     public static final String[] IGNORE_FILE_PATH_PREFIX = {
-        "/src/views/nested"
+        "/src/views/dashboard",
+        "/src/views/form",
+        "/src/views/nested",
+        "/src/views/table",
+        "/src/views/tree"
     };
 
     private CodeTemplatePO templatePO;
@@ -60,7 +64,7 @@ public class InitTemplateFile {
         templatePO = new CodeTemplatePO();
         templatePO.setCode("youran-template-02");
         templatePO.setName("标准vue前端模板");
-        templatePO.setTemplateVersion("0.0.1");
+        templatePO.setTemplateVersion("1.0.0");
         templatePO.setSysLowVersion("3.0.0");
         templatePO.setSysDefault(true);
         templatePO.setRemark("标准vue前端模板");

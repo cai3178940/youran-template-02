@@ -1,9 +1,519 @@
 {
   "code" : "youran-template-02",
   "name" : "标准vue前端模板",
-  "templateVersion" : "0.0.1",
+  "templateVersion" : "1.0.0",
   "sysLowVersion" : "3.0.0",
   "sysDefault" : true,
   "remark" : "标准vue前端模板",
-  "templateFiles" : [ ]
+  "templateFiles" : [ {
+    "fileName" : ".editorconfig.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : ".env.development.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : ".env.production.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : ".env.staging.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : ".eslintignore.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : ".eslintrc.js.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : ".gitignore.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : ".travis.yml.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "babel.config.js.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.js.ftl",
+    "fileDir" : "/build",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "jest.config.js.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "jsconfig.json.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "LICENSE.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.js.ftl",
+    "fileDir" : "/mock",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "mock-server.js.ftl",
+    "fileDir" : "/mock",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "table.js.ftl",
+    "fileDir" : "/mock",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "user.js.ftl",
+    "fileDir" : "/mock",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "package.json.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "postcss.config.js.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "favicon.ico",
+    "fileDir" : "/public",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "index.html.ftl",
+    "fileDir" : "/public",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "README-zh.md.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "README.md.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "table.js.ftl",
+    "fileDir" : "/src/api",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "user.js.ftl",
+    "fileDir" : "/src/api",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "App.vue.ftl",
+    "fileDir" : "/src",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "404.png",
+    "fileDir" : "/src/assets/404_images",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "404_cloud.png",
+    "fileDir" : "/src/assets/404_images",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/components/Breadcrumb",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/components/Hamburger",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/components/SvgIcon",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.js.ftl",
+    "fileDir" : "/src/icons",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "dashboard.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "example.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "eye-open.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "eye.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "form.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "link.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "nested.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "password.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "table.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "tree.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "user.svg",
+    "fileDir" : "/src/icons/svg",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : true
+  }, {
+    "fileName" : "svgo.yml.ftl",
+    "fileDir" : "/src/icons",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "AppMain.vue.ftl",
+    "fileDir" : "/src/layout/components",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.js.ftl",
+    "fileDir" : "/src/layout/components",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "Navbar.vue.ftl",
+    "fileDir" : "/src/layout/components",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "FixiOSBug.js.ftl",
+    "fileDir" : "/src/layout/components/Sidebar",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/layout/components/Sidebar",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "Item.vue.ftl",
+    "fileDir" : "/src/layout/components/Sidebar",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "Link.vue.ftl",
+    "fileDir" : "/src/layout/components/Sidebar",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "Logo.vue.ftl",
+    "fileDir" : "/src/layout/components/Sidebar",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "SidebarItem.vue.ftl",
+    "fileDir" : "/src/layout/components/Sidebar",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/layout",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "ResizeHandler.js.ftl",
+    "fileDir" : "/src/layout/mixin",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "main.js.ftl",
+    "fileDir" : "/src",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "permission.js.ftl",
+    "fileDir" : "/src",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.js.ftl",
+    "fileDir" : "/src/router",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "settings.js.ftl",
+    "fileDir" : "/src",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "getters.js.ftl",
+    "fileDir" : "/src/store",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.js.ftl",
+    "fileDir" : "/src/store",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "app.js.ftl",
+    "fileDir" : "/src/store/modules",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "settings.js.ftl",
+    "fileDir" : "/src/store/modules",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "user.js.ftl",
+    "fileDir" : "/src/store/modules",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "element-ui.scss.ftl",
+    "fileDir" : "/src/styles",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.scss.ftl",
+    "fileDir" : "/src/styles",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "mixin.scss.ftl",
+    "fileDir" : "/src/styles",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "sidebar.scss.ftl",
+    "fileDir" : "/src/styles",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "transition.scss.ftl",
+    "fileDir" : "/src/styles",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "variables.scss.ftl",
+    "fileDir" : "/src/styles",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "auth.js.ftl",
+    "fileDir" : "/src/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "get-page-title.js.ftl",
+    "fileDir" : "/src/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.js.ftl",
+    "fileDir" : "/src/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "request.js.ftl",
+    "fileDir" : "/src/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "validate.js.ftl",
+    "fileDir" : "/src/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "404.vue.ftl",
+    "fileDir" : "/src/views",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/views/login",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : ".eslintrc.js.ftl",
+    "fileDir" : "/tests/unit",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "Breadcrumb.spec.js.ftl",
+    "fileDir" : "/tests/unit/components",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "Hamburger.spec.js.ftl",
+    "fileDir" : "/tests/unit/components",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "SvgIcon.spec.js.ftl",
+    "fileDir" : "/tests/unit/components",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "formatTime.spec.js.ftl",
+    "fileDir" : "/tests/unit/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "parseTime.spec.js.ftl",
+    "fileDir" : "/tests/unit/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "validate.spec.js.ftl",
+    "fileDir" : "/tests/unit/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "vue.config.js.ftl",
+    "fileDir" : "/",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  } ]
 }
