@@ -47,6 +47,8 @@ public class InitTemplateFile {
     public static final String[] BINARY_FILE_NAME = {
     };
     public static final String[] IGNORE_FILE_PATH_PREFIX = {
+        "/mock/table.js",
+        "/src/api/table.js",
         "/src/views/dashboard",
         "/src/views/form",
         "/src/views/nested",

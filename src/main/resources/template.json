@@ -96,12 +96,6 @@
     "abstracted" : false,
     "binary" : false
   }, {
-    "fileName" : "table.js.ftl",
-    "fileDir" : "/mock",
-    "contextType" : 1,
-    "abstracted" : false,
-    "binary" : false
-  }, {
     "fileName" : "user.js.ftl",
     "fileDir" : "/mock",
     "contextType" : 1,
@@ -140,12 +134,6 @@
   }, {
     "fileName" : "README.md.ftl",
     "fileDir" : "/",
-    "contextType" : 1,
-    "abstracted" : false,
-    "binary" : false
-  }, {
-    "fileName" : "table.js.ftl",
-    "fileDir" : "/src/api",
     "contextType" : 1,
     "abstracted" : false,
     "binary" : false
