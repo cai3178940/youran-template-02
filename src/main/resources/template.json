@@ -6,6 +6,24 @@
   "sysDefault" : true,
   "remark" : "标准vue前端模板",
   "templateFiles" : [ {
+    "fileName" : "{className}.js.ftl",
+    "fileDir" : "/mock",
+    "contextType" : 2,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "{className}.js.ftl",
+    "fileDir" : "/src/api",
+    "contextType" : 2,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/views/{className}",
+    "contextType" : 2,
+    "abstracted" : false,
+    "binary" : false
+  }, {
     "fileName" : "mock-util.js.ftl",
     "fileDir" : "/mock",
     "contextType" : 1,
