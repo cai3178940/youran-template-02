@@ -12,8 +12,8 @@
   <div class="app-container">
     <div class="filter-container">
 <#--渲染查询输入框-->
-<#if this.queryFields?? && this.queryFields?size &gt; 0>
-    <#list this.queryFields as id,field>
+<#list this.queryFields>
+    <#items as id,field>
         <#if !QueryType.isBetween(field.queryType)>
       <el-input v-model="listQuery.${field.jfieldName}" placeholder="${field.fieldDesc}"
                 style="width: 200px;" class="filter-item"
@@ -21,12 +21,12 @@
         <#else>
         <#-- TODO 其他类型查询条件 -->
         </#if>
-    </#list>
+    </#items>
       <el-button class="filter-item" icon="el-icon-search" type="primary"
                  @click="handleQuery">
         搜索
       </el-button>
-</#if>
+</#list>
 <#if this.entityFeature.save>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary"
                  icon="el-icon-edit" @click="handleCreate">
@@ -91,37 +91,25 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page"
                 :limit.sync="listQuery.limit" @pagination="doQueryList"/>
 </#if>
-<#if tableOperate>
-    <el-dialog :title="formTitleMap[formStatus]" :visible.sync="formVisible">
-      <el-form ref="dataForm" :rules="formRules" :model="form"
-               label-position="left"
-               label-width="100px" style="width: 400px; margin-left:50px;">
-    <#list this.showFields as id,field>
-        <el-form-item label="${field.fieldDesc}" prop="${field.jfieldName}">
-          <span <#if field.update>v-if="formStatus === 'show'"</#if> class="form-item-show">{{form.${field.jfieldName}}}</span>
-        <#if field.update>
-          <el-input v-else v-model="form.${field.jfieldName}" />
-        </#if>
-        </el-form-item>
-    </#list>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="formVisible = false">
-          取消
-        </el-button>
-    <#if this.entityFeature.save || this.entityFeature.update>
-        <el-button type="primary" <#if this.entityFeature.update>v-if="formStatus!=='show'"</#if>
-                   @click="<#if this.entityFeature.save>formStatus==='create'?createData():</#if>updateData()">
-          确认
-        </el-button>
-    </#if>
-      </div>
-    </el-dialog>
+<#if this.entityFeature.save>
+    <!-- 新建表单 -->
+    <${this.className}-add ref="${this.className}Add" @created="doQueryList({<#if this.pageSign> page: 1 </#if>})"/>
+</#if>
+<#if this.entityFeature.update>
+    <!-- 编辑表单 -->
+    <${this.className}-edit ref="${this.className}Edit" @updated="doQueryList({})"/>
+</#if>
+<#if this.entityFeature.show>
+    <!-- 查看表单 -->
+    <${this.className}-show ref="${this.className}Show"/>
 </#if>
   </div>
 </template>
 
 <script>
+import ${this.className}Add from './add'
+import ${this.className}Edit from './edit'
+import ${this.className}Show from './show'
 import ${this.className}Api from '@/api/${this.className}'
 <#if this.pageSign>
 import Pagination from '@/components/Pagination'
@@ -129,45 +117,53 @@ import Pagination from '@/components/Pagination'
 
 export default {
   name: '${this.classNameUpper}Table',
-<#if this.pageSign>
-  components: { Pagination },
-</#if>
+  components: {
+<@removeLastComma>
+    <#if this.pageSign>
+    Pagination,
+    </#if>
+    <#if this.entityFeature.save>
+    ${this.className}Add,
+    </#if>
+    <#if this.entityFeature.update>
+    ${this.className}Edit,
+    </#if>
+    <#if this.entityFeature.show>
+    ${this.className}Show,
+    </#if>
+</@removeLastComma>
+  },
   data() {
     return {
+<@removeLastComma>
       list: [],
       total: 0,
       listLoading: true,
       listQuery: {
-<#if this.pageSign>
+    <@removeLastComma>
+        <#if this.pageSign>
         page: 1,
         limit: 10,
-</#if>
-<#list this.queryFields as id,field>
-        name: undefined,
-</#list>
-        idSortNo: null
+        </#if>
+        <#list this.queryFields as id,field>
+        ${field.jfieldName}: null,
+        </#list>
+        <#list this.listSortFields as id,field>
+        ${field.jfieldName}SortSign: 0,
+        </#list>
+    </@removeLastComma>
       },
+    <#if tableSelect>
       selectItems: [],
-      form: {
-        id: undefined,
-        name: ''
-      },
-      formVisible: false,
-      formStatus: '',
-      formTitleMap: {
-        show: '查看${this.title}',
-        update: '编辑${this.title}',
-        create: '新建${this.title}'
-      },
-      formRules: {
-        name: [{ required: true, message: '请输入${field.fieldDesc}', trigger: 'blur' }]
-      }
+    </#if>
+</@removeLastComma>
     }
   },
   created() {
     this.doQueryList({ page: 1 })
   },
   methods: {
+<@removeLastComma>
     /**
      * 选择框变化
      */
@@ -247,75 +243,31 @@ export default {
           return this.doQueryList({ page: 1 })
         })
     },
-    /**
-     * 重置编辑表单
-     */
-    resetForm(data) {
-      if (data) {
-        this.form = data
-      } else {
-        this.form = {
-          id: undefined,
-          name: ''
-        }
-      }
-    },
+    <#if this.entityFeature.save>
     /**
      * 打开新建表单
      */
     handleCreate() {
-      this.resetForm()
-      this.formStatus = 'create'
-      this.formVisible = true
+      this.$refs.roleAdd.handleCreate()
     },
-    /**
-     * 执行新建操作
-     */
-    createData() {
-      return this.$refs['dataForm'].validate()
-        .then(() => roleApi.create(this.form))
-        .then(() => {
-          this.formVisible = false
-          this.$common.showMsg('success', '创建成功')
-          return this.doQueryList({ page: 1 })
-        })
-    },
+    </#if>
+    <#if this.entityFeature.save>
     /**
      * 打开查看表单
      */
     handleShow(row) {
-      roleApi.fetchById(row.id)
-        .then(data => {
-          this.resetForm(data)
-          this.formStatus = 'show'
-          this.formVisible = true
-        })
+      this.$refs.roleShow.handleShow(row.id)
     },
+    </#if>
+    <#if this.entityFeature.save>
     /**
      * 打开编辑表单
      */
     handleUpdate(row) {
-      roleApi.fetchById(row.id)
-        .then(data => {
-          this.resetForm(data)
-          this.formStatus = 'update'
-          this.formVisible = true
-        })
+      this.$refs.roleEdit.handleUpdate(row.id)
     },
-    /**
-     * 执行修改操作
-     */
-    updateData() {
-      return this.$refs['dataForm'].validate()
-        .then(() => {
-          roleApi.update(this.form)
-        })
-        .then(() => {
-          this.formVisible = false
-          this.$common.showMsg('success', '修改成功')
-          return this.doQueryList({})
-        })
-    }
+    </#if>
+</@removeLastComma>
   }
 }
 </script>

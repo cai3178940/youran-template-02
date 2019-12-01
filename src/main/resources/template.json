@@ -18,7 +18,25 @@
     "abstracted" : false,
     "binary" : false
   }, {
+    "fileName" : "add.vue.ftl",
+    "fileDir" : "/src/views/{className}",
+    "contextType" : 2,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "edit.vue.ftl",
+    "fileDir" : "/src/views/{className}",
+    "contextType" : 2,
+    "abstracted" : false,
+    "binary" : false
+  }, {
     "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/views/{className}",
+    "contextType" : 2,
+    "abstracted" : false,
+    "binary" : false
+  }, {
+    "fileName" : "show.vue.ftl",
     "fileDir" : "/src/views/{className}",
     "contextType" : 2,
     "abstracted" : false,
