@@ -96,7 +96,7 @@
     "abstracted" : false,
     "binary" : false
   }, {
-    "fileName" : "user.js.ftl",
+    "fileName" : "_user.js.ftl",
     "fileDir" : "/mock",
     "contextType" : 1,
     "abstracted" : false,
@@ -138,7 +138,7 @@
     "abstracted" : false,
     "binary" : false
   }, {
-    "fileName" : "user.js.ftl",
+    "fileName" : "_user.js.ftl",
     "fileDir" : "/src/api",
     "contextType" : 1,
     "abstracted" : false,
