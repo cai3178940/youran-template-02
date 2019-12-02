@@ -2,13 +2,13 @@
 import Mock from 'mockjs'
 import { param2Obj } from '../src/utils'
 
-import user from './user'
+import _user from './_user'
 <#list this.metaEntities as entity>
 import ${entity.className?uncapFirst} from './${entity.className?uncapFirst}'
 </#list>
 
 const mocks = [
-  ...user,
+  ..._user,
 <@removeLastComma>
     <#list this.metaEntities as entity>
   ...${entity.className?uncapFirst},
