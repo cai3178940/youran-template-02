@@ -56,6 +56,7 @@ export const constantRoutes = [
     }]
   },
 <#list this.metaEntities as entity>
+    <#if !entity.entityFeature.list><#continue></#if>
   {
     path: '/${entity.className?uncapFirst}',
     component: Layout,

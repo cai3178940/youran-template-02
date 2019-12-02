@@ -1,7 +1,4 @@
 <#include "/abstracted/common.ftl">
-<#if !this.entityFeature.list>
-    <@call this.skipCurrent()/>
-</#if>
 import request from '@/utils/request'
 
 const ${this.className}Api = {
@@ -11,9 +8,11 @@ const ${this.className}Api = {
     return request.get(`/api/${this.className}/${r'$'}{${this.id}}`)
   },
     </#if>
+    <#if !this.entityFeature.list>
   fetchList(query) {
     return request.get(`/api/${this.className}`, { params: query })
   },
+    </#if>
     <#if this.entityFeature.save>
   create(data) {
     return request.post(`/api/${this.className}`, data)

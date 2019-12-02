@@ -1,8 +1,5 @@
 <#include "/abstracted/common.ftl">
 <#include "/abstracted/table.ftl">
-<#if !this.entityFeature.list>
-    <@call this.skipCurrent()/>
-</#if>
 import Mock from 'mockjs'
 import { <#if this.pageSign>paging, </#if>copy } from './mock-util'
 
@@ -47,51 +44,53 @@ export default [
     }
   },
     </#if>
+    <#if this.entityFeature.list>
   {
     url: `/api/${this.className}`,
     type: 'get',
     response: ({ query }) => {
       // 列表过滤
       let list = data.list.filter(item => {
-    <#list this.queryFields as id,field>
+        <#list this.queryFields as id,field>
         if (query.${field.jfieldName} && item.${field.jfieldName}.indexOf(query.${field.jfieldName}) < 0) {
           return false
         }
-    </#list>
+        </#list>
         return true
       })
-    <#if tableSort>
-        <#assign sortCondition="">
-        <#list this.listSortFields as id,field>
-            <#assign sortCondition += "query.${field.jfieldName}SortSign">
-        <#sep>
-            <#assign sortCondition += " || ">
-        </#list>
+        <#if tableSort>
+            <#assign sortCondition="">
+            <#list this.listSortFields as id,field>
+                <#assign sortCondition += "query.${field.jfieldName}SortSign">
+            <#sep>
+                <#assign sortCondition += " || ">
+            </#list>
       // 列表排序
       if (${sortCondition}) {
         list = copy(list).sort((item1, item2) => {
-        <#list this.listSortFields as id,field>
+            <#list this.listSortFields as id,field>
           if (query.${field.jfieldName}SortSign) {
             const dif = item1.${field.jfieldName} - item2.${field.jfieldName}
             return query.${field.jfieldName}SortSign > 0 ? dif : -dif
           }
-        </#list>
+            </#list>
           return 0
         })
       }
-    </#if>
-    <#if this.pageSign>
+        </#if>
+        <#if this.pageSign>
       // 列表分页
       const page = paging(list, query)
       return {
         total: list.length,
         list: copy(page)
       }
-    <#else>
+        <#else>
       return copy(list)
-    </#if>
+        </#if>
     }
   },
+    </#if>
     <#if this.entityFeature.save>
   {
     url: `/api/${this.className}`,
