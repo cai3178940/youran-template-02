@@ -15,14 +15,14 @@ module.exports = {
   //it is base on https://github.com/vuejs/eslint-config-vue
   rules: {
     "vue/max-attributes-per-line": [2, {
-      "singleline": 10,
+      "singleline": 3,
       "multiline": {
-        "max": 1,
-        "allowFirstLine": false
+        "max": 3,
+        "allowFirstLine": true
       }
     }],
-    "vue/singleline-html-element-content-newline": "off",
-    "vue/multiline-html-element-content-newline":"off",
+    //"vue/singleline-html-element-content-newline": "off",
+    //"vue/multiline-html-element-content-newline":"off",
     "vue/name-property-casing": ["error", "PascalCase"],
     "vue/no-v-html": "off",
     'accessor-pairs': 2,

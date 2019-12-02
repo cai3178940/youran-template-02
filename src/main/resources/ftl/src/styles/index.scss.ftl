@@ -63,3 +63,18 @@ div:focus {
 .app-container {
   padding: 20px;
 }
+
+.form-item-show {
+  font-size: 14px;
+  color: #8c8f95;
+}
+
+.filter-container {
+  padding-bottom: 10px;
+
+  .filter-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+  }
+}

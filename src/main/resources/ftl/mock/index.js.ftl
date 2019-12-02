@@ -1,12 +1,19 @@
+<#include "/abstracted/common.ftl">
 import Mock from 'mockjs'
 import { param2Obj } from '../src/utils'
 
 import user from './user'
-import table from './table'
+<#list this.metaEntities as entity>
+import ${entity.className?uncapFirst} from './${entity.className?uncapFirst}'
+</#list>
 
 const mocks = [
   ...user,
-  ...table
+<@removeLastComma>
+    <#list this.metaEntities as entity>
+  ...${entity.className?uncapFirst},
+    </#list>
+</@removeLastComma>
 ]
 
 // for front mock
@@ -15,6 +22,9 @@ const mocks = [
 export function mockXHR() {
   // mock patch
   // https://github.com/nuysoft/Mock/issues/300
+  Mock.setup({
+    timeout: '100-500'
+  })
   Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send
   Mock.XHR.prototype.send = function() {
     if (this.custom.xhr) {
@@ -36,7 +46,8 @@ export function mockXHR() {
         result = respond({
           method: type,
           body: JSON.parse(body),
-          query: param2Obj(url)
+          query: param2Obj(url),
+          url: url
         })
       } else {
         result = respond
