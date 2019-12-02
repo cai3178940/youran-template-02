@@ -18,6 +18,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -55,6 +56,11 @@ public class InitTemplateFile {
         "/src/views/table",
         "/src/views/tree"
     };
+
+    public static final Map<String, String> MOVE_FILES = JsonUtil.parseObject("{" +
+        "\"/mock/user.js\" : \"/mock/_user.js\"," +
+        "\"/src/api/user.js\" : \"/src/api/_user.js\"" +
+        "}", Map.class);
 
     private CodeTemplatePO templatePO;
 
@@ -157,12 +163,13 @@ public class InitTemplateFile {
      * @param repoFile
      */
     private void copyRepoFile(File repoDir, File repoFile) {
-        String path = repoFile.getPath().substring(repoDir.getPath().length())
+        String relativePath = repoFile.getPath().substring(repoDir.getPath().length())
             .replaceAll("\\\\", "/");
-        System.out.println(path);
-        if (this.isRepoFileIgnore(path)) {
+        System.out.println(relativePath);
+        if (this.isRepoFileIgnore(relativePath)) {
             return;
         }
+        String path = this.moveRelativePath(relativePath);
         String target = FTL_DIR + path;
         try {
             if (!this.isBinaryFile(repoFile)) {
@@ -181,15 +188,30 @@ public class InitTemplateFile {
 
     }
 
+    /**
+     * 移动原始文件
+     *
+     * @param relativePath
+     * @return
+     */
+    private String moveRelativePath(String relativePath) {
+        String newPath = relativePath;
+        // 判断是否需要移动模板文件
+        if (MOVE_FILES.containsKey(relativePath)) {
+            newPath = MOVE_FILES.get(relativePath);
+        }
+        return newPath;
+    }
 
     /**
      * 转换模板内容
+     *
      * @param content
      * @return
      */
     private String convertFtlContent(String content) {
-        return content.replaceAll("\\$\\{","\\${r'\\$'}{")
-            .replaceAll("#\\{","\\${r'#'}{");
+        return content.replaceAll("\\$\\{", "\\${r'\\$'}{")
+            .replaceAll("#\\{", "\\${r'#'}{");
     }
 
     /**
@@ -229,7 +251,6 @@ public class InitTemplateFile {
      */
     private void buildAndSetTemplateFilePO(String path, boolean binary) {
         String fileName = path.substring(path.lastIndexOf("/") + 1);
-
         String dir = path.substring(0, path.lastIndexOf("/"));
         if (StringUtils.isBlank(dir)) {
             dir = "/";
