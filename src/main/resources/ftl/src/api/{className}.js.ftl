@@ -8,7 +8,7 @@ const ${this.className}Api = {
     return request.get(`/api/${this.className}/${r'$'}{${this.id}}`)
   },
     </#if>
-    <#if !this.entityFeature.list>
+    <#if this.entityFeature.list>
   fetchList(query) {
     return request.get(`/api/${this.className}`, { params: query })
   },

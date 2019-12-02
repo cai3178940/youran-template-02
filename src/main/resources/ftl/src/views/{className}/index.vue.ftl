@@ -33,8 +33,8 @@
                  icon="el-icon-delete" @click="handleDeleteBatch">
         删除
       </el-button>
-    </div>
 </#if>
+    </div>
 
     <el-table v-loading="listLoading" :data="list"
 <#if tableSelect>
@@ -102,17 +102,23 @@
 </template>
 
 <script>
+<#if !this.entityFeature.save>
 import ${this.className}Add from './add'
+</#if>
+<#if !this.entityFeature.update>
 import ${this.className}Edit from './edit'
+</#if>
+<#if !this.entityFeature.show>
 import ${this.className}Show from './show'
+</#if>
 import ${this.className}Api from '@/api/${this.className}'
 <#if this.pageSign>
 import Pagination from '@/components/Pagination'
 </#if>
 
 export default {
-  name: '${this.classNameUpper}Table',
-  components: {
+name: '${this.classNameUpper}Table',
+components: {
 <@removeLastComma>
     <#if this.pageSign>
     Pagination,
@@ -175,7 +181,7 @@ export default {
       const sortKeyMap = {
         <@removeLastComma>
             <#list this.listSortFields as id,field>
-        '${field.jfieldName}': '${field.jfieldName}SortSign'
+        '${field.jfieldName}': '${field.jfieldName}SortSign',
             </#list>
         </@removeLastComma>
       }

@@ -7,5 +7,4 @@
 <#-- 移除最后一个逗号 -->
 <#macro removeLastComma>
 <#local content><#nested></#local>
-${CommonTemplateFunction.removeLastComma(content)}
-</#macro>
+${CommonTemplateFunction.removeLastComma(content)}</#macro>
