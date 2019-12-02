@@ -6,6 +6,18 @@
   "sysDefault" : true,
   "remark" : "标准vue前端模板",
   "templateFiles" : [ {
+    "fileName" : "common.ftl",
+    "fileDir" : "/abstracted",
+    "contextType" : 1,
+    "abstracted" : true,
+    "binary" : false
+  }, {
+    "fileName" : "table.ftl",
+    "fileDir" : "/abstracted",
+    "contextType" : 1,
+    "abstracted" : true,
+    "binary" : false
+  }, {
     "fileName" : "{className}.js.ftl",
     "fileDir" : "/mock",
     "contextType" : 2,

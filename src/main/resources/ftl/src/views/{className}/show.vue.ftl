@@ -1,5 +1,5 @@
 <#include "/abstracted/common.ftl">
-<#if !this.entityFeature.show>
+<#if !this.entityFeature.show || !this.entityFeature.list>
     <@call this.skipCurrent()/>
 </#if>
 <template>
@@ -42,8 +42,8 @@ export default {
     /**
      * 打开查看表单
      */
-    handleShow(id) {
-      ${this.className}Api.fetchById(id)
+    handleShow(${this.id}) {
+      ${this.className}Api.fetchById(${this.id})
         .then(data => {
           this.form = data
           this.formVisible = true

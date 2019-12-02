@@ -1,5 +1,5 @@
 <#include "/abstracted/common.ftl">
-<#if !this.entityFeature.save>
+<#if !this.entityFeature.save || !this.entityFeature.list>
     <@call this.skipCurrent()/>
 </#if>
 <template>
@@ -46,7 +46,17 @@ export default {
       form: initFormBean(),
       formVisible: false,
       formRules: {
-        name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
+<@removeLastComma>
+    <#list this.insertFields as id,field>
+        name: [{
+        <#if field.notNull>
+          required: true,
+        </#if>
+          message: '请输入${field.fieldDesc}',
+          trigger: 'blur'
+        }],
+    </#list>
+</@removeLastComma>
       }
     }
   },

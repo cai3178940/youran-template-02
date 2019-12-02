@@ -1,5 +1,5 @@
 <#include "/abstracted/common.ftl">
-<#if !this.entityFeature.update>
+<#if !this.entityFeature.update || !this.entityFeature.list>
     <@call this.skipCurrent()/>
 </#if>
 <template>
@@ -48,7 +48,17 @@ export default {
       form: initFormBean(),
       formVisible: false,
       formRules: {
-        name: [{ required: true, message: '请输入角色名称', trigger: 'blur' }]
+<@removeLastComma>
+    <#list this.updateFields as id,field>
+        name: [{
+        <#if field.notNull>
+          required: true,
+        </#if>
+          message: '请输入${field.fieldDesc}',
+          trigger: 'blur'
+        }],
+    </#list>
+</@removeLastComma>
       }
     }
   },
@@ -64,8 +74,8 @@ export default {
     /**
      * 打开编辑表单
      */
-    handleUpdate(id) {
-      ${this.className}Api.fetchById(id)
+    handleUpdate(${this.id}) {
+      ${this.className}Api.fetchById(${this.id})
         .then(data => {
           this.old = data
           this.resetForm()

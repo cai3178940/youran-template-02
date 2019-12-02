@@ -1,13 +1,8 @@
 <#include "/abstracted/common.ftl">
+<#include "/abstracted/table.ftl">
 <#if !this.entityFeature.list>
     <@call this.skipCurrent()/>
 </#if>
-<#--表格是否可选择-->
-<#assign tableSelect=this.entityFeature.deleteBatch/>
-<#--表格是否可排序-->
-<#assign tableSort=this.listSortFields?? && this.listSortFields?size &gt; 0/>
-<#--表格是否需要操作列-->
-<#assign tableOperate=this.entityFeature.show || this.entityFeature.update || this.entityFeature.delete/>
 <template>
   <div class="app-container">
     <div class="filter-container">
@@ -53,7 +48,7 @@
       <el-table-column type="selection" width="50" />
 </#if>
 <#list this.listFields as id,field>
-      <el-table-column label="${field.fieldDesc}" prop="id"
+      <el-table-column label="${field.fieldDesc}"
     <#if field.listSort>
                        sortable="custom"
     </#if>
@@ -160,22 +155,29 @@ export default {
     }
   },
   created() {
-    this.doQueryList({ page: 1 })
+    this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
   },
   methods: {
 <@removeLastComma>
+    <#if tableSelect>
     /**
      * 选择框变化
      */
     selectionChange(val) {
       this.selectItems = val
     },
+    </#if>
+    <#if tableSort>
     /**
      * 触发后端排序
      */
     sortChange({ prop, order }) {
       const sortKeyMap = {
-        'id': 'idSortNo'
+        <@removeLastComma>
+            <#list this.listSortFields as id,field>
+        '${field.jfieldName}': '${field.jfieldName}SortSign'
+            </#list>
+        </@removeLastComma>
       }
       for (var k in sortKeyMap) {
         const sortKey = sortKeyMap[k]
@@ -191,43 +193,53 @@ export default {
       }
       this.doQueryList({})
     },
+    </#if>
     /**
      * 触发搜索操作
      */
     handleQuery() {
-      this.doQueryList({ page: 1 })
+      this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
     },
     /**
      * 执行列表查询
      */
-    doQueryList({ page, limit }) {
+    doQueryList(<#if this.pageSign>{ page, limit }</#if>) {
+    <#if this.pageSign>
       if (page) {
         this.listQuery.page = page
       }
       if (limit) {
         this.listQuery.limit = limit
       }
+    </#if>
       this.listLoading = true
-      return roleApi.fetchList(this.listQuery)
+      return ${this.className}Api.fetchList(this.listQuery)
         .then(data => {
+    <#if this.pageSign>
           this.list = data.list
           this.total = data.total
+    <#else>
+          this.list = data
+    </#if>
         })
         .finally(() => {
           this.listLoading = false
         })
     },
+    <#if this.entityFeature.delete>
     /**
      * 删除单条记录
      */
     handleDeleteSingle(row) {
       return this.$common.confirm('是否确认删除')
-        .then(() => roleApi.deleteById(row.id))
+        .then(() => ${this.className}Api.deleteById(row.${this.id}))
         .then(() => {
           this.$common.showMsg('success', '删除成功')
-          return this.doQueryList({ page: 1 })
+          return this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
         })
     },
+    </#if>
+    <#if this.entityFeature.deleteBatch>
     /**
      * 批量删除记录
      */
@@ -237,18 +249,19 @@ export default {
         return
       }
       return this.$common.confirm('是否确认删除')
-        .then(() => roleApi.deleteBatch(this.selectItems.map(row => row.id)))
+        .then(() => ${this.className}Api.deleteBatch(this.selectItems.map(row => row.${this.id})))
         .then(() => {
           this.$common.showMsg('success', '删除成功')
-          return this.doQueryList({ page: 1 })
+          return this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
         })
     },
+    </#if>
     <#if this.entityFeature.save>
     /**
      * 打开新建表单
      */
     handleCreate() {
-      this.$refs.roleAdd.handleCreate()
+      this.$refs.${this.className}Add.handleCreate()
     },
     </#if>
     <#if this.entityFeature.save>
@@ -256,7 +269,7 @@ export default {
      * 打开查看表单
      */
     handleShow(row) {
-      this.$refs.roleShow.handleShow(row.id)
+      this.$refs.${this.className}Show.handleShow(row.${this.id})
     },
     </#if>
     <#if this.entityFeature.save>
@@ -264,7 +277,7 @@ export default {
      * 打开编辑表单
      */
     handleUpdate(row) {
-      this.$refs.roleEdit.handleUpdate(row.id)
+      this.$refs.${this.className}Edit.handleUpdate(row.${this.id})
     },
     </#if>
 </@removeLastComma>
