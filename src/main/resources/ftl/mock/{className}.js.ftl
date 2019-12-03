@@ -12,8 +12,21 @@ const data = Mock.mock({
     <#list this.listFields as id,field>
         <#if field.primaryKey>
     '${field.jfieldName}|+1': 1,
+        <#elseIf field.dicType??>
+            <#assign const = findConst(field.dicType)>
+    '${field.jfieldName}|1': [
+            <@removeLastComma>
+                <#list const.detailList as detail>
+                    <#if const.constType==MetaConstType.INTEGER>
+      ${detail.detailValue},
+                    <#elseIf const.constType==MetaConstType.STRING>
+      '${detail.detailValue}',
+                    </#if>
+                </#list>
+            </@removeLastComma>
+    ],
         <#else>
-    ${field.jfieldName}: '@cword(1, ${field.fieldLength})',
+    '${field.jfieldName}': '@cword(1, ${field.fieldLength})',
         </#if>
     </#list>
 </@removeLastComma>

@@ -8,3 +8,12 @@
 <#macro removeLastComma>
 <#local content><#nested></#local>
 ${CommonTemplateFunction.removeLastComma(content)}</#macro>
+
+<#-- 根据常量名查找常量 -->
+<#function findConst constName>
+    <#list this.metaConsts as const>
+        <#if const.constName == constName>
+            <#return const>
+        </#if>
+    </#list>
+</#function>
