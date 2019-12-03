@@ -21,8 +21,10 @@ module.exports = {
         "allowFirstLine": true
       }
     }],
-    //"vue/singleline-html-element-content-newline": "off",
-    //"vue/multiline-html-element-content-newline":"off",
+    "vue/html-closing-bracket-newline": "off",
+    "vue/html-self-closing": "off",
+    "vue/singleline-html-element-content-newline": "off",
+    "vue/multiline-html-element-content-newline":"off",
     "vue/name-property-casing": ["error", "PascalCase"],
     "vue/no-v-html": "off",
     'accessor-pairs': 2,

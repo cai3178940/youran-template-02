@@ -102,13 +102,13 @@
 </template>
 
 <script>
-<#if !this.entityFeature.save>
+<#if this.entityFeature.save>
 import ${this.className}Add from './add'
 </#if>
-<#if !this.entityFeature.update>
+<#if this.entityFeature.update>
 import ${this.className}Edit from './edit'
 </#if>
-<#if !this.entityFeature.show>
+<#if this.entityFeature.show>
 import ${this.className}Show from './show'
 </#if>
 import ${this.className}Api from '@/api/${this.className}'
@@ -117,8 +117,8 @@ import Pagination from '@/components/Pagination'
 </#if>
 
 export default {
-name: '${this.classNameUpper}Table',
-components: {
+  name: '${this.classNameUpper}Table',
+  components: {
 <@removeLastComma>
     <#if this.pageSign>
     Pagination,

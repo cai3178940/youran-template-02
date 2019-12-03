@@ -27,7 +27,7 @@ import java.util.function.Consumer;
  * 使用场景：
  * <ul><li>1、首次构建vue前端脚手架模板时使用
  * <li>2、vue-admin-template项目有更新时，拉取最新代码
- * （需要在template-02-init分支上做该操作）
+ * （需要在gen-init分支上做该操作，然后合并回master）
  * </ul>
  *
  * @author cbb

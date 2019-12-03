@@ -48,7 +48,7 @@ export default {
       formRules: {
 <@removeLastComma>
     <#list this.insertFields as id,field>
-        name: [{
+        ${field.jfieldName}: [{
         <#if field.notNull>
           required: true,
         </#if>

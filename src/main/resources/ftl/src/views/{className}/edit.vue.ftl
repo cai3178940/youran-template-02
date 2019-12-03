@@ -30,8 +30,8 @@ import ${this.className}Api from '@/api/${this.className}'
 
 function initFormBean() {
   const formBean = {
-    ${this.pk.jfieldName}: null,
 <@removeLastComma>
+    ${this.pk.jfieldName}: null,
     <#list this.updateFields as id,field>
     ${field.jfieldName}: null,
     </#list>
@@ -50,7 +50,7 @@ export default {
       formRules: {
 <@removeLastComma>
     <#list this.updateFields as id,field>
-        name: [{
+        ${field.jfieldName}: [{
         <#if field.notNull>
           required: true,
         </#if>
