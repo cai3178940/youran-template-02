@@ -84,6 +84,12 @@
     "abstracted" : false,
     "binary" : false
   }, {
+    "fileName" : "enums.js.ftl",
+    "fileDir" : "/src/utils",
+    "contextType" : 1,
+    "abstracted" : false,
+    "binary" : false
+  }, {
     "fileName" : "index.vue.ftl",
     "fileDir" : "/src/views/home",
     "contextType" : 1,

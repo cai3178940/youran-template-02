@@ -8,10 +8,13 @@ import { <#if this.pageSign>paging, </#if>copy } from './mock-util'
  */
 const data = Mock.mock({
   'list|20': [{
-    '${this.id}|+1': 1,
 <@removeLastComma>
     <#list this.listFields as id,field>
+        <#if field.primaryKey>
+    '${field.jfieldName}|+1': 1,
+        <#else>
     ${field.jfieldName}: '@cword(1, ${field.fieldLength})',
+        </#if>
     </#list>
 </@removeLastComma>
   }]
