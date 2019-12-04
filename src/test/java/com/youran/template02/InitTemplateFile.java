@@ -59,6 +59,7 @@ public class InitTemplateFile {
 
     public static final Map<String, String> MOVE_FILES = JsonUtil.parseObject("{" +
         "\"/mock/user.js\" : \"/mock/_user.js\"," +
+        "\"/src/views/login/index.vue\" : \"/src/views/_login/index.vue\"," +
         "\"/src/api/user.js\" : \"/src/api/_user.js\"" +
         "}", Map.class);
 

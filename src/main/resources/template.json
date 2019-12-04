@@ -541,7 +541,7 @@
     "binary" : false
   }, {
     "fileName" : "index.vue.ftl",
-    "fileDir" : "/src/views/login",
+    "fileDir" : "/src/views/_login",
     "contextType" : 1,
     "abstracted" : false,
     "binary" : false
