@@ -52,8 +52,7 @@
     <#if field.listSort>
                        sortable="custom"
     </#if>
-                                    <#-- TODO 列宽 -->
-                       align="center" width="100">
+                       align="center"<#if field.columnWidth?? && field.columnWidth &gt; 0> width="${field.columnWidth}"</#if>>
         <template slot-scope="{row}">
           <span>{{ row.${field.jfieldName} }}</span>
         </template>
