@@ -78,6 +78,7 @@ export default [
             <#assign sortCondition="">
             <#list this.listSortFields as id,field>
                 <#assign sortCondition += "query.${field.jfieldName}SortSign">
+      query.${field.jfieldName}SortSign = parseInt(query.${field.jfieldName}SortSign)
             <#sep>
                 <#assign sortCondition += " || ">
             </#list>
@@ -96,7 +97,7 @@ export default [
         </#if>
         <#if this.pageSign>
       // 列表分页
-      const page = paging(list, query)
+      const page = paging(list, query.page, query.limit)
       return {
         total: list.length,
         list: copy(page)

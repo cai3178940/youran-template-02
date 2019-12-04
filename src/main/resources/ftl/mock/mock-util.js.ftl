@@ -1,6 +1,6 @@
-export function paging(list, query) {
-  const endIndex = query.page * query.limit
-  const startIndex = (query.page - 1) * query.limit
+export function paging(list, page, limit) {
+  const endIndex = page * limit
+  const startIndex = (page - 1) * limit
   return list.slice(startIndex, endIndex)
 }
 

@@ -91,7 +91,7 @@
     "binary" : false
   }, {
     "fileName" : "index.vue.ftl",
-    "fileDir" : "/src/views/home",
+    "fileDir" : "/src/views/_home",
     "contextType" : 1,
     "abstracted" : false,
     "binary" : false

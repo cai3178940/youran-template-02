@@ -49,6 +49,7 @@
 </#if>
 <#list this.listFields as id,field>
       <el-table-column label="${field.fieldDesc}"
+                       prop="${field.jfieldName}"
     <#if field.listSort>
                        sortable="custom"
     </#if>
