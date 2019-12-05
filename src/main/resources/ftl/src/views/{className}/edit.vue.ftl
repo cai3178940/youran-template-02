@@ -14,7 +14,7 @@
     <#elseIf field.editType == EditType.TEXTAREA.getValue()>
         <el-input v-model="form.${field.jfieldName}" type="textarea" :rows="2"></el-input>
     <#elseIf field.editType == EditType.NUMBER.getValue()>
-        <el-input-number v-model="form.${field.jfieldName}" controls-position="right"></el-input-number>
+        <el-input-number v-model="form.${field.jfieldName}" style="width:100%;" controls-position="right"></el-input-number>
     <#elseIf field.editType == EditType.DATE.getValue()>
         <el-date-picker v-model="form.${field.jfieldName}" type="date" placeholder="选择日期"></el-date-picker>
     <#elseIf field.editType == EditType.DATETIME.getValue()>
@@ -30,13 +30,14 @@
             <#assign constName = const.constName?uncapFirst>
           <el-radio v-for="item in enums.${constName}"
                     :key="item.value"
-                    :label="item.value">{{item.label}}</el-radio>
+                    :label="item.value">{{ item.label }}</el-radio>
         <#else>
         </#if>
         </el-radio-group>
     <#elseIf field.editType == EditType.SELECT.getValue()>
         <el-select v-model="form.${field.jfieldName}"
-                   style="width:100%;" filterable>
+                   style="width:100%;" placeholder="请选择"
+                   filterable clearable>
         <#if field.foreignKey>
           <el-option :label="'外键暂不支持'"
                      :value="1">

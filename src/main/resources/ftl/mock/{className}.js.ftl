@@ -65,45 +65,15 @@ export default [
     url: `/api/${this.className}`,
     type: 'get',
     response: ({ query }) => {
-      // 列表过滤
-      let list = data.list.filter(item => {
-        <#list this.queryFields as id,field>
-        if (query.${field.jfieldName} && item.${field.jfieldName}.indexOf(query.${field.jfieldName}) < 0) {
-          return false
-        }
-        </#list>
-        return true
-      })
-        <#if tableSort>
-            <#assign sortCondition="">
-            <#list this.listSortFields as id,field>
-                <#assign sortCondition += "query.${field.jfieldName}SortSign">
-      query.${field.jfieldName}SortSign = parseInt(query.${field.jfieldName}SortSign)
-            <#sep>
-                <#assign sortCondition += " || ">
-            </#list>
-      // 列表排序
-      if (${sortCondition}) {
-        list = copy(list).sort((item1, item2) => {
-            <#list this.listSortFields as id,field>
-          if (query.${field.jfieldName}SortSign) {
-            const dif = item1.${field.jfieldName} - item2.${field.jfieldName}
-            return query.${field.jfieldName}SortSign > 0 ? dif : -dif
-          }
-            </#list>
-          return 0
-        })
-      }
-        </#if>
         <#if this.pageSign>
       // 列表分页
-      const page = paging(list, query.page, query.limit)
+      const page = paging(data.list, query.page, query.limit)
       return {
         total: list.length,
         list: copy(page)
       }
         <#else>
-      return copy(list)
+      return copy(data.list)
         </#if>
     }
   },

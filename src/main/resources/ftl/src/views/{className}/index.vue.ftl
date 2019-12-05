@@ -10,11 +10,45 @@
 <#list this.queryFields>
     <#items as id,field>
         <#if !QueryType.isBetween(field.queryType)>
-      <el-input v-model="listQuery.${field.jfieldName}" placeholder="${field.fieldDesc}"
+            <#if field.editType == EditType.NUMBER.getValue()>
+      <el-input-number v-model="query.${field.jfieldName}" placeholder="${field.fieldDesc}"
+                       style="width:200px;" class="filter-item"
+                       controls-position="right"></el-input-number>
+            <#elseIf field.editType == EditType.DATE.getValue()>
+      <el-date-picker v-model="query.${field.jfieldName}" type="date"
+                      style="width:200px;" class="filter-item"
+                      placeholder="${field.fieldDesc}"></el-date-picker>
+            <#elseIf field.editType == EditType.DATETIME.getValue()>
+      <el-date-picker v-model="query.${field.jfieldName}" type="datetime"
+                      style="width:200px;" class="filter-item"
+                      placeholder="${field.fieldDesc}"></el-date-picker>
+            <#elseIf field.jfieldType == JFieldType.BOOLEAN.javaType>
+      <el-select v-model="query.${field.jfieldName}" class="filter-item"
+                 style="width:200px;" placeholder="${field.fieldDesc}"
+                 clearable>
+        <el-option label="是" :value="true"></el-option>
+        <el-option label="否" :value="false"></el-option>
+      </el-select>
+            <#elseIf field.dicType??>
+                <#assign const = findConst(field.dicType)>
+                <@justCall importEnums.add(const)/>
+                <#assign constName = const.constName?uncapFirst>
+      <el-select v-model="query.${field.jfieldName}" class="filter-item"
+                 style="width:200px;" placeholder="${field.fieldDesc}"
+                 filterable clearable>
+        <el-option v-for="item in enums.${constName}"
+                   :key="item.value"
+                   :label="item.label"
+                   :value="item.value">
+        </el-option>
+      </el-select>
+            <#else>
+      <el-input v-model="query.${field.jfieldName}" placeholder="${field.fieldDesc}"
                 style="width: 200px;" class="filter-item"
                 @keyup.enter.native="handleQuery"/>
+            </#if>
         <#else>
-        <#-- TODO 其他类型查询条件 -->
+        <#-- TODO Between查询条件 -->
         </#if>
     </#items>
       <el-button class="filter-item" icon="el-icon-search" type="primary"
@@ -59,7 +93,7 @@
         <#assign const = findConst(field.dicType)>
         <@justCall importEnums.add(const)/>
         <#assign constName = const.constName?uncapFirst>
-          <span>{{ row.${field.jfieldName} | findEnumLabel(enums.${constName})}}</span>
+          <span>{{ row.${field.jfieldName} | findEnumLabel(enums.${constName}) }}</span>
     <#else>
           <span>{{ row.${field.jfieldName} }}</span>
     </#if>
@@ -90,8 +124,8 @@
 </#if>
     </el-table>
 <#if this.pageSign>
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page"
-                :limit.sync="listQuery.limit" @pagination="doQueryList"/>
+    <pagination v-show="total>0" :total="total" :page.sync="query.page"
+                :limit.sync="query.limit" @pagination="doQueryList"/>
 </#if>
 <#if this.entityFeature.save>
     <!-- 新建表单 -->
@@ -144,6 +178,11 @@ export default {
     </#if>
 </@removeLastComma>
   },
+<#if !importEnums.isEmpty()>
+  filters: {
+    findEnumLabel: enums.findEnumLabel
+  },
+</#if>
   data() {
     return {
 <#if !importEnums.isEmpty()>
@@ -159,7 +198,7 @@ export default {
       list: [],
       total: 0,
       listLoading: true,
-      listQuery: {
+      query: {
     <@removeLastComma>
         <#if this.pageSign>
         page: 1,
@@ -179,11 +218,9 @@ export default {
 </@removeLastComma>
     }
   },
-<#if !importEnums.isEmpty()>
-  filters: {
-    findEnumLabel: enums.findEnumLabel
+  created() {
+    this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
   },
-</#if>
   methods: {
 <@removeLastComma>
     <#if tableSelect>
@@ -209,12 +246,12 @@ export default {
       for (var k in sortKeyMap) {
         const sortKey = sortKeyMap[k]
         if (k !== prop) {
-          this.listQuery[sortKey] = null
+          this.query[sortKey] = null
         } else {
           if (order === 'ascending') {
-            this.listQuery[sortKey] = 1
+            this.query[sortKey] = 1
           } else {
-            this.listQuery[sortKey] = -1
+            this.query[sortKey] = -1
           }
         }
       }
@@ -233,14 +270,14 @@ export default {
     doQueryList(<#if this.pageSign>{ page, limit }</#if>) {
     <#if this.pageSign>
       if (page) {
-        this.listQuery.page = page
+        this.query.page = page
       }
       if (limit) {
-        this.listQuery.limit = limit
+        this.query.limit = limit
       }
     </#if>
       this.listLoading = true
-      return ${this.className}Api.fetchList(this.listQuery)
+      return ${this.className}Api.fetchList(this.query)
         .then(data => {
     <#if this.pageSign>
           this.list = data.list
@@ -308,9 +345,6 @@ export default {
     },
     </#if>
 </@removeLastComma>
-  },
-  created() {
-    this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
   }
 }
 </script>

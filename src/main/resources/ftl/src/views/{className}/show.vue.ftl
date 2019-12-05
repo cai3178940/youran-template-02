@@ -38,6 +38,11 @@ import enums from '@/utils/enums'
 
 export default {
   name: '${this.classNameUpper}Show',
+<#if !importEnums.isEmpty()>
+  filters: {
+    findEnumLabel: enums.findEnumLabel
+  },
+</#if>
   data() {
     return {
 <#if !importEnums.isEmpty()>
@@ -59,11 +64,6 @@ export default {
       formVisible: false
     }
   },
-<#if !importEnums.isEmpty()>
-  filters: {
-    findEnumLabel: enums.findEnumLabel
-  },
-</#if>
   methods: {
     /**
      * 打开查看表单
