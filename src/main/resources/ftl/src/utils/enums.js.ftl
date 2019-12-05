@@ -2,20 +2,34 @@
 <#list this.metaConsts>
     <#items as const>
         <#assign isString = const.constType==MetaConstType.STRING>
-        <#assign constName = const.constName?uncapFirst>
-const ${constName} = new Map()
-        <#list const.detailList as detail>
-${constName}.set(<#if isString>'${detail.detailValue}'<#else>${detail.detailValue}</#if>, '${detail.detailRemark}')
-        </#list>
+function get${const.constName}() {
+  return {
+        <@removeLastComma>
+            <#list const.detailList as detail>
+    '${detail.detailName}': {
+      value: <#if isString>'${detail.detailValue}'<#else>${detail.detailValue}</#if>,
+      label: '${detail.detailRemark}'
+    },
+            </#list>
+        </@removeLastComma>
+  }
+}
 
     </#items>
 <#else>
     <@call this.skipCurrent()/>
 </#list>
-export {
-<@removeLastComma>
-    <#list this.metaConsts as const>
-  ${const.constName?uncapFirst},
-    </#list>
-</@removeLastComma>
+export default {
+<#list this.metaConsts as const>
+  get${const.constName},
+</#list>
+  findEnumLabel(value, enums) {
+    for (const key in enums) {
+      const item = enums[key]
+      if (item.value === value) {
+        return item.label
+      }
+    }
+    return ''
+  }
 }

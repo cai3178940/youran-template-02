@@ -55,7 +55,14 @@
     </#if>
                        align="center"<#if field.columnWidth?? && field.columnWidth &gt; 0> width="${field.columnWidth}"</#if>>
         <template slot-scope="{row}">
+    <#if field.dicType??>
+        <#assign const = findConst(field.dicType)>
+        <@justCall importEnums.add(const)/>
+        <#assign constName = const.constName?uncapFirst>
+          <span>{{ row.${field.jfieldName} | findEnumLabel(enums.${constName})}}</span>
+    <#else>
           <span>{{ row.${field.jfieldName} }}</span>
+    </#if>
         </template>
       </el-table-column>
 </#list>
@@ -112,6 +119,9 @@ import ${this.className}Edit from './edit'
 import ${this.className}Show from './show'
 </#if>
 import ${this.className}Api from '@/api/${this.className}'
+<#if !importEnums.isEmpty()>
+import enums from '@/utils/enums'
+</#if>
 <#if this.pageSign>
 import Pagination from '@/components/Pagination'
 </#if>
@@ -136,6 +146,15 @@ export default {
   },
   data() {
     return {
+<#if !importEnums.isEmpty()>
+      enums: {
+    <@removeLastComma>
+        <#list importEnums as const>
+        ${const.constName?uncapFirst}: enums.get${const.constName}()
+        </#list>
+    </@removeLastComma>
+      },
+</#if>
 <@removeLastComma>
       list: [],
       total: 0,
@@ -160,9 +179,11 @@ export default {
 </@removeLastComma>
     }
   },
-  created() {
-    this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
+<#if !importEnums.isEmpty()>
+  filters: {
+    findEnumLabel: enums.findEnumLabel
   },
+</#if>
   methods: {
 <@removeLastComma>
     <#if tableSelect>
@@ -287,6 +308,9 @@ export default {
     },
     </#if>
 </@removeLastComma>
+  },
+  created() {
+    this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
   }
 }
 </script>
