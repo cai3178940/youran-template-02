@@ -25,6 +25,18 @@ const data = Mock.mock({
                 </#list>
             </@removeLastComma>
     ],
+        <#elseIf field.jfieldType == JFieldType.BOOLEAN.javaType>
+    '${field.jfieldName}|1': true,
+        <#elseIf field.jfieldType == JFieldType.INTEGER.javaType
+              || field.jfieldType == JFieldType.SHORT.javaType
+              || field.jfieldType == JFieldType.LONG.javaType>
+    '${field.jfieldName}|0-100': 1,
+        <#elseIf field.jfieldType == JFieldType.DOUBLE.javaType
+              || field.jfieldType == JFieldType.FLOAT.javaType
+              || field.jfieldType == JFieldType.BIGDECIMAL.javaType>
+    '${field.jfieldName}|0-100.1-2': 1,
+        <#elseIf field.jfieldType == JFieldType.DATE.javaType>
+    '${field.jfieldName}': '@date(yyyy-MM-dd) 00:00:00',
         <#else>
     '${field.jfieldName}': '@cword(1, ${field.fieldLength})',
         </#if>
@@ -69,7 +81,7 @@ export default [
       // 列表分页
       const page = paging(data.list, query.page, query.limit)
       return {
-        total: list.length,
+        total: data.list.length,
         list: copy(page)
       }
         <#else>
