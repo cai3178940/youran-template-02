@@ -107,9 +107,7 @@ export default {
 <@removeLastComma>
     <#list this.insertFields as id,field>
         ${field.jfieldName}: [{
-        <#if field.notNull>
-          required: true,
-        </#if>
+          required: <#if field.notNull>true<#else>false</#if>,
           message: '请输入${field.fieldDesc}',
           trigger: 'blur'
         }],
