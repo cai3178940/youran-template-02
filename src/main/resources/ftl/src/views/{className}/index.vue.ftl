@@ -9,19 +9,22 @@
 <#--渲染查询输入框-->
 <#list this.queryFields>
     <#items as id,field>
+        <#-- 非Between查询条件 -->
         <#if !QueryType.isBetween(field.queryType)>
             <#if field.editType == EditType.NUMBER.getValue()>
-      <el-input-number v-model="query.${field.jfieldName}" placeholder="${field.fieldDesc}"
+      <el-input-number v-model="query.${field.jfieldName}" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
                        style="width:200px;" class="filter-item"
                        controls-position="right"></el-input-number>
             <#elseIf field.editType == EditType.DATE.getValue()>
       <el-date-picker v-model="query.${field.jfieldName}" type="date"
                       style="width:200px;" class="filter-item"
-                      placeholder="${field.fieldDesc}"></el-date-picker>
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"></el-date-picker>
             <#elseIf field.editType == EditType.DATETIME.getValue()>
       <el-date-picker v-model="query.${field.jfieldName}" type="datetime"
                       style="width:200px;" class="filter-item"
-                      placeholder="${field.fieldDesc}"></el-date-picker>
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"></el-date-picker>
             <#elseIf field.jfieldType == JFieldType.BOOLEAN.javaType>
       <el-select v-model="query.${field.jfieldName}" class="filter-item"
                  style="width:200px;" placeholder="${field.fieldDesc}"
@@ -43,12 +46,46 @@
         </el-option>
       </el-select>
             <#else>
-      <el-input v-model="query.${field.jfieldName}" placeholder="${field.fieldDesc}"
+      <el-input v-model="query.${field.jfieldName}" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
                 style="width: 200px;" class="filter-item"
                 @keyup.enter.native="handleQuery"/>
             </#if>
         <#else>
-        <#-- TODO Between查询条件 -->
+            <#-- Between查询条件 -->
+            <#if field.jfieldType == JFieldType.DATE.javaType>
+      <el-date-picker v-model="query.${field.jfieldName}Start"
+                <#if field.editType == EditType.DATE.getValue()>
+                      type="date"
+                <#else>
+                      type="datetime"
+                </#if>
+                      style="width:200px;" class="filter-item"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"></el-date-picker>
+      <el-date-picker v-model="query.${field.jfieldName}End"
+                <#if field.editType == EditType.DATE.getValue()>
+                      type="date"
+                <#else>
+                      type="datetime"
+                </#if>
+                      style="width:200px;" class="filter-item"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"></el-date-picker>
+            <#elseIf field.editType == EditType.NUMBER.getValue()>
+      <el-input-number v-model="query.${field.jfieldName}Start" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"
+                       style="width:200px;" class="filter-item"
+                       controls-position="right"></el-input-number>
+      <el-input-number v-model="query.${field.jfieldName}End" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
+                       style="width:200px;" class="filter-item"
+                       controls-position="right"></el-input-number>
+            <#else>
+      <el-input v-model="query.${field.jfieldName}Start" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"
+                style="width: 200px;" class="filter-item"
+                @keyup.enter.native="handleQuery"/>
+      <el-input v-model="query.${field.jfieldName}End" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
+                style="width: 200px;" class="filter-item"
+                @keyup.enter.native="handleQuery"/>
+            </#if>
         </#if>
     </#items>
       <el-button class="filter-item" icon="el-icon-search" type="primary"
@@ -205,7 +242,12 @@ export default {
         limit: 10,
         </#if>
         <#list this.queryFields as id,field>
-        ${field.jfieldName}: null,
+            <#if !QueryType.isBetween(field.queryType)>
+        ${field.jfieldName}: ${getFieldEmptyValue(field)},
+            <#else>
+        ${field.jfieldName}Start: ${getFieldEmptyValue(field)},
+        ${field.jfieldName}End: ${getFieldEmptyValue(field)},
+            </#if>
         </#list>
         <#list this.listSortFields as id,field>
         ${field.jfieldName}SortSign: 0,

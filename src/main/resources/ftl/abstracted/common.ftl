@@ -4,7 +4,7 @@
 <#macro justCall func></#macro>
 
 <#-- 将当前model赋值给this变量 -->
-<#assign this = .data_model>
+<#assign this = .dataModel>
 
 <#-- 初始需要导入的枚举列表 -->
 <#assign importEnums = CommonTemplateFunction.createHashSet()>
@@ -22,3 +22,34 @@ ${CommonTemplateFunction.removeLastComma(content)}</#macro>
         </#if>
     </#list>
 </#function>
+
+<#-- 获取字段空值 -->
+<#function getFieldEmptyValue field>
+    <#-- 日期类型不能用null -->
+    <#if field.jfieldType == JFieldType.DATE.javaType>
+        <#return "''">
+    <#elseIf field.editType == EditType.NUMBER.getValue()>
+        <#return "undefined">
+    <#else>
+        <#return "null">
+    </#if>
+</#function>
+
+
+<#-- 获取范围查询条件的文字提示语后缀 -->
+<#function getRangeQueryTipSuffix field isBetweenStart>
+    <#if QueryType.isGe(field.queryType) || QueryType.isGt(field.queryType)>
+        <#return "(开始于)">
+    <#elseIf QueryType.isLe(field.queryType) || QueryType.isLt(field.queryType)>
+        <#return "(结束于)">
+    <#elseIf QueryType.isBetween(field.queryType)>
+        <#if isBetweenStart>
+            <#return "(开始于)">
+        <#else>
+            <#return "(结束于)">
+        </#if>
+    <#else>
+        <#return "">
+    </#if>
+</#function>
+

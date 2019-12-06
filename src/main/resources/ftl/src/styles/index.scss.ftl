@@ -73,7 +73,6 @@ div:focus {
   padding-bottom: 10px;
 
   .filter-item {
-    display: inline-block;
     vertical-align: middle;
     margin-bottom: 10px;
   }

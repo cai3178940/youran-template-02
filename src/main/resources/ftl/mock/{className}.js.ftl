@@ -45,12 +45,14 @@ const data = Mock.mock({
   }]
 })
 
+<#if this.entityFeature.save>
 /**
  * 新的id生成规则
  */
 const mockNewIdRule = {
   '${this.id}|+1': 20
 }
+</#if>
 
 const urlWithIdPattern = /\/api\/${this.className}\/(\d+)/
 

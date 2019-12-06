@@ -39,9 +39,10 @@ export function mockXHR() {
 
   function XHR2ExpressReqWrap(respond) {
     return function(options) {
+      const { body, type, url } = options
+      console.info(`${r'$'}{type} ${r'$'}{url} ${r'$'}{body ? 'body=' + JSON.stringify(body) : ''}`)
       let result = null
       if (respond instanceof Function) {
-        const { body, type, url } = options
         // https://expressjs.com/en/4x/api.html#req
         result = respond({
           method: type,
