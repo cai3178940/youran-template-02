@@ -6,37 +6,28 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-<#--渲染查询输入框-->
-<#list this.queryFields>
-    <#items as id,field>
-        <#-- 非Between查询条件 -->
-        <#if !QueryType.isBetween(field.queryType)>
-            <#if field.editType == EditType.NUMBER.getValue()>
-      <el-input-number v-model="query.${field.jfieldName}" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
-                       style="width:200px;" class="filter-item"
-                       controls-position="right"></el-input-number>
-            <#elseIf field.editType == EditType.DATE.getValue()>
-      <el-date-picker v-model="query.${field.jfieldName}" type="date"
-                      style="width:200px;" class="filter-item"
-                      value-format="yyyy-MM-dd HH:mm:ss"
-                      placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"></el-date-picker>
-            <#elseIf field.editType == EditType.DATETIME.getValue()>
-      <el-date-picker v-model="query.${field.jfieldName}" type="datetime"
-                      style="width:200px;" class="filter-item"
-                      value-format="yyyy-MM-dd HH:mm:ss"
-                      placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"></el-date-picker>
-            <#elseIf field.jfieldType == JFieldType.BOOLEAN.javaType>
-      <el-select v-model="query.${field.jfieldName}" class="filter-item"
+<#-- 把渲染搜索字段的逻辑抽象出来 -->
+<#macro displayQueryField field alias>
+    <#local name = alias?hasContent?string(alias,field.jfieldName)/>
+    <#-- 首先考虑外键的情况 -->
+    <#if field.foreignKey>
+        <@justCall importforeignEntitys.add(field.foreignEntity)/>
+        <#assign foreignClassName = field.foreignEntity.className?uncapFirst>
+      <el-select v-model="query.${name}" class="filter-item"
                  style="width:200px;" placeholder="${field.fieldDesc}"
-                 clearable>
-        <el-option label="是" :value="true"></el-option>
-        <el-option label="否" :value="false"></el-option>
+                 filterable clearable>
+        <el-option v-for="item in options.${foreignClassName}"
+                   :key="item.key"
+                   :label="item.value"
+                   :value="item.key">
+        </el-option>
       </el-select>
-            <#elseIf field.dicType??>
-                <#assign const = findConst(field.dicType)>
-                <@justCall importEnums.add(const)/>
-                <#assign constName = const.constName?uncapFirst>
-      <el-select v-model="query.${field.jfieldName}" class="filter-item"
+    <#-- 其次考虑枚举的情况 -->
+    <#elseIf field.dicType??>
+        <#assign const = findConst(field.dicType)>
+        <@justCall importEnums.add(const)/>
+        <#assign constName = const.constName?uncapFirst>
+      <el-select v-model="query.${name}" class="filter-item"
                  style="width:200px;" placeholder="${field.fieldDesc}"
                  filterable clearable>
         <el-option v-for="item in enums.${constName}"
@@ -45,56 +36,93 @@
                    :value="item.value">
         </el-option>
       </el-select>
-            <#else>
-      <el-input v-model="query.${field.jfieldName}" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
-                style="width: 200px;" class="filter-item"
-                @keyup.enter.native="handleQuery"/>
-            </#if>
-        <#else>
-            <#-- Between查询条件 -->
-            <#if field.jfieldType == JFieldType.DATE.javaType>
-      <el-date-picker v-model="query.${field.jfieldName}Start"
-                <#if field.editType == EditType.DATE.getValue()>
-                      type="date"
-                <#else>
-                      type="datetime"
-                </#if>
-                      style="width:200px;" class="filter-item"
-                      value-format="yyyy-MM-dd HH:mm:ss"
-                      placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"></el-date-picker>
-      <el-date-picker v-model="query.${field.jfieldName}End"
-                <#if field.editType == EditType.DATE.getValue()>
-                      type="date"
-                <#else>
-                      type="datetime"
-                </#if>
+    <#-- 非Between查询条件 -->
+    <#elseIf !QueryType.isBetween(field.queryType)>
+        <#if field.editType == EditType.NUMBER.getValue()>
+      <el-input-number v-model="query.${name}" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
+                       style="width:200px;" class="filter-item"
+                       controls-position="right"></el-input-number>
+        <#elseIf field.editType == EditType.DATE.getValue()>
+      <el-date-picker v-model="query.${name}" type="date"
                       style="width:200px;" class="filter-item"
                       value-format="yyyy-MM-dd HH:mm:ss"
                       placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"></el-date-picker>
-            <#elseIf field.editType == EditType.NUMBER.getValue()>
-      <el-input-number v-model="query.${field.jfieldName}Start" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"
-                       style="width:200px;" class="filter-item"
-                       controls-position="right"></el-input-number>
-      <el-input-number v-model="query.${field.jfieldName}End" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
-                       style="width:200px;" class="filter-item"
-                       controls-position="right"></el-input-number>
-            <#else>
-      <el-input v-model="query.${field.jfieldName}Start" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"
+        <#elseIf field.editType == EditType.DATETIME.getValue()>
+      <el-date-picker v-model="query.${name}" type="datetime"
+                      style="width:200px;" class="filter-item"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"></el-date-picker>
+        <#elseIf field.jfieldType == JFieldType.BOOLEAN.javaType>
+      <el-select v-model="query.${name}" class="filter-item"
+                 style="width:200px;" placeholder="${field.fieldDesc}"
+                 clearable>
+        <el-option label="是" :value="true"></el-option>
+        <el-option label="否" :value="false"></el-option>
+      </el-select>
+        <#else>
+      <el-input v-model="query.${name}" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
                 style="width: 200px;" class="filter-item"
                 @keyup.enter.native="handleQuery"/>
-      <el-input v-model="query.${field.jfieldName}End" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
-                style="width: 200px;" class="filter-item"
-                @keyup.enter.native="handleQuery"/>
-            </#if>
         </#if>
-    </#items>
+    <#-- 最后考虑Between查询条件 -->
+    <#else>
+        <#if field.jfieldType == JFieldType.DATE.javaType>
+      <el-date-picker v-model="query.${name}Start"
+            <#if field.editType == EditType.DATE.getValue()>
+                      type="date"
+            <#else>
+                      type="datetime"
+            </#if>
+                      style="width:200px;" class="filter-item"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"></el-date-picker>
+      <el-date-picker v-model="query.${name}End"
+            <#if field.editType == EditType.DATE.getValue()>
+                      type="date"
+            <#else>
+                      type="datetime"
+            </#if>
+                      style="width:200px;" class="filter-item"
+                      value-format="yyyy-MM-dd HH:mm:ss"
+                      placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"></el-date-picker>
+        <#elseIf field.editType == EditType.NUMBER.getValue()>
+      <el-input-number v-model="query.${name}Start" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"
+                       style="width:200px;" class="filter-item"
+                       controls-position="right"></el-input-number>
+      <el-input-number v-model="query.${name}End" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
+                       style="width:200px;" class="filter-item"
+                       controls-position="right"></el-input-number>
+        <#else>
+      <el-input v-model="query.${name}Start" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"
+                style="width: 200px;" class="filter-item"
+                @keyup.enter.native="handleQuery"/>
+      <el-input v-model="query.${name}End" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"
+                style="width: 200px;" class="filter-item"
+                @keyup.enter.native="handleQuery"/>
+        </#if>
+    </#if>
+</#macro>
+<#assign hasQueryField = false>
+<#--渲染查询输入框-->
+<#list this.queryFields as id,field>
+    <#assign hasQueryField = true>
+    <@displayQueryField field ""/>
+</#list>
+<#-- 外键级联扩展字段 -->
+<#list this.fkFields as id,field>
+    <#list field.cascadeQueryExts! as cascadeExt>
+        <#assign hasQueryField = true>
+        <@displayQueryField cascadeExt.cascadeField cascadeExt.alias/>
+    </#list>
+</#list>
+<#if hasQueryField>
       <el-button class="filter-item" icon="el-icon-search" type="primary"
                  @click="handleQuery">
         搜索
       </el-button>
-</#list>
+</#if>
 <#if this.entityFeature.save>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary"
+      <el-button class="filter-item" style="margin-left: 10px;" type="success"
                  icon="el-icon-edit" @click="handleCreate">
         新建
       </el-button>
@@ -118,24 +146,40 @@
 <#if tableSelect>
       <el-table-column type="selection" width="50" />
 </#if>
-<#list this.listFields as id,field>
+<#-- 把渲染字段的逻辑抽象出来 -->
+<#macro displayTableColumn field alias>
+    <#-- 不渲染外键字段 -->
+    <#if field.foreignKey><#return></#if>
+    <#local name = alias?hasContent?string(alias,field.jfieldName)/>
       <el-table-column label="${field.fieldDesc}"
-                       prop="${field.jfieldName}"
-    <#if field.listSort>
+                       prop="${name}"
+    <#if !(alias?hasContent) && field.listSort>
                        sortable="custom"
     </#if>
                        align="center"<#if field.columnWidth?? && field.columnWidth &gt; 0> width="${field.columnWidth}"</#if>>
         <template slot-scope="{row}">
+    <#-- 枚举字段特殊处理 -->
     <#if field.dicType??>
         <#assign const = findConst(field.dicType)>
         <@justCall importEnums.add(const)/>
         <#assign constName = const.constName?uncapFirst>
-          <span>{{ row.${field.jfieldName} | findEnumLabel(enums.${constName}) }}</span>
+          <span>{{ row.${name} | findEnumLabel(enums.${constName}) }}</span>
+    <#-- 普通字段直接展示 -->
     <#else>
-          <span>{{ row.${field.jfieldName} }}</span>
+          <span>{{ row.${name} }}</span>
     </#if>
         </template>
       </el-table-column>
+</#macro>
+<#-- 列表字段 -->
+<#list this.listFields as id,field>
+      <@displayTableColumn field ""/>
+</#list>
+<#-- 外键级联扩展字段 -->
+<#list this.fkFields as id,field>
+    <#list field.cascadeListExts! as cascadeExt>
+        <@displayTableColumn cascadeExt.cascadeField cascadeExt.alias/>
+    </#list>
 </#list>
 <#if tableOperate>
       <el-table-column label="操作" align="center" width="230"
@@ -190,6 +234,12 @@ import ${this.className}Edit from './edit'
 import ${this.className}Show from './show'
 </#if>
 import ${this.className}Api from '@/api/${this.className}'
+<#if !importforeignEntitys.isEmpty()>
+    <#list importforeignEntitys as foreignEntity>
+        <#assign foreignClassName = foreignEntity.className?uncapFirst>
+import ${foreignClassName}Api from '@/api/${foreignClassName}'
+    </#list>
+</#if>
 <#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
 </#if>
@@ -226,7 +276,16 @@ export default {
       enums: {
     <@removeLastComma>
         <#list importEnums as const>
-        ${const.constName?uncapFirst}: enums.get${const.constName}()
+        ${const.constName?uncapFirst}: enums.get${const.constName}(),
+        </#list>
+    </@removeLastComma>
+      },
+</#if>
+<#if !importforeignEntitys.isEmpty()>
+      options: {
+    <@removeLastComma>
+        <#list importforeignEntitys as foreignEntity>
+        ${foreignEntity.className?uncapFirst}: [],
         </#list>
     </@removeLastComma>
       },
@@ -262,6 +321,14 @@ export default {
   },
   created() {
     this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
+<#if !importforeignEntitys.isEmpty()>
+    <@removeLastComma>
+        <#list importforeignEntitys as foreignEntity>
+            <#assign foreignClassName = foreignEntity.className?uncapFirst>
+    ${foreignClassName}Api.findOptions().then(data => { this.options.${foreignClassName} = data })
+        </#list>
+    </@removeLastComma>
+</#if>
   },
   methods: {
 <@removeLastComma>

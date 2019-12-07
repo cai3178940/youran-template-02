@@ -1,5 +1,38 @@
 <#include "/abstracted/common.ftl">
 <#include "/abstracted/table.ftl">
+<#-- 输出常规字段mock表达式 -->
+<#macro mockGeneralField field alias>
+    <#local name = alias?hasContent?string(alias,field.jfieldName)/>
+    <#-- 枚举的情况 -->
+    <#if field.dicType??>
+        <#assign const = findConst(field.dicType)>
+    '${field.jfieldName}|1': [
+        <@removeLastComma>
+            <#list const.detailList as detail>
+                <#if const.constType==MetaConstType.INTEGER>
+      ${detail.detailValue},
+                <#elseIf const.constType==MetaConstType.STRING>
+      '${detail.detailValue}',
+                </#if>
+            </#list>
+        </@removeLastComma>
+    ],
+    <#elseIf field.jfieldType == JFieldType.BOOLEAN.javaType>
+    '${name}|1': true,
+    <#elseIf field.jfieldType == JFieldType.INTEGER.javaType
+              || field.jfieldType == JFieldType.SHORT.javaType
+              || field.jfieldType == JFieldType.LONG.javaType>
+    '${name}|0-100': 1,
+    <#elseIf field.jfieldType == JFieldType.DOUBLE.javaType
+              || field.jfieldType == JFieldType.FLOAT.javaType
+              || field.jfieldType == JFieldType.BIGDECIMAL.javaType>
+    '${name}|0-100.1-2': 1,
+    <#elseIf field.jfieldType == JFieldType.DATE.javaType>
+    '${name}': '@date(yyyy-MM-dd) 00:00:00',
+    <#else>
+    '${name}': '@cword(1, ${field.fieldLength})',
+    </#if>
+</#macro>
 import Mock from 'mockjs'
 import { <#if this.pageSign>paging, </#if>copy } from './mock-util'
 
@@ -9,37 +42,29 @@ import { <#if this.pageSign>paging, </#if>copy } from './mock-util'
 const data = Mock.mock({
   'list|20': [{
 <@removeLastComma>
-    <#list this.listFields as id,field>
+    <#list this.fields as id,field>
+        <#-- 跳过既不是列表展示，也不是详情展示的字段 -->
+        <#if !field.list && !field.show>
+            <#continue>
+        </#if>
+        <#-- 主键的情况 -->
         <#if field.primaryKey>
     '${field.jfieldName}|+1': 1,
-        <#elseIf field.dicType??>
-            <#assign const = findConst(field.dicType)>
-    '${field.jfieldName}|1': [
-            <@removeLastComma>
-                <#list const.detailList as detail>
-                    <#if const.constType==MetaConstType.INTEGER>
-      ${detail.detailValue},
-                    <#elseIf const.constType==MetaConstType.STRING>
-      '${detail.detailValue}',
-                    </#if>
-                </#list>
-            </@removeLastComma>
-    ],
-        <#elseIf field.jfieldType == JFieldType.BOOLEAN.javaType>
-    '${field.jfieldName}|1': true,
-        <#elseIf field.jfieldType == JFieldType.INTEGER.javaType
-              || field.jfieldType == JFieldType.SHORT.javaType
-              || field.jfieldType == JFieldType.LONG.javaType>
-    '${field.jfieldName}|0-100': 1,
-        <#elseIf field.jfieldType == JFieldType.DOUBLE.javaType
-              || field.jfieldType == JFieldType.FLOAT.javaType
-              || field.jfieldType == JFieldType.BIGDECIMAL.javaType>
-    '${field.jfieldName}|0-100.1-2': 1,
-        <#elseIf field.jfieldType == JFieldType.DATE.javaType>
-    '${field.jfieldName}': '@date(yyyy-MM-dd) 00:00:00',
+        <#-- 外键的情况 -->
+        <#elseIf field.foreignKey>
+    '${field.jfieldName}|1-20': 1,
+        <#-- 常规情况 -->
         <#else>
-    '${field.jfieldName}': '@cword(1, ${field.fieldLength})',
+            <@mockGeneralField field ""/>
         </#if>
+    </#list>
+    <#-- mock 外键级联扩展字段 -->
+    <#list this.fkFields as id,field>
+        <#list field.cascadeExts! as cascadeExt>
+            <#if cascadeExt.show || cascadeExt.list>
+                <@mockGeneralField cascadeExt.cascadeField cascadeExt.alias/>
+            </#if>
+        </#list>
     </#list>
 </@removeLastComma>
   }]
@@ -52,8 +77,8 @@ const data = Mock.mock({
 const mockNewIdRule = {
   '${this.id}|+1': 20
 }
-</#if>
 
+</#if>
 const urlWithIdPattern = /\/api\/${this.className}\/(\d+)/
 
 function removeById(list, ${this.id}) {
@@ -63,6 +88,18 @@ function removeById(list, ${this.id}) {
 
 export default [
 <@removeLastComma>
+    <#if this.titleField??>
+  {
+    url: `/api/${this.className}/options`,
+    type: 'get',
+    response: () => {
+      return data.list.map(item => ({
+        key: item.${this.id},
+        value: item.${this.titleField.jfieldName}
+      }))
+    }
+  },
+    </#if>
     <#if this.entityFeature.show>
   {
     url: urlWithIdPattern,

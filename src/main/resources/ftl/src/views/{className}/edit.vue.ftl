@@ -39,8 +39,11 @@
                    style="width:100%;" placeholder="请选择"
                    filterable clearable>
         <#if field.foreignKey>
-          <el-option :label="'外键暂不支持'"
-                     :value="1">
+            <@justCall importforeignEntitys.add(field.foreignEntity)/>
+          <el-option v-for="item in options.${field.foreignEntity.className?uncapFirst}"
+                     :key="item.key"
+                     :label="item.value"
+                     :value="item.key">
           </el-option>
         <#elseIf field.dicType??>
             <#assign const = findConst(field.dicType)>
@@ -73,6 +76,12 @@
 
 <script>
 import ${this.className}Api from '@/api/${this.className}'
+<#if !importforeignEntitys.isEmpty()>
+    <#list importforeignEntitys as foreignEntity>
+        <#assign foreignClassName = foreignEntity.className?uncapFirst>
+import ${foreignClassName}Api from '@/api/${foreignClassName}'
+    </#list>
+</#if>
 <#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
 </#if>
@@ -97,7 +106,16 @@ export default {
       enums: {
     <@removeLastComma>
         <#list importEnums as const>
-        ${const.constName?uncapFirst}: enums.get${const.constName}()
+        ${const.constName?uncapFirst}: enums.get${const.constName}(),
+        </#list>
+    </@removeLastComma>
+      },
+</#if>
+<#if !importforeignEntitys.isEmpty()>
+      options: {
+    <@removeLastComma>
+        <#list importforeignEntitys as foreignEntity>
+        ${foreignEntity.className?uncapFirst}: [],
         </#list>
     </@removeLastComma>
       },
@@ -133,6 +151,14 @@ export default {
      * 打开编辑表单
      */
     handleUpdate(${this.id}) {
+<#if !importforeignEntitys.isEmpty()>
+    <@removeLastComma>
+        <#list importforeignEntitys as foreignEntity>
+            <#assign foreignClassName = foreignEntity.className?uncapFirst>
+      ${foreignClassName}Api.findOptions().then(data => { this.options.${foreignClassName} = data })
+        </#list>
+    </@removeLastComma>
+</#if>
       ${this.className}Api.fetchById(${this.id})
         .then(data => {
           this.old = data

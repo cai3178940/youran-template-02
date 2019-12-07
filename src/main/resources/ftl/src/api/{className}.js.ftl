@@ -13,6 +13,11 @@ const ${this.className}Api = {
     return request.get(`/api/${this.className}`, { params: query })
   },
     </#if>
+    <#if this.titleField??>
+  findOptions() {
+    return request.get(`/api/${this.className}/options`)
+  },
+    </#if>
     <#if this.entityFeature.save>
   create(data) {
     return request.post(`/api/${this.className}`, data)

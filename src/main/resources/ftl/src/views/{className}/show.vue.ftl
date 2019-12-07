@@ -7,19 +7,33 @@
     <el-form ref="dataForm" :model="form"
              label-position="left" size="small"
              label-width="100px" style="width: 400px; margin-left:50px;">
-<#list this.showFields as id,field>
+<#-- 把渲染字段的逻辑抽象出来 -->
+<#macro displayShowField field alias>
+    <#-- 不渲染外键字段 -->
+    <#if field.foreignKey><#return></#if>
+    <#local name = alias?hasContent?string(alias,field.jfieldName)/>
       <el-form-item label="${field.fieldDesc}">
         <span class="form-item-show">
     <#if field.dicType??>
         <#assign const = findConst(field.dicType)>
         <@justCall importEnums.add(const)/>
         <#assign constName = const.constName?uncapFirst>
-          {{ form.${field.jfieldName} | findEnumLabel(enums.${constName}) }}
+          {{ form.${name} | findEnumLabel(enums.${constName}) }}
     <#else>
-          {{ form.${field.jfieldName} }}
+          {{ form.${name} }}
     </#if>
         </span>
       </el-form-item>
+</#macro>
+<#--渲染详情字段-->
+<#list this.showFields as id,field>
+    <@displayShowField field ""/>
+</#list>
+<#-- 外键级联扩展字段 -->
+<#list this.fkFields as id,field>
+    <#list field.cascadeShowExts! as cascadeExt>
+        <@displayShowField cascadeExt.cascadeField cascadeExt.alias/>
+    </#list>
 </#list>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -49,7 +63,7 @@ export default {
       enums: {
     <@removeLastComma>
         <#list importEnums as const>
-        ${const.constName?uncapFirst}: enums.get${const.constName}()
+        ${const.constName?uncapFirst}: enums.get${const.constName}(),
         </#list>
     </@removeLastComma>
       },

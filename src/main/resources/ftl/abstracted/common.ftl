@@ -6,8 +6,11 @@
 <#-- 将当前model赋值给this变量 -->
 <#assign this = .dataModel>
 
-<#-- 初始需要导入的枚举列表 -->
+<#-- 初始化需要导入的枚举列表 -->
 <#assign importEnums = CommonTemplateFunction.createHashSet()>
+<#-- 初始化需要导入的外键实体列表 -->
+<#assign importforeignEntitys = CommonTemplateFunction.createHashSet()>
+
 
 <#-- 移除最后一个逗号 -->
 <#macro removeLastComma>
