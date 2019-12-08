@@ -4,7 +4,7 @@
   "templateVersion" : "1.0.0",
   "sysLowVersion" : "3.0.0",
   "sysDefault" : true,
-  "remark" : "标准vue前端模板",
+  "remark" : "# 标准vue前端模板\n\n\n## 软件架构\n\n将开源vue管理后台脚手架：\n<a href=\"https://github.com/PanJiaChen/vue-admin-template\" target=\"_blank\">vue-admin-template</a>\n包装成代码模板，所有前端技术细节请参考 <a href=\"https://panjiachen.github.io/vue-element-admin-site/zh/guide/\" target=\"_blank\">vue-element-admin手册</a>\n",
   "templateFiles" : [ {
     "fileName" : "common.ftl",
     "fileDir" : "/abstracted",
