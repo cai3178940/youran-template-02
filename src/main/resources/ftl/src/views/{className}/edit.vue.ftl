@@ -83,7 +83,7 @@
         取消
       </el-button>
       <el-button type="primary"
-                 @click="updateData()">
+                 @click="doUpdate()">
         确认
       </el-button>
     </div>
@@ -209,7 +209,7 @@ export default {
     /**
      * 执行修改操作
      */
-    updateData() {
+    doUpdate() {
       this.$refs['dataForm'].validate()
         .then(() => ${this.className}Api.update(this.form))
         .then(data => {

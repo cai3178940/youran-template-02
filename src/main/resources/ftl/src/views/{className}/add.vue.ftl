@@ -82,7 +82,7 @@
         取消
       </el-button>
       <el-button type="primary"
-                 @click="createData()">
+                 @click="doCreate()">
         确认
       </el-button>
     </div>
@@ -188,7 +188,7 @@ export default {
     /**
      * 执行新建操作
      */
-    createData() {
+    doCreate() {
       this.$refs['dataForm'].validate()
         .then(() => ${this.className}Api.create(this.form))
         .then(data => {

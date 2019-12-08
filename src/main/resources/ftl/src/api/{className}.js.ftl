@@ -38,6 +38,19 @@ const ${this.className}Api = {
     return request.delete(`/api/${this.className}`, { data: ids })
   },
     </#if>
+    <#list this.holds! as otherEntity,mtm>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+        <#if entityFeature.addRemove || entityFeature.set>
+  fetch${otherCName}List(${this.id}) {
+    return request.get(`/api/user/${r'$'}{${this.id}}/${othercName}List`)
+  },
+  set${otherCName}(${this.id}, data) {
+    return request.put(`/api/user${r'$'}{${this.id}}`, data)
+  },
+        </#if>
+    </#list>
 </@removeLastComma>
 }
 export default ${this.className}Api
