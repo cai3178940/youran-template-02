@@ -8,8 +8,8 @@
 
 <#-- 初始化需要导入的枚举列表 -->
 <#assign importEnums = CommonTemplateFunction.createHashSet()>
-<#-- 初始化需要导入的外键实体列表 -->
-<#assign importforeignEntitys = CommonTemplateFunction.createHashSet()>
+<#-- 初始化需要导入的其他实体列表 -->
+<#assign importOtherEntitys = CommonTemplateFunction.createHashSet()>
 
 
 <#-- 移除最后一个逗号 -->
@@ -56,3 +56,15 @@ ${CommonTemplateFunction.removeLastComma(content)}</#macro>
     </#if>
 </#function>
 
+<#-- 获取字段校验触发事件名称 -->
+<#function getRuleTrigger field>
+    <#-- 日期类型不能用null -->
+    <#if field.editType == EditType.SELECT.getValue()
+      || field.editType == EditType.DATE.getValue()
+      || field.editType == EditType.DATETIME.getValue()
+      || field.editType == EditType.RADIO.getValue()>
+        <#return "change">
+    <#else>
+        <#return "blur">
+    </#if>
+</#function>

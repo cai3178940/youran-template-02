@@ -11,7 +11,7 @@
     <#local name = alias?hasContent?string(alias,field.jfieldName)/>
     <#-- 首先考虑外键的情况 -->
     <#if field.foreignKey>
-        <@justCall importforeignEntitys.add(field.foreignEntity)/>
+        <@justCall importOtherEntitys.add(field.foreignEntity)/>
         <#assign foreignClassName = field.foreignEntity.className?uncapFirst>
       <el-select v-model="query.${name}" class="filter-item"
                  style="width:200px;" placeholder="${field.fieldDesc}"
@@ -186,19 +186,16 @@
                        class-name="small-padding fixed-width">
         <template slot-scope="{row}">
     <#if this.entityFeature.show>
-          <el-button size="mini" @click="handleShow(row)">
-            查看
-          </el-button>
+          <el-button size="mini"
+                     @click="handleShow(row)" class="table-inner-button">查看</el-button>
     </#if>
     <#if this.entityFeature.update>
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            编辑
-          </el-button>
+          <el-button type="primary" size="mini"
+                     @click="handleUpdate(row)" class="table-inner-button">编辑</el-button>
     </#if>
     <#if this.entityFeature.delete>
-          <el-button type="danger" size="mini" @click="handleDeleteSingle(row)">
-            删除
-          </el-button>
+          <el-button type="danger" size="mini"
+                     @click="handleDeleteSingle(row)" class="table-inner-button">删除</el-button>
     </#if>
         </template>
       </el-table-column>
@@ -234,8 +231,8 @@ import ${this.className}Edit from './edit'
 import ${this.className}Show from './show'
 </#if>
 import ${this.className}Api from '@/api/${this.className}'
-<#if !importforeignEntitys.isEmpty()>
-    <#list importforeignEntitys as foreignEntity>
+<#if !importOtherEntitys.isEmpty()>
+    <#list importOtherEntitys as foreignEntity>
         <#assign foreignClassName = foreignEntity.className?uncapFirst>
 import ${foreignClassName}Api from '@/api/${foreignClassName}'
     </#list>
@@ -281,10 +278,10 @@ export default {
     </@removeLastComma>
       },
 </#if>
-<#if !importforeignEntitys.isEmpty()>
+<#if !importOtherEntitys.isEmpty()>
       options: {
     <@removeLastComma>
-        <#list importforeignEntitys as foreignEntity>
+        <#list importOtherEntitys as foreignEntity>
         ${foreignEntity.className?uncapFirst}: [],
         </#list>
     </@removeLastComma>
@@ -323,9 +320,9 @@ export default {
   },
   created() {
     this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
-<#if !importforeignEntitys.isEmpty()>
+<#if !importOtherEntitys.isEmpty()>
     <@removeLastComma>
-        <#list importforeignEntitys as foreignEntity>
+        <#list importOtherEntitys as foreignEntity>
             <#assign foreignClassName = foreignEntity.className?uncapFirst>
     ${foreignClassName}Api.findOptions().then(data => { this.options.${foreignClassName} = data })
         </#list>

@@ -1,4 +1,5 @@
 <#include "/abstracted/common.ftl">
+<#include "/abstracted/mtmCascadeExtsForShow.ftl">
 <#if !this.entityFeature.update || !this.entityFeature.list>
     <@call this.skipCurrent()/>
 </#if>
@@ -31,7 +32,6 @@
           <el-radio v-for="item in enums.${constName}"
                     :key="item.value"
                     :label="item.value">{{ item.label }}</el-radio>
-        <#else>
         </#if>
         </el-radio-group>
     <#elseIf field.editType == EditType.SELECT.getValue()>
@@ -39,7 +39,7 @@
                    style="width:100%;" placeholder="请选择"
                    filterable clearable>
         <#if field.foreignKey>
-            <@justCall importforeignEntitys.add(field.foreignEntity)/>
+            <@justCall importOtherEntitys.add(field.foreignEntity)/>
           <el-option v-for="item in options.${field.foreignEntity.className?uncapFirst}"
                      :key="item.key"
                      :label="item.value"
@@ -54,12 +54,28 @@
                      :label="item.label"
                      :value="item.value">
           </el-option>
-        <#else>
         </#if>
         </el-select>
-    <#else>
     </#if>
       </el-form-item>
+</#list>
+<#list this.holds! as otherEntity,mtm>
+    <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+    <#if entityFeature.withinEntity>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <@justCall importOtherEntitys.add(otherEntity)/>
+      <el-form-item label="${otherEntity.title}">
+        <el-select v-model="form.${othercName}List"
+                   style="width:100%;" placeholder="请选择"
+                   filterable clearable multiple>
+          <el-option v-for="item in options.${othercName}"
+                     :key="item.key"
+                     :label="item.value"
+                     :value="item.key">
+          </el-option>
+        </el-select>
+      </el-form-item>
+    </#if>
 </#list>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -76,8 +92,8 @@
 
 <script>
 import ${this.className}Api from '@/api/${this.className}'
-<#if !importforeignEntitys.isEmpty()>
-    <#list importforeignEntitys as foreignEntity>
+<#if !importOtherEntitys.isEmpty()>
+    <#list importOtherEntitys as foreignEntity>
         <#assign foreignClassName = foreignEntity.className?uncapFirst>
 import ${foreignClassName}Api from '@/api/${foreignClassName}'
     </#list>
@@ -92,6 +108,13 @@ function initFormBean() {
     ${this.pk.jfieldName}: null,
     <#list this.updateFields as id,field>
     ${field.jfieldName}: null,
+    </#list>
+    <#list this.holds! as otherEntity,mtm>
+        <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+        <#if entityFeature.withinEntity>
+            <#assign othercName=otherEntity.className?uncapFirst>
+    ${othercName}List: [],
+        </#if>
     </#list>
 </@removeLastComma>
   }
@@ -111,10 +134,10 @@ export default {
     </@removeLastComma>
       },
 </#if>
-<#if !importforeignEntitys.isEmpty()>
+<#if !importOtherEntitys.isEmpty()>
       options: {
     <@removeLastComma>
-        <#list importforeignEntitys as foreignEntity>
+        <#list importOtherEntitys as foreignEntity>
         ${foreignEntity.className?uncapFirst}: [],
         </#list>
     </@removeLastComma>
@@ -126,13 +149,18 @@ export default {
       formRules: {
 <@removeLastComma>
     <#list this.updateFields as id,field>
-        ${field.jfieldName}: [{
-        <#if field.notNull>
-          required: true,
-        </#if>
-          message: '请输入${field.fieldDesc}',
-          trigger: 'blur'
-        }],
+        ${field.jfieldName}: [
+        <@removeLastComma>
+            <#if field.notNull>
+          { required: true, message: '请输入${field.fieldDesc}', trigger: '${getRuleTrigger(field)}' },
+            </#if>
+            <#if (field.editType == EditType.TEXT.getValue()
+              || field.editType == EditType.TEXTAREA.getValue())
+              && field.fieldLength &gt; 0>
+          { max: ${field.fieldLength}, message: '长度不能超过${field.fieldLength}个字符', trigger: 'blur' },
+            </#if>
+        </@removeLastComma>
+        ],
     </#list>
 </@removeLastComma>
       }
@@ -151,9 +179,9 @@ export default {
      * 打开编辑表单
      */
     handleUpdate(${this.id}) {
-<#if !importforeignEntitys.isEmpty()>
+<#if !importOtherEntitys.isEmpty()>
     <@removeLastComma>
-        <#list importforeignEntitys as foreignEntity>
+        <#list importOtherEntitys as foreignEntity>
             <#assign foreignClassName = foreignEntity.className?uncapFirst>
       ${foreignClassName}Api.findOptions().then(data => { this.options.${foreignClassName} = data })
         </#list>
@@ -161,7 +189,19 @@ export default {
 </#if>
       ${this.className}Api.fetchById(${this.id})
         .then(data => {
+<#if mtmCascadeEntitiesForShow?size &gt; 0>
+          this.old = Object.assign({}, data, {
+    <@removeLastComma>
+        <#list mtmCascadeEntitiesForShow as otherEntity>
+            <#assign otherCName=otherEntity.className?capFirst>
+            <#assign othercName=otherEntity.className?uncapFirst>
+            ${othercName}List: data.${othercName}List ? data.${othercName}List.map(t => t.id) : [],
+        </#list>
+    </@removeLastComma>
+          })
+<#else>
           this.old = data
+</#if>
           this.resetForm()
           this.formVisible = true
         })

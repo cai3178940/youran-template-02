@@ -77,3 +77,8 @@ div:focus {
     margin-bottom: 10px;
   }
 }
+
+.table-inner-button {
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
