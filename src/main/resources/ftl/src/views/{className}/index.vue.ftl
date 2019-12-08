@@ -15,7 +15,7 @@
         <#assign foreignClassName = field.foreignEntity.className?uncapFirst>
       <el-select v-model="query.${name}" class="filter-item"
                  style="width:200px;" placeholder="${field.fieldDesc}"
-                 filterable clearable>
+                 filterable clearable<#if QueryType.isIn(field.queryType)> multiple</#if>>
         <el-option v-for="item in options.${foreignClassName}"
                    :key="item.key"
                    :label="item.value"
@@ -29,7 +29,7 @@
         <#assign constName = const.constName?uncapFirst>
       <el-select v-model="query.${name}" class="filter-item"
                  style="width:200px;" placeholder="${field.fieldDesc}"
-                 filterable clearable>
+                 filterable clearable<#if QueryType.isIn(field.queryType)> multiple</#if>>
         <el-option v-for="item in enums.${constName}"
                    :key="item.value"
                    :label="item.label"
@@ -301,7 +301,9 @@ export default {
         limit: 10,
         </#if>
         <#list this.queryFields as id,field>
-            <#if !QueryType.isBetween(field.queryType)>
+            <#if QueryType.isIn(field.queryType)>
+        ${field.jfieldName}: [],
+            <#elseIf !QueryType.isBetween(field.queryType)>
         ${field.jfieldName}: ${getFieldEmptyValue(field)},
             <#else>
         ${field.jfieldName}Start: ${getFieldEmptyValue(field)},
