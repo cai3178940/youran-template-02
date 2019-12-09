@@ -18,6 +18,12 @@
     "abstracted" : true,
     "binary" : false
   }, {
+    "fileName" : "mtmCascadeExtsForQuery.ftl",
+    "fileDir" : "/abstracted",
+    "contextType" : 1,
+    "abstracted" : true,
+    "binary" : false
+  }, {
     "fileName" : "mtmCascadeExtsForShow.ftl",
     "fileDir" : "/abstracted",
     "contextType" : 1,

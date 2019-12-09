@@ -1,5 +1,6 @@
 <#include "/abstracted/common.ftl">
 <#include "/abstracted/table.ftl">
+<#include "/abstracted/mtmCascadeExtsForQuery.ftl">
 <#if !this.entityFeature.list>
     <@call this.skipCurrent()/>
 </#if>
@@ -108,12 +109,17 @@
     <#assign hasQueryField = true>
     <@displayQueryField field ""/>
 </#list>
-<#-- 外键级联扩展字段 -->
+<#--开始渲染【外键级联扩展】字段 -->
 <#list this.fkFields as id,field>
     <#list field.cascadeQueryExts! as cascadeExt>
         <#assign hasQueryField = true>
         <@displayQueryField cascadeExt.cascadeField cascadeExt.alias/>
     </#list>
+</#list>
+<#--开始渲染【多对多级联扩展】字段-->
+<#list mtmCascadeExtsForQuery as mtmCascadeExt>
+    <#assign hasQueryField = true>
+    <@displayQueryField mtmCascadeExt.cascadeField mtmCascadeExt.alias/>
 </#list>
 <#if hasQueryField>
       <el-button class="filter-item" icon="el-icon-search" type="primary"
