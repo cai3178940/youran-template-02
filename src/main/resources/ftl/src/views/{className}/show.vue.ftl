@@ -40,7 +40,8 @@
     <#assign mtmCascadeExts = groupMtmCascadeExtsForShow[otherEntity?index]>
     <#assign othercName=otherEntity.className?uncapFirst>
       <el-form-item label="${otherEntity.title}">
-        <el-table :data="form.${othercName}List" style="width: 100%;">
+        <el-table :data="form.${othercName}List" style="width: 100%;"
+                  size="mini" border>
         <#list mtmCascadeExts as cascadeExt>
             <#assign cascadeField = cascadeExt.cascadeField>
           <el-table-column label="${cascadeField.fieldDesc}" prop="${cascadeField.jfieldName}"></el-table-column>
