@@ -193,9 +193,9 @@ export default {
           this.old = Object.assign({}, data, {
     <@removeLastComma>
         <#list mtmCascadeEntitiesForShow as otherEntity>
-            <#assign otherCName=otherEntity.className?capFirst>
             <#assign othercName=otherEntity.className?uncapFirst>
-            ${othercName}List: data.${othercName}List ? data.${othercName}List.map(t => t.id) : [],
+            <#assign pkField=otherEntity.pkField>
+            ${othercName}List: data.${othercName}List ? data.${othercName}List.map(t => t.${pkField.jfieldName}) : [],
         </#list>
     </@removeLastComma>
           })

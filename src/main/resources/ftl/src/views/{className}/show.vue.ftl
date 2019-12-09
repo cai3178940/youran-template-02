@@ -1,4 +1,5 @@
 <#include "/abstracted/common.ftl">
+<#include "/abstracted/mtmCascadeExtsForShow.ftl">
 <#if !this.entityFeature.show || !this.entityFeature.list>
     <@call this.skipCurrent()/>
 </#if>
@@ -34,6 +35,18 @@
     <#list field.cascadeShowExts! as cascadeExt>
         <@displayShowField cascadeExt.cascadeField cascadeExt.alias/>
     </#list>
+</#list>
+<#list mtmCascadeEntitiesForShow as otherEntity>
+    <#assign mtmCascadeExts = groupMtmCascadeExtsForShow[otherEntity?index]>
+    <#assign othercName=otherEntity.className?uncapFirst>
+      <el-form-item label="${otherEntity.title}">
+        <el-table :data="form.${othercName}List" style="width: 100%;">
+        <#list mtmCascadeExts as cascadeExt>
+            <#assign cascadeField = cascadeExt.cascadeField>
+          <el-table-column label="${cascadeField.fieldDesc}" prop="${cascadeField.jfieldName}"></el-table-column>
+        </#list>
+        </el-table>
+      </el-form-item>
 </#list>
     </el-form>
     <div slot="footer" class="dialog-footer">
