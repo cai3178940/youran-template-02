@@ -464,7 +464,7 @@ export default {
       this.$refs.${this.className}Add.handleCreate()
     },
     </#if>
-    <#if this.entityFeature.save>
+    <#if this.entityFeature.show>
     /**
      * 打开查看表单
      */
@@ -472,7 +472,7 @@ export default {
       this.$refs.${this.className}Show.handleShow(row.${this.id})
     },
     </#if>
-    <#if this.entityFeature.save>
+    <#if this.entityFeature.update>
     /**
      * 打开编辑表单
      */
