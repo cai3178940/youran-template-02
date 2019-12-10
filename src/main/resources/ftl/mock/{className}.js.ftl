@@ -6,41 +6,59 @@
     <#-- 枚举的情况 -->
     <#if field.dicType??>
         <#assign const = findConst(field.dicType)>
-    '${field.jfieldName}|1': [
+      '${field.jfieldName}|1': [
         <@removeLastComma>
             <#list const.detailList as detail>
                 <#if const.constType==MetaConstType.INTEGER>
-      ${detail.detailValue},
+        ${detail.detailValue},
                 <#elseIf const.constType==MetaConstType.STRING>
-      '${detail.detailValue}',
+        '${detail.detailValue}',
                 </#if>
             </#list>
         </@removeLastComma>
-    ],
+      ],
     <#elseIf field.jfieldType == JFieldType.BOOLEAN.javaType>
-    '${name}|1': true,
+      '${name}|1': true,
     <#elseIf field.jfieldType == JFieldType.INTEGER.javaType
               || field.jfieldType == JFieldType.SHORT.javaType
               || field.jfieldType == JFieldType.LONG.javaType>
-    '${name}|0-100': 1,
+      '${name}|0-100': 1,
     <#elseIf field.jfieldType == JFieldType.DOUBLE.javaType
               || field.jfieldType == JFieldType.FLOAT.javaType
               || field.jfieldType == JFieldType.BIGDECIMAL.javaType>
-    '${name}|0-100.1-2': 1,
+      '${name}|0-100.1-2': 1,
     <#elseIf field.jfieldType == JFieldType.DATE.javaType>
-    '${name}': '@date(yyyy-MM-dd) 00:00:00',
+      '${name}': '@date(yyyy-MM-dd) 00:00:00',
     <#else>
-    '${name}': '@cword(1, ${field.fieldLength})',
+      '${name}': '@cword(1, ${field.fieldLength})',
     </#if>
 </#macro>
 import Mock from 'mockjs'
 import { <#if this.pageSign>paging, </#if>copy } from './mock-util'
+<#-- 引入依赖的其他mock -->
+<#list this.holds! as otherEntity,mtm>
+    <#assign othercName=otherEntity.className?uncapFirst>
+import ${othercName} from './${othercName}'
+</#list>
 
 /**
- * mock列表数据
+ * mock数据缓存
  */
-const data = Mock.mock({
-  'list|20': [{
+let data = null
+
+/**
+ * 获取mock数据缓存
+ */
+function getMockData() {
+  return data
+}
+
+/**
+ * 初始化mock数据阶段1
+ */
+function initMockDataStage1() {
+  data = Mock.mock({
+    'list|20': [{
 <@removeLastComma>
     <#list this.fields as id,field>
         <#-- 跳过既不是列表展示，也不是详情展示的字段 -->
@@ -49,10 +67,10 @@ const data = Mock.mock({
         </#if>
         <#-- 主键的情况 -->
         <#if field.primaryKey>
-    '${field.jfieldName}|+1': 1,
+      '${field.jfieldName}|+1': 1,
         <#-- 外键的情况 -->
         <#elseIf field.foreignKey>
-    '${field.jfieldName}|1-20': 1,
+      '${field.jfieldName}|1-20': 1,
         <#-- 常规情况 -->
         <#else>
             <@mockGeneralField field ""/>
@@ -67,8 +85,24 @@ const data = Mock.mock({
         </#list>
     </#list>
 </@removeLastComma>
-  }]
-})
+    }]
+  })
+}
+
+/**
+ * 初始化mock数据阶段2
+ */
+function initMockDataStage2() {
+<#-- 初始化多对多关联 -->
+<#if this.holds!?hasContent>
+  for (const item of data.list) {
+    <#list this.holds! as otherEntity,mtm>
+        <#assign othercName=otherEntity.className?uncapFirst>
+    item.${othercName}List = [Mock.Random.pick(${othercName}.getMockData())]
+    </#list>
+  }
+</#if>
+}
 
 <#if this.entityFeature.save>
 /**
@@ -86,7 +120,7 @@ function removeById(list, ${this.id}) {
   list.splice(index, 1)
 }
 
-export default [
+const reqMocks = [
 <@removeLastComma>
     <#if this.titleField??>
   {
@@ -176,3 +210,10 @@ export default [
     </#if>
 </@removeLastComma>
 ]
+
+export default {
+  initMockDataStage1,
+  initMockDataStage2,
+  reqMocks,
+  getMockData
+}

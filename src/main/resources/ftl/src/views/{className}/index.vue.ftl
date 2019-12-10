@@ -1,6 +1,7 @@
 <#include "/abstracted/common.ftl">
 <#include "/abstracted/table.ftl">
 <#include "/abstracted/mtmCascadeExtsForQuery.ftl">
+<#include "/abstracted/mtmCascadeExtsForList.ftl">
 <#if !this.entityFeature.list>
     <@call this.skipCurrent()/>
 </#if>
@@ -186,6 +187,25 @@
     <#list field.cascadeListExts! as cascadeExt>
         <@displayTableColumn cascadeExt.cascadeField cascadeExt.alias/>
     </#list>
+</#list>
+<#--多对多级联扩展列表展示-->
+<#list mtmCascadeEntitiesForList as otherEntity>
+    <#assign otherPkField = otherEntity.pkField>
+    <#assign mtmCascadeExts = groupMtmCascadeExtsForList[otherEntity?index]>
+    <#--级联扩展列表字段中，如果有标题字段，则使用标题字段展示，否则直接展示主键字段-->
+    <#if hasTitleField(otherEntity,mtmCascadeExts)>
+        <#assign displayField = otherEntity.titleField>
+    <#else>
+        <#assign displayField = otherPkField>
+    </#if>
+    <#assign othercName=otherEntity.className?uncapFirst>
+      <el-table-column label="${otherEntity.title}" align="center">
+        <template slot-scope="{row}">
+          <span v-for="item in row.${othercName}List" class="table-inner-mtm">
+            {{ item.${displayField.jfieldName} }}
+          </span>
+        </template>
+      </el-table-column>
 </#list>
 <#if tableOperate>
       <el-table-column label="操作" align="center" width="230"

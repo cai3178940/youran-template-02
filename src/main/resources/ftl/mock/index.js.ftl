@@ -4,14 +4,24 @@ import { param2Obj } from '../src/utils'
 
 import _user from './_user'
 <#list this.metaEntities as entity>
-import ${entity.className?uncapFirst} from './${entity.className?uncapFirst}'
+    <#assign className=entity.className?uncapFirst>
+import ${className} from './${className}'
 </#list>
 
-const mocks = [
+function initMockData() {
+<#list this.metaEntities as entity>
+  ${entity.className?uncapFirst}.initMockDataStage1()
+</#list>
+<#list this.metaEntities as entity>
+  ${entity.className?uncapFirst}.initMockDataStage2()
+</#list>
+}
+
+const reqMocks = [
   ..._user,
 <@removeLastComma>
     <#list this.metaEntities as entity>
-  ...${entity.className?uncapFirst},
+  ...${entity.className?uncapFirst}.reqMocks,
     </#list>
 </@removeLastComma>
 ]
@@ -56,8 +66,10 @@ export function mockXHR() {
       return Mock.mock(result)
     }
   }
-
-  for (const i of mocks) {
+  // 初始化所有mock数据
+  initMockData()
+  // 设置异步请求的mock规则
+  for (const i of reqMocks) {
     Mock.mock(new RegExp(i.url), i.type || 'get', XHR2ExpressReqWrap(i.response))
   }
 }
@@ -73,6 +85,6 @@ const responseFake = (url, type, respond) => {
   }
 }
 
-export default mocks.map(route => {
+export default reqMocks.map(route => {
   return responseFake(route.url, route.type, route.response)
 })

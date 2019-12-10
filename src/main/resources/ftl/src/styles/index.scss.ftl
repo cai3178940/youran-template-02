@@ -78,6 +78,17 @@ div:focus {
   }
 }
 
+.table-inner-mtm {
+  font-size: 11px;
+  color: #FFFFFF;
+  padding: 2px;
+  border: 2px solid transparent;
+  border-radius:4px;
+  margin: 2px;
+  user-select: none;
+  background-color: #409EFF;
+}
+
 .table-inner-button {
   margin-top: 2px;
   margin-bottom: 2px;
