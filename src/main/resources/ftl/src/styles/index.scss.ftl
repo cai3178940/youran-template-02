@@ -86,7 +86,7 @@ div:focus {
   border-radius:4px;
   margin: 2px;
   user-select: none;
-  background-color: #409EFF;
+  background-color: #FFA500;
 }
 
 .table-inner-button {

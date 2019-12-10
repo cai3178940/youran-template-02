@@ -199,7 +199,7 @@
         <#assign displayField = otherPkField>
     </#if>
     <#assign othercName=otherEntity.className?uncapFirst>
-      <el-table-column label="${otherEntity.title}" align="center">
+      <el-table-column label="${otherEntity.title}" align="left" width="180">
         <template slot-scope="{row}">
           <span v-for="item in row.${othercName}List"
                 :key="item.${otherPkField.jfieldName}"
@@ -211,7 +211,7 @@
 </#list>
 <#if tableOperate>
       <el-table-column label="操作" align="center" width="230"
-                       class-name="small-padding fixed-width">
+                       class-name="small-padding fixed-width" fixed="right">
         <template slot-scope="{row}">
     <#if this.entityFeature.show>
           <el-button size="mini"
