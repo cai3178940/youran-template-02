@@ -30,7 +30,7 @@
     <#elseIf field.jfieldType == JFieldType.DATE.javaType>
       '${name}': '@date(yyyy-MM-dd) 00:00:00',
     <#else>
-      '${name}': '@cword(1, ${field.fieldLength})',
+      '${name}': '@word(1, ${[field.fieldLength, 10]?min})',
     </#if>
 </#macro>
 import Mock from 'mockjs'
@@ -98,7 +98,7 @@ function initMockDataStage2() {
   for (const item of data.list) {
     <#list this.holds! as otherEntity,mtm>
         <#assign othercName=otherEntity.className?uncapFirst>
-    item.${othercName}List = [Mock.Random.pick(${othercName}.getMockData())]
+    item.${othercName}List = [Mock.Random.pick(${othercName}.getMockData().list)]
     </#list>
   }
 </#if>

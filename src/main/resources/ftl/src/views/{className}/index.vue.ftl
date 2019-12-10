@@ -201,7 +201,9 @@
     <#assign othercName=otherEntity.className?uncapFirst>
       <el-table-column label="${otherEntity.title}" align="center">
         <template slot-scope="{row}">
-          <span v-for="item in row.${othercName}List" class="table-inner-mtm">
+          <span v-for="item in row.${othercName}List"
+                :key="item.${otherPkField.jfieldName}"
+                class="table-inner-mtm">
             {{ item.${displayField.jfieldName} }}
           </span>
         </template>

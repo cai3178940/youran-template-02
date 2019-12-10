@@ -63,7 +63,9 @@ export function mockXHR() {
       } else {
         result = respond
       }
-      return Mock.mock(result)
+      const mockResult = Mock.mock(result)
+      console.info(mockResult)
+      return mockResult
     }
   }
   // 初始化所有mock数据
