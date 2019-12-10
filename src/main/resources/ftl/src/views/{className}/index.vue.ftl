@@ -199,7 +199,7 @@
         <#assign displayField = otherPkField>
     </#if>
     <#assign othercName=otherEntity.className?uncapFirst>
-      <el-table-column label="${otherEntity.title}" align="left" width="180">
+      <el-table-column label="${otherEntity.title}" align="center">
         <template slot-scope="{row}">
           <span v-for="item in row.${othercName}List"
                 :key="item.${otherPkField.jfieldName}"
