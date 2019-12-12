@@ -1,6 +1,7 @@
+<#include "/abstracted/common.ftl">
 module.exports = {
 
-  title: 'Vue Admin Template',
+  title: '${this.projectDesc}',
 
   /**
    * @type {boolean} true | false

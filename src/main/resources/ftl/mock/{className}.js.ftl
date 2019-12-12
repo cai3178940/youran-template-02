@@ -41,6 +41,8 @@ import { <#if this.pageSign>paging, </#if>copy } from './mock-util'
 import ${othercName} from './${othercName}'
 </#list>
 
+const baseURL = process.env.VUE_APP_BASE_API
+
 /**
  * mock数据缓存
  */
@@ -109,11 +111,11 @@ function initMockDataStage2() {
  * 新的id生成规则
  */
 const mockNewIdRule = {
-  '${this.id}|+1': 20
+  '${this.id}|+1': 21
 }
 
 </#if>
-const urlWithIdPattern = /\/api\/${this.className}\/(\d+)/
+const urlWithIdPattern = new RegExp(`\\${r'$'}{baseURL}\\/${this.className}\\/(\\d+)`)
 
 function removeById(list, ${this.id}) {
   const index = list.findIndex(item => item.${this.id} === ${this.id})
@@ -124,7 +126,7 @@ const reqMocks = [
 <@removeLastComma>
     <#if this.titleField??>
   {
-    url: `/api/${this.className}/options`,
+    url: `${r'$'}{baseURL}/${this.className}/options`,
     type: 'get',
     response: () => {
       return data.list.map(item => ({
@@ -147,7 +149,7 @@ const reqMocks = [
     </#if>
     <#if this.entityFeature.list>
   {
-    url: `/api/${this.className}`,
+    url: `${r'$'}{baseURL}/${this.className}`,
     type: 'get',
     response: ({ query }) => {
         <#if this.pageSign>
@@ -165,7 +167,7 @@ const reqMocks = [
     </#if>
     <#if this.entityFeature.save>
   {
-    url: `/api/${this.className}`,
+    url: `${r'$'}{baseURL}/${this.className}`,
     type: 'post',
     response: ({ body }) => {
       body.${this.id} = Mock.mock(mockNewIdRule).${this.id}
@@ -176,7 +178,7 @@ const reqMocks = [
     </#if>
     <#if this.entityFeature.update>
   {
-    url: `/api/${this.className}`,
+    url: `${r'$'}{baseURL}/${this.className}`,
     type: 'put',
     response: ({ body }) => {
       const obj = data.list.find(item => item.${this.id} === body.${this.id})
@@ -198,7 +200,7 @@ const reqMocks = [
     </#if>
     <#if this.entityFeature.deleteBatch>
   {
-    url: `/api/${this.className}`,
+    url: `${r'$'}{baseURL}/${this.className}`,
     type: 'delete',
     response: ({ body }) => {
       for (var ${this.id} of body) {
