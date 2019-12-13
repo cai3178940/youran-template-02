@@ -35,8 +35,12 @@ service.interceptors.response.use(
     }
   },
   error => {
+    let message = error.message
+    if (error.response && error.response.data && error.response.data.message) {
+      message = error.response.data.message
+    }
     Message({
-      message: error.message,
+      message: message,
       type: 'error',
       duration: 5 * 1000
     })
