@@ -225,6 +225,14 @@
           <el-button type="danger" size="mini"
                      @click="handleDeleteSingle(row)" class="table-inner-button">删除</el-button>
     </#if>
+    <#list this.holds! as otherEntity,mtm>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+        <#if entityFeature.set>
+          <el-button type="success" size="mini"
+                     @click="handle${otherCName}Setting(row)" class="table-inner-button">设置${otherEntity.title}</el-button>
+        </#if>
+    </#list>
         </template>
       </el-table-column>
 </#if>
@@ -245,6 +253,14 @@
     <!-- 查看表单 -->
     <${this.className}-show ref="${this.className}Show"/>
 </#if>
+<#list this.holds! as otherEntity,mtm>
+    <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+    <#if entityFeature.set>
+    <!-- 设置${otherEntity.title} -->
+    <${othercName}-setting ref="${othercName}Setting" @updated="doQueryList({})"/>
+    </#if>
+</#list>
   </div>
 </template>
 
@@ -258,6 +274,13 @@ import ${this.className}Edit from './edit'
 <#if this.entityFeature.show>
 import ${this.className}Show from './show'
 </#if>
+<#list this.holds! as otherEntity,mtm>
+    <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+    <#if entityFeature.set>
+import ${othercName}Setting from './${othercName}Setting'
+    </#if>
+</#list>
 import ${this.className}Api from '@/api/${this.className}'
 <#if !importOtherEntitys.isEmpty()>
     <#list importOtherEntitys as foreignEntity>
@@ -288,6 +311,13 @@ export default {
     <#if this.entityFeature.show>
     ${this.className}Show,
     </#if>
+    <#list this.holds! as otherEntity,mtm>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+        <#if entityFeature.set>
+    ${othercName}Setting,
+        </#if>
+    </#list>
 </@removeLastComma>
   },
 <#if !importEnums.isEmpty()>
@@ -480,6 +510,19 @@ export default {
       this.$refs.${this.className}Edit.handleUpdate(row.${this.id})
     },
     </#if>
+    <#list this.holds! as otherEntity,mtm>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+        <#if entityFeature.set>
+    /**
+     * 打开设置${otherEntity.title}表单
+     */
+    handle${otherCName}Setting(row) {
+      this.$refs.${othercName}Setting.handleUpdate(row.${this.id})
+    },
+        </#if>
+    </#list>
 </@removeLastComma>
   }
 }

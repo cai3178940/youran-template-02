@@ -44,10 +44,10 @@ const ${this.className}Api = {
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
         <#if entityFeature.addRemove || entityFeature.set>
   fetch${otherCName}List(${this.id}) {
-    return request.get(`/user/${r'$'}{${this.id}}/${othercName}List`)
+    return request.get(`/${this.className}/${r'$'}{${this.id}}/${othercName}`)
   },
   set${otherCName}(${this.id}, data) {
-    return request.put(`/user${r'$'}{${this.id}}`, data)
+    return request.put(`/${this.className}/${r'$'}{${this.id}}/${othercName}`, data)
   },
         </#if>
     </#list>

@@ -66,6 +66,12 @@
     "abstracted" : false,
     "binary" : false
   }, {
+    "fileName" : "mtmSetting.ftl",
+    "fileDir" : "/src/views/{className}",
+    "contextType" : 2,
+    "abstracted" : false,
+    "binary" : false
+  }, {
     "fileName" : "show.vue.ftl",
     "fileDir" : "/src/views/{className}",
     "contextType" : 2,

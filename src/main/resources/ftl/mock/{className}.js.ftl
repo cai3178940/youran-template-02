@@ -34,14 +34,12 @@
     </#if>
 </#macro>
 import Mock from 'mockjs'
-import { <#if this.pageSign>paging, </#if>copy } from './mock-util'
+import { <#if this.pageSign>paging, </#if>copy, getUrlPattern } from './mock-util'
 <#-- 引入依赖的其他mock -->
 <#list this.holds! as otherEntity,mtm>
     <#assign othercName=otherEntity.className?uncapFirst>
 import ${othercName} from './${othercName}'
 </#list>
-
-const baseURL = process.env.VUE_APP_BASE_API
 
 /**
  * mock数据缓存
@@ -115,7 +113,6 @@ const mockNewIdRule = {
 }
 
 </#if>
-const urlWithIdPattern = new RegExp(`\\${r'$'}{baseURL}\\/${this.className}\\/(\\d+)`)
 
 function removeById(list, ${this.id}) {
   const index = list.findIndex(item => item.${this.id} === ${this.id})
@@ -126,7 +123,7 @@ const reqMocks = [
 <@removeLastComma>
     <#if this.titleField??>
   {
-    url: `${r'$'}{baseURL}/${this.className}/options`,
+    url: getUrlPattern('${this.className}', false, 'options'),
     type: 'get',
     response: () => {
       return data.list.map(item => ({
@@ -136,12 +133,41 @@ const reqMocks = [
     }
   },
     </#if>
-    <#if this.entityFeature.show>
+    <#list this.holds! as otherEntity,mtm>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign otherId=otherEntity.pkField.jfieldName>
+        <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+        <#if entityFeature.addRemove || entityFeature.set>
   {
-    url: urlWithIdPattern,
+    url: getUrlPattern('${this.className}', true, '${othercName}'),
     type: 'get',
     response: ({ url }) => {
-      const ${this.id} = url.match(urlWithIdPattern)[1]
+      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
+      const obj = data.list.find(item => item.${otherId} === parseInt(${this.id}))
+      return copy(obj.${othercName}List)
+    }
+  },
+  {
+    url: getUrlPattern('${this.className}', true, '${othercName}'),
+    type: 'put',
+    response: ({ url, body }) => {
+      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
+      const obj = data.list.find(item => item.id === parseInt(${this.id}))
+      const ${othercName}List = ${othercName}.getMockData().list
+        .filter(i => body.findIndex(j => j === i.${otherId}) > -1)
+      obj.${othercName}List = ${othercName}List
+      return body.length
+    }
+  },
+        </#if>
+    </#list>
+    <#if this.entityFeature.show>
+  {
+    url: getUrlPattern('${this.className}', true),
+    type: 'get',
+    response: ({ url }) => {
+      const ${this.id} = url.match(getUrlPattern('${this.className}', true))[1]
       const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
       return copy(obj)
     }
@@ -149,7 +175,7 @@ const reqMocks = [
     </#if>
     <#if this.entityFeature.list>
   {
-    url: `${r'$'}{baseURL}/${this.className}`,
+    url: getUrlPattern('${this.className}', false),
     type: 'get',
     response: ({ query }) => {
         <#if this.pageSign>
@@ -167,7 +193,7 @@ const reqMocks = [
     </#if>
     <#if this.entityFeature.save>
   {
-    url: `${r'$'}{baseURL}/${this.className}`,
+    url: getUrlPattern('${this.className}', false),
     type: 'post',
     response: ({ body }) => {
       body.${this.id} = Mock.mock(mockNewIdRule).${this.id}
@@ -178,7 +204,7 @@ const reqMocks = [
     </#if>
     <#if this.entityFeature.update>
   {
-    url: `${r'$'}{baseURL}/${this.className}`,
+    url: getUrlPattern('${this.className}', false),
     type: 'put',
     response: ({ body }) => {
       const obj = data.list.find(item => item.${this.id} === body.${this.id})
@@ -189,7 +215,7 @@ const reqMocks = [
     </#if>
     <#if this.entityFeature.delete>
   {
-    url: urlWithIdPattern,
+    url: getUrlPattern('${this.className}', true),
     type: 'delete',
     response: ({ url }) => {
       const ${this.id} = url.match(urlWithIdPattern)[1]
@@ -200,7 +226,7 @@ const reqMocks = [
     </#if>
     <#if this.entityFeature.deleteBatch>
   {
-    url: `${r'$'}{baseURL}/${this.className}`,
+    url: getUrlPattern('${this.className}', false),
     type: 'delete',
     response: ({ body }) => {
       for (var ${this.id} of body) {
