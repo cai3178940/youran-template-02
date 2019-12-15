@@ -75,9 +75,9 @@ export default {
       }
     },
     /**
-     * 打开编辑表单
+     * 显示表单
      */
-    handleUpdate(${this.id}) {
+    handleShow(${this.id}) {
       ${othercName}Api.findOptions().then(data => { this.options.${othercName} = data })
       ${this.className}Api.fetch${otherCName}List(${this.id})
         .then(data => {

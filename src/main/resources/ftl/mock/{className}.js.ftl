@@ -113,67 +113,41 @@ const mockNewIdRule = {
 }
 
 </#if>
-
+<#if this.entityFeature.delete || this.entityFeature.deleteBatch>
 function removeById(list, ${this.id}) {
   const index = list.findIndex(item => item.${this.id} === ${this.id})
   list.splice(index, 1)
 }
 
+</#if>
 const reqMocks = [
 <@removeLastComma>
-    <#if this.titleField??>
+    <#if this.entityFeature.save>
+  // 添加【${this.title}】
   {
-    url: getUrlPattern('${this.className}', false, 'options'),
-    type: 'get',
-    response: () => {
-      return data.list.map(item => ({
-        key: item.${this.id},
-        value: item.${this.titleField.jfieldName}
-      }))
+    url: getUrlPattern('${this.className}', false),
+    type: 'post',
+    response: ({ body }) => {
+      body.${this.id} = Mock.mock(mockNewIdRule).${this.id}
+      data.list.push(body)
+      return copy(body)
     }
   },
     </#if>
-    <#list this.holds! as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
-        <#assign otherId=otherEntity.pkField.jfieldName>
-        <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-        <#if entityFeature.addRemove || entityFeature.set>
+    <#if this.entityFeature.update>
+  // 修改【${this.title}】
   {
-    url: getUrlPattern('${this.className}', true, '${othercName}'),
-    type: 'get',
-    response: ({ url }) => {
-      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
-      const obj = data.list.find(item => item.${otherId} === parseInt(${this.id}))
-      return copy(obj.${othercName}List)
-    }
-  },
-  {
-    url: getUrlPattern('${this.className}', true, '${othercName}'),
+    url: getUrlPattern('${this.className}', false),
     type: 'put',
-    response: ({ url, body }) => {
-      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
-      const obj = data.list.find(item => item.id === parseInt(${this.id}))
-      const ${othercName}List = ${othercName}.getMockData().list
-        .filter(i => body.findIndex(j => j === i.${otherId}) > -1)
-      obj.${othercName}List = ${othercName}List
-      return body.length
-    }
-  },
-        </#if>
-    </#list>
-    <#if this.entityFeature.show>
-  {
-    url: getUrlPattern('${this.className}', true),
-    type: 'get',
-    response: ({ url }) => {
-      const ${this.id} = url.match(getUrlPattern('${this.className}', true))[1]
-      const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
+    response: ({ body }) => {
+      const obj = data.list.find(item => item.${this.id} === body.${this.id})
+      Object.assign(obj, body)
       return copy(obj)
     }
   },
     </#if>
     <#if this.entityFeature.list>
+  // ${this.pageSign?string('分页','列表')}查询【${this.title}】
   {
     url: getUrlPattern('${this.className}', false),
     type: 'get',
@@ -191,40 +165,45 @@ const reqMocks = [
     }
   },
     </#if>
-    <#if this.entityFeature.save>
+    <#if this.titleField??>
+  // 查询【${this.title}】选项列表
   {
-    url: getUrlPattern('${this.className}', false),
-    type: 'post',
-    response: ({ body }) => {
-      body.${this.id} = Mock.mock(mockNewIdRule).${this.id}
-      data.list.push(body)
-      return copy(body)
+    url: getUrlPattern('${this.className}', false, 'options'),
+    type: 'get',
+    response: () => {
+      return data.list.map(item => ({
+        key: item.${this.id},
+        value: item.${this.titleField.jfieldName}
+      }))
     }
   },
     </#if>
-    <#if this.entityFeature.update>
+    <#if this.entityFeature.show>
+  // 查看【${this.title}】详情
   {
-    url: getUrlPattern('${this.className}', false),
-    type: 'put',
-    response: ({ body }) => {
-      const obj = data.list.find(item => item.${this.id} === body.${this.id})
-      Object.assign(obj, body)
+    url: getUrlPattern('${this.className}', true),
+    type: 'get',
+    response: ({ url }) => {
+      const ${this.id} = url.match(getUrlPattern('${this.className}', true))[1]
+      const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
       return copy(obj)
     }
   },
     </#if>
     <#if this.entityFeature.delete>
+  // 删除单个【${this.title}】
   {
     url: getUrlPattern('${this.className}', true),
     type: 'delete',
     response: ({ url }) => {
-      const ${this.id} = url.match(urlWithIdPattern)[1]
+      const ${this.id} = url.match(getUrlPattern('${this.className}', true))[1]
       removeById(data.list, parseInt(${this.id}))
       return 1
     }
   },
     </#if>
     <#if this.entityFeature.deleteBatch>
+  // 批量删除【${this.title}】
   {
     url: getUrlPattern('${this.className}', false),
     type: 'delete',
@@ -236,6 +215,72 @@ const reqMocks = [
     }
   },
     </#if>
+    <#list this.holds! as otherEntity,mtm>
+        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign otherId=otherEntity.pkField.jfieldName>
+        <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
+        <#if entityFeature.addRemove || entityFeature.set>
+  // 获取【${otherEntity.title}】关联
+  {
+    url: getUrlPattern('${this.className}', true, '${othercName}'),
+    type: 'get',
+    response: ({ url }) => {
+      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
+      const obj = data.list.find(item => item.${otherId} === parseInt(${this.id}))
+      return copy(obj.${othercName}List)
+    }
+  },
+        </#if>
+        <#if entityFeature.addRemove>
+  // 添加【${otherEntity.title}】关联
+  {
+    url: getUrlPattern('${this.className}', true, '${othercName}'),
+    type: 'post',
+    response: ({ url, body }) => {
+      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
+      const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
+      ${othercName}.getMockData().list
+        // 过滤出需要添加的
+        .filter(i => body.findIndex(j => j === i.${otherId}) > -1)
+        // 过滤掉之前已经存在的
+        .filter(i => obj.${othercName}List.findIndex(j => j === i) < 0)
+        .forEach(i => obj.${othercName}List.push(i))
+      return body.length
+    }
+  },
+  // 移除【${otherEntity.title}】关联
+  {
+    url: getUrlPattern('${this.className}', true, '${othercName}'),
+    type: 'delete',
+    response: ({ url, body }) => {
+      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
+      const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
+      body.forEach(i => {
+        const index = obj.${othercName}List.findIndex(j => j.${otherId} === i)
+        if (index > -1) {
+          obj.${othercName}List.splice(index, 1)
+        }
+      })
+      return body.length
+    }
+  },
+        <#elseIf entityFeature.set>
+  // 设置【${otherEntity.title}】关联
+  {
+    url: getUrlPattern('${this.className}', true, '${othercName}'),
+    type: 'put',
+    response: ({ url, body }) => {
+      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
+      const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
+      const ${othercName}List = ${othercName}.getMockData().list
+        .filter(i => body.findIndex(j => j === i.${otherId}) > -1)
+      obj.${othercName}List = ${othercName}List
+      return body.length
+    }
+  },
+        </#if>
+    </#list>
 </@removeLastComma>
 ]
 

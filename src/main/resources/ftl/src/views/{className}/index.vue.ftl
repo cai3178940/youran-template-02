@@ -228,7 +228,10 @@
     <#list this.holds! as otherEntity,mtm>
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-        <#if entityFeature.set>
+        <#if entityFeature.addRemove>
+          <el-button type="success" size="mini"
+                     @click="handle${otherCName}AddRemove(row)" class="table-inner-button">添加移除${otherEntity.title}</el-button>
+        <#elseIf entityFeature.set>
           <el-button type="success" size="mini"
                      @click="handle${otherCName}Setting(row)" class="table-inner-button">设置${otherEntity.title}</el-button>
         </#if>
@@ -256,7 +259,10 @@
 <#list this.holds! as otherEntity,mtm>
     <#assign othercName=otherEntity.className?uncapFirst>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-    <#if entityFeature.set>
+    <#if entityFeature.addRemove>
+    <!-- 添加移除${otherEntity.title} -->
+    <${othercName}-add-remove ref="${othercName}AddRemove" @updated="doQueryList({})"/>
+    <#elseIf entityFeature.set>
     <!-- 设置${otherEntity.title} -->
     <${othercName}-setting ref="${othercName}Setting" @updated="doQueryList({})"/>
     </#if>
@@ -277,7 +283,9 @@ import ${this.className}Show from './show'
 <#list this.holds! as otherEntity,mtm>
     <#assign othercName=otherEntity.className?uncapFirst>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-    <#if entityFeature.set>
+    <#if entityFeature.addRemove>
+import ${othercName}AddRemove from './${othercName}AddRemove'
+    <#elseIf entityFeature.set>
 import ${othercName}Setting from './${othercName}Setting'
     </#if>
 </#list>
@@ -314,7 +322,9 @@ export default {
     <#list this.holds! as otherEntity,mtm>
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-        <#if entityFeature.set>
+        <#if entityFeature.addRemove>
+    ${othercName}AddRemove,
+        <#elseIf entityFeature.set>
     ${othercName}Setting,
         </#if>
     </#list>
@@ -514,12 +524,19 @@ export default {
         <#assign otherCName=otherEntity.className?capFirst>
         <#assign othercName=otherEntity.className?uncapFirst>
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
-        <#if entityFeature.set>
+        <#if entityFeature.addRemove>
+    /**
+     * 打开添加移除${otherEntity.title}表单
+     */
+    handle${otherCName}AddRemove(row) {
+      this.$refs.${othercName}AddRemove.handleShow(row.${this.id})
+    },
+        <#elseIf entityFeature.set>
     /**
      * 打开设置${otherEntity.title}表单
      */
     handle${otherCName}Setting(row) {
-      this.$refs.${othercName}Setting.handleUpdate(row.${this.id})
+      this.$refs.${othercName}Setting.handleShow(row.${this.id})
     },
         </#if>
     </#list>
