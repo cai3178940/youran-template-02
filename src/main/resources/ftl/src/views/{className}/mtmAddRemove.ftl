@@ -13,7 +13,7 @@
   <el-dialog title="添加移除${otherEntity.title}" :visible.sync="formVisible" @close="handleClose">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <el-form ref="dataForm" :model="form" :inline="true"
+        <el-form :model="form" :inline="true"
                  label-position="right" size="small"
                  label-width="120px">
           <el-form-item label="${otherEntity.title}:">
@@ -107,8 +107,10 @@ export default {
      * 执行添加操作
      */
     handleAdd${otherCName}() {
-      this.$refs['dataForm'].validate()
-        .then(() => ${this.className}Api.add${otherCName}(this.form.${this.id}, this.form.${othercName}List))
+      if (!this.form.${othercName}List.length) {
+        return
+      }
+      ${this.className}Api.add${otherCName}(this.form.${this.id}, this.form.${othercName}List)
         .then(data => {
           this.$common.showMsg('success', '添加成功')
           this.formUpdated = true
