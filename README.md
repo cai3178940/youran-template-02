@@ -18,3 +18,15 @@
 2.  用package命令直接编译打包本项目
 3.  打包完之后生成的youran-template-02-x.x.x-SNAPSHOT-src.zip
 就能在youran平台中导入了
+
+## 生成的前端工程支持两种开发模式
+
+```
+
+# 前端独立启动，自动mock后端服务
+npm run dev
+
+# 配合生成的后端服务，前后联调（需要先启动后端服务）
+npm run dev:joint
+
+```
