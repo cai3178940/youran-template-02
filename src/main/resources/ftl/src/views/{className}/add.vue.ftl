@@ -184,6 +184,9 @@ export default {
     </@removeLastComma>
 </#if>
       this.formVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     /**
      * 执行新建操作

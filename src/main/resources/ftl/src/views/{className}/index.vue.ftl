@@ -149,7 +149,7 @@
 <#if tableSort>
               @sort-change="sortChange"
 </#if>
-              border style="width: 100%;">
+              border stripe style="width: 100%;">
 <#if tableSelect>
       <el-table-column type="selection" width="50" />
 </#if>

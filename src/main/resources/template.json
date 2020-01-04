@@ -1,7 +1,7 @@
 {
   "code" : "youran-template-02",
   "name" : "vue前端模板",
-  "templateVersion" : "1.0.0",
+  "templateVersion" : "1.0.1",
   "sysLowVersion" : "3.0.0",
   "sysDefault" : true,
   "remark" : "# vue前端模板\n\n\n## 软件架构\n\n将开源vue管理后台脚手架：\n<a href=\"https://github.com/PanJiaChen/vue-admin-template\" target=\"_blank\">vue-admin-template</a>\n包装成代码模板，所有前端技术细节请参考 <a href=\"https://panjiachen.github.io/vue-element-admin-site/zh/guide/\" target=\"_blank\">vue-element-admin手册</a>\n## 生成的前端工程支持两种开发模式\n\n```\n\n# 前端独立启动，自动mock后端服务\nnpm run dev\n\n# 配合生成的后端服务，前后联调（需要先启动后端服务）\nnpm run dev:joint\n\n```\n",
