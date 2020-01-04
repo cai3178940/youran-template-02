@@ -84,8 +84,8 @@ public class InitTemplateFile {
     @Test
     public void initCode() throws Exception {
         // 从github下载vue-admin-template原始代码
-        //File repoDir = this.checkOutVueAdminTemplate();
-        File repoDir = new File("C:\\Users\\caibi\\AppData\\Local\\Temp\\vue-admin-template8463170824386821771");
+        File repoDir = this.checkOutVueAdminTemplate();
+        //File repoDir = new File("C:\\Users\\caibi\\AppData\\Local\\Temp\\vue-admin-template8463170824386821771");
         // 清空模板目录
         this.cleanFtlDir();
         // 遍历原始代码，并拷贝模板文件
@@ -93,7 +93,6 @@ public class InitTemplateFile {
         // 模板元数据写入template.json
         JsonUtil.writeJsonToFile(templatePO, true, new File(TEMPLATE_JSON_FILE_PATH));
     }
-
 
     /**
      * 从github下载vue-admin-template原始代码
