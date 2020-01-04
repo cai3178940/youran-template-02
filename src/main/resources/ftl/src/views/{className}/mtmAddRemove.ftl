@@ -10,7 +10,7 @@
     <#--定义代码内容-->
     <#assign code>
 <template>
-  <el-dialog title="添加移除${otherEntity.title}" :visible.sync="formVisible" @close="handleClose">
+  <el-dialog title="配置${otherEntity.title}" :visible.sync="formVisible" @close="handleClose">
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <el-form :model="form" :inline="true"

@@ -13,7 +13,7 @@
     <#--定义代码内容-->
     <#assign code>
 <template>
-  <el-dialog title="设置${otherEntity.title}" :visible.sync="formVisible">
+  <el-dialog title="配置${otherEntity.title}" :visible.sync="formVisible">
     <el-form ref="dataForm" :model="form"
              label-position="left" size="small"
              label-width="100px" style="width: 400px; margin-left:50px;">
@@ -101,7 +101,7 @@ export default {
         .then(() => ${this.className}Api.set${otherCName}(this.form.${this.id}, this.form.${othercName}List))
         .then(data => {
           this.formVisible = false
-          this.$common.showMsg('success', '设置成功')
+          this.$common.showMsg('success', '配置成功')
           this.$emit('updated', data)
         })
     }

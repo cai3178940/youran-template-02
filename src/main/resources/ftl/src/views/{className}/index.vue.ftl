@@ -230,10 +230,10 @@
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
         <#if entityFeature.addRemove>
           <el-button type="success" size="mini"
-                     @click="handle${otherCName}AddRemove(row)" class="table-inner-button">添加移除${otherEntity.title}</el-button>
+                     @click="handle${otherCName}AddRemove(row)" class="table-inner-button">配置${otherEntity.title}</el-button>
         <#elseIf entityFeature.set>
           <el-button type="success" size="mini"
-                     @click="handle${otherCName}Setting(row)" class="table-inner-button">设置${otherEntity.title}</el-button>
+                     @click="handle${otherCName}Setting(row)" class="table-inner-button">配置${otherEntity.title}</el-button>
         </#if>
     </#list>
         </template>
