@@ -38,7 +38,7 @@
                 size="mini" border>
         <el-table-column label="${otherEntity.titleField.fieldDesc}" prop="${otherEntity.titleField.jfieldName}"></el-table-column>
         <el-table-column label="操作" align="center" width="150"
-                         class-name="small-padding fixed-width" fixed="right">
+                         fixed="right">
           <template slot-scope="{row}">
             <el-button type="danger" size="mini"
                        @click="handleDeleteSingle(row)" class="table-inner-button">移除</el-button>

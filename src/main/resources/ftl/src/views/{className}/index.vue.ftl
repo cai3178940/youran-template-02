@@ -211,7 +211,7 @@
 </#list>
 <#if tableOperate>
       <el-table-column label="操作" align="center" width="230"
-                       class-name="small-padding fixed-width" fixed="right">
+                       fixed="right">
         <template slot-scope="{row}">
     <#if this.entityFeature.show>
           <el-button size="mini"
