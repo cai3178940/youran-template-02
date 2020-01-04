@@ -37,8 +37,7 @@
       <el-table :data="form.${othercName}ListRaw" style="width: 100%;"
                 size="mini" border>
         <el-table-column label="${otherEntity.titleField.fieldDesc}" prop="${otherEntity.titleField.jfieldName}"></el-table-column>
-        <el-table-column label="操作" align="center" width="150"
-                         fixed="right">
+        <el-table-column label="操作" align="center" width="150">
           <template slot-scope="{row}">
             <el-button type="danger" size="mini"
                        @click="handleDeleteSingle(row)" class="table-inner-button">移除</el-button>

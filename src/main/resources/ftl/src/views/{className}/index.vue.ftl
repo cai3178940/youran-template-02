@@ -210,8 +210,7 @@
       </el-table-column>
 </#list>
 <#if tableOperate>
-      <el-table-column label="操作" align="center" width="230"
-                       fixed="right">
+      <el-table-column label="操作" align="center" width="230">
         <template slot-scope="{row}">
     <#if this.entityFeature.show>
           <el-button size="mini"
