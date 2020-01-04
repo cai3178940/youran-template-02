@@ -204,6 +204,9 @@ export default {
 </#if>
           this.resetForm()
           this.formVisible = true
+          this.$nextTick(() => {
+            this.$refs['dataForm'].clearValidate()
+          })
         })
     },
     /**
