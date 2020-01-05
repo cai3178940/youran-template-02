@@ -1,5 +1,6 @@
 <#include "/abstracted/common.ftl">
 <#include "/abstracted/table.ftl">
+<#include "/abstracted/mtmCascadeExtsForShow.ftl">
 <#-- 输出常规字段mock表达式 -->
 <#macro mockGeneralField field alias>
     <#local name = alias?hasContent?string(alias,field.jfieldName)/>
@@ -221,14 +222,23 @@ const reqMocks = [
         <#assign otherId=otherEntity.pkField.jfieldName>
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
         <#if entityFeature.addRemove || entityFeature.set>
+            <#assign index=getMtmCascadeEntityIndexForShow(otherEntity.entityId)>
+            <#assign justReturnOtherId=true>
+            <#if entityFeature.addRemove || index &gt; -1>
+                <#assign justReturnOtherId=false>
+            </#if>
   // 获取【${otherEntity.title}】关联
   {
     url: getUrlPattern('${this.className}', true, '${othercName}'),
     type: 'get',
     response: ({ url }) => {
       const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
-      const obj = data.list.find(item => item.${otherId} === parseInt(${this.id}))
+      const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
+            <#if justReturnOtherId>
+      return copy(obj.${othercName}List.map(item => item.${otherId}))
+            <#else>
       return copy(obj.${othercName}List)
+            </#if>
     }
   },
         </#if>
