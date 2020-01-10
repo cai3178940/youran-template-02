@@ -44,7 +44,20 @@
                   size="mini" border>
         <#list mtmCascadeExts as cascadeExt>
             <#assign cascadeField = cascadeExt.cascadeField>
-          <el-table-column label="${cascadeField.fieldDesc}" prop="${cascadeField.jfieldName}"></el-table-column>
+          <el-table-column label="${cascadeField.fieldDesc}" prop="${cascadeField.jfieldName}">
+            <template slot-scope="{row}">
+            <#-- 枚举字段特殊处理 -->
+            <#if cascadeField.dicType??>
+                <#assign const = findConst(cascadeField.dicType)>
+                <@justCall importEnums.add(const)/>
+                <#assign constName = const.constName?uncapFirst>
+              <span>{{ row.${cascadeField.jfieldName} | findEnumLabel(enums.${constName}) }}</span>
+            <#-- 普通字段直接展示 -->
+            <#else>
+              <span>{{ row.${cascadeField.jfieldName} }}</span>
+            </#if>
+            </template>
+          </el-table-column>
         </#list>
         </el-table>
       </el-form-item>
