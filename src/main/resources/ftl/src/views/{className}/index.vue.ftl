@@ -128,6 +128,12 @@
         搜索
       </el-button>
 </#if>
+<#if this.entityFeature.excelImport>
+      <el-button class="filter-item" icon="el-icon-download" type="primary"
+                 @click="handleExport">
+        导出
+      </el-button>
+</#if>
 <#if this.entityFeature.save>
       <el-button class="filter-item" style="margin-left: 10px;" type="success"
                  icon="el-icon-edit" @click="handleCreate">
@@ -539,6 +545,26 @@ export default {
     },
         </#if>
     </#list>
+    <#if this.entityFeature.excelImport>
+    /**
+     * 导出excel
+     */
+    handleExport() {
+      return this.$common.confirm('是否确认导出')
+        .then(() => ${this.className}Api.exportExcel(this.query))
+        .then(res => {
+          const blob = new Blob([res], { type: res.type })
+          const downloadElement = document.createElement('a')
+          const href = window.URL.createObjectURL(blob)
+          downloadElement.href = href
+          downloadElement.download = 'export.xlsx'
+          document.body.appendChild(downloadElement)
+          downloadElement.click()
+          document.body.removeChild(downloadElement)
+          window.URL.revokeObjectURL(href)
+        })
+    },
+    </#if>
 </@removeLastComma>
   }
 }

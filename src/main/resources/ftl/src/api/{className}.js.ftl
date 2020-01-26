@@ -93,6 +93,17 @@ const ${this.className}Api = {
   },
         </#if>
     </#list>
+    <#if this.entityFeature.excelImport>
+  /**
+   * 导出【${this.title}】excel
+   */
+  exportExcel(query) {
+    return request.get(`/${this.className}/export`, {
+      responseType: 'blob',
+      params: query
+    })
+  },
+    </#if>
 </@removeLastComma>
 }
 export default ${this.className}Api
