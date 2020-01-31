@@ -1,4 +1,7 @@
 <#include "/abstracted/common.ftl">
+<#if !this.entityFeature.list>
+    <@call this.skipCurrent()/>
+</#if>
 <#list this.holds! as otherEntity,mtm>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
     <#if !entityFeature.addRemove>

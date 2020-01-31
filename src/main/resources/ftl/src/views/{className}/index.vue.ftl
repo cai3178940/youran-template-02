@@ -128,12 +128,6 @@
         搜索
       </el-button>
 </#if>
-<#if this.entityFeature.excelImport>
-      <el-button class="filter-item" icon="el-icon-download" type="primary"
-                 @click="handleExport">
-        导出
-      </el-button>
-</#if>
 <#if this.entityFeature.save>
       <el-button class="filter-item" style="margin-left: 10px;" type="success"
                  icon="el-icon-edit" @click="handleCreate">
@@ -144,6 +138,18 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="danger"
                  icon="el-icon-delete" @click="handleDeleteBatch">
         删除
+      </el-button>
+</#if>
+<#if this.entityFeature.excelExport>
+      <el-button class="filter-item" icon="el-icon-download" type="warning"
+                 @click="handleExport">
+        导出
+      </el-button>
+</#if>
+<#if this.entityFeature.excelImport>
+      <el-button class="filter-item" icon="el-icon-upload2" type="success"
+                 @click="handleImport">
+        导入
       </el-button>
 </#if>
     </div>
@@ -272,6 +278,10 @@
     <${othercName}-setting ref="${othercName}Setting" @updated="doQueryList({})"/>
     </#if>
 </#list>
+<#if this.entityFeature.excelImport>
+    <!-- 查看表单 -->
+    <${this.className}-import ref="${this.className}Import" @imported="doQueryList({<#if this.pageSign> page: 1 </#if>})"/>
+</#if>
   </div>
 </template>
 
@@ -294,6 +304,9 @@ import ${othercName}AddRemove from './${othercName}AddRemove'
 import ${othercName}Setting from './${othercName}Setting'
     </#if>
 </#list>
+<#if this.entityFeature.excelImport>
+import ${this.className}Import from './import'
+</#if>
 import ${this.className}Api from '@/api/${this.className}'
 <#if !importOtherEntitys.isEmpty()>
     <#list importOtherEntitys as foreignEntity>
@@ -333,6 +346,9 @@ export default {
     ${othercName}Setting,
         </#if>
     </#list>
+    <#if this.entityFeature.excelImport>
+    ${this.className}Import,
+    </#if>
 </@removeLastComma>
   },
 <#if !importEnums.isEmpty()>
@@ -545,24 +561,21 @@ export default {
     },
         </#if>
     </#list>
-    <#if this.entityFeature.excelImport>
+    <#if this.entityFeature.excelExport>
     /**
      * 导出excel
      */
     handleExport() {
       return this.$common.confirm('是否确认导出')
         .then(() => ${this.className}Api.exportExcel(this.query))
-        .then(res => {
-          const blob = new Blob([res], { type: res.type })
-          const downloadElement = document.createElement('a')
-          const href = window.URL.createObjectURL(blob)
-          downloadElement.href = href
-          downloadElement.download = 'export.xlsx'
-          document.body.appendChild(downloadElement)
-          downloadElement.click()
-          document.body.removeChild(downloadElement)
-          window.URL.revokeObjectURL(href)
-        })
+    },
+    </#if>
+    <#if this.entityFeature.excelImport>
+    /**
+     * 打开导入表单
+     */
+    handleImport() {
+      this.$refs.userImport.show()
     },
     </#if>
 </@removeLastComma>

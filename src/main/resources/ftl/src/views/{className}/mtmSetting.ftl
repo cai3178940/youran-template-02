@@ -1,5 +1,8 @@
 <#include "/abstracted/common.ftl">
 <#include "/abstracted/mtmCascadeExtsForShow.ftl">
+<#if !this.entityFeature.list>
+    <@call this.skipCurrent()/>
+</#if>
 <#list this.holds! as otherEntity,mtm>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
     <#if !entityFeature.set>
