@@ -167,8 +167,6 @@
 </#if>
 <#-- 把渲染字段的逻辑抽象出来 -->
 <#macro displayTableColumn field alias>
-    <#-- 不渲染外键字段 -->
-    <#if field.foreignKey><#return></#if>
     <#local name = alias?hasContent?string(alias,field.jfieldName)/>
       <el-table-column label="${field.fieldDesc}"
                        prop="${name}"
