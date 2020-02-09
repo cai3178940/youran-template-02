@@ -308,6 +308,7 @@ import ${this.className}Import from './import'
 import ${this.className}Api from '@/api/${this.className}'
 <#if !importOtherEntitys.isEmpty()>
     <#list importOtherEntitys as foreignEntity>
+        <#if foreignEntity == this.metaEntity><#break></#if>
         <#assign foreignClassName = foreignEntity.className?uncapFirst>
 import ${foreignClassName}Api from '@/api/${foreignClassName}'
     </#list>
