@@ -35,11 +35,15 @@
     </#if>
 </#macro>
 import Mock from 'mockjs'
-import { <#if this.pageSign>paging, </#if>copy, getUrlPattern } from './mock-util'
+import { <#if this.pageSign>paging, </#if>copy, getUrlPattern } from './${entity.module?? ? then("../","")}mock-util'
 <#-- 引入依赖的其他mock -->
 <#list this.holds! as otherEntity,mtm>
     <#assign othercName=otherEntity.className?uncapFirst>
+<#if otherEntity.module??>
+import ${othercName} from '../${otherEntity.module}/${othercName}'
+<#else>
 import ${othercName} from './${othercName}'
+</#if>
 </#list>
 
 /**

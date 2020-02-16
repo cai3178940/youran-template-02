@@ -1,14 +1,13 @@
 <#include "/abstracted/common.ftl">
-<#include "/abstracted/mtmCascadeExtsForShow.ftl">
-<#if !this.entityFeature.update || !this.entityFeature.list>
+<#if !this.entityFeature.save || !this.entityFeature.list>
     <@call this.skipCurrent()/>
 </#if>
 <template>
-  <el-dialog title="编辑${this.title}" :visible.sync="formVisible">
+  <el-dialog title="新建${this.title}" :visible.sync="formVisible">
     <el-form ref="dataForm" :rules="formRules" :model="form"
              label-position="left" size="small"
              label-width="100px" style="width: 400px; margin-left:50px;">
-<#list this.updateFields as id,field>
+<#list this.insertFields as id,field>
       <el-form-item label="${field.fieldDesc}" prop="${field.jfieldName}">
     <#if field.editType == EditType.TEXT.getValue()>
         <el-input v-model="form.${field.jfieldName}"/>
@@ -83,7 +82,7 @@
         取消
       </el-button>
       <el-button type="primary"
-                 @click="doUpdate()">
+                 @click="doCreate()">
         确认
       </el-button>
     </div>
@@ -91,12 +90,12 @@
 </template>
 
 <script>
-import ${this.className}Api from '@/api/${this.className}'
+import ${this.className}Api from '@/api/${this.module?? ? then(this.module+"/","")}${this.className}'
 <#if !importOtherEntitys.isEmpty()>
     <#list importOtherEntitys as foreignEntity>
         <#if foreignEntity == this.metaEntity><#break></#if>
         <#assign foreignClassName = foreignEntity.className?uncapFirst>
-import ${foreignClassName}Api from '@/api/${foreignClassName}'
+import ${foreignClassName}Api from '@/api/${foreignEntity.module?? ? then(foreignEntity.module+"/","")}${foreignClassName}'
     </#list>
 </#if>
 <#if !importEnums.isEmpty()>
@@ -106,8 +105,7 @@ import enums from '@/utils/enums'
 function initFormBean() {
   const formBean = {
 <@removeLastComma>
-    ${this.pk.jfieldName}: null,
-    <#list this.updateFields as id,field>
+    <#list this.insertFields as id,field>
     ${field.jfieldName}: null,
     </#list>
     <#list this.holds! as otherEntity,mtm>
@@ -123,7 +121,7 @@ function initFormBean() {
 }
 
 export default {
-  name: '${this.classNameUpper}Edit',
+  name: '${this.classNameUpper}Add',
   data() {
     return {
 <#if !importEnums.isEmpty()>
@@ -144,12 +142,11 @@ export default {
     </@removeLastComma>
       },
 </#if>
-      old: initFormBean(),
       form: initFormBean(),
       formVisible: false,
       formRules: {
 <@removeLastComma>
-    <#list this.updateFields as id,field>
+    <#list this.insertFields as id,field>
         ${field.jfieldName}: [
         <@removeLastComma>
             <#if field.notNull>
@@ -172,14 +169,13 @@ export default {
      * 重置表单
      */
     resetForm() {
-      for (const key in initFormBean()) {
-        this.form[key] = this.old[key]
-      }
+      this.form = initFormBean()
     },
     /**
-     * 打开编辑表单
+     * 打开新建表单
      */
-    handleUpdate(${this.id}) {
+    handleCreate() {
+      this.resetForm()
 <#if !importOtherEntitys.isEmpty()>
     <@removeLastComma>
         <#list importOtherEntitys as foreignEntity>
@@ -188,38 +184,21 @@ export default {
         </#list>
     </@removeLastComma>
 </#if>
-      ${this.className}Api.fetchById(${this.id})
-        .then(data => {
-<#if mtmCascadeEntitiesForShow?size &gt; 0>
-          this.old = Object.assign({}, data, {
-    <@removeLastComma>
-        <#list mtmCascadeEntitiesForShow as otherEntity>
-            <#assign othercName=otherEntity.className?uncapFirst>
-            <#assign pkField=otherEntity.pkField>
-            ${othercName}List: data.${othercName}List ? data.${othercName}List.map(t => t.${pkField.jfieldName}) : [],
-        </#list>
-    </@removeLastComma>
-          })
-<#else>
-          this.old = data
-</#if>
-          this.resetForm()
-          this.formVisible = true
-          this.$nextTick(() => {
-            this.$refs['dataForm'].clearValidate()
-          })
-        })
+      this.formVisible = true
+      this.$nextTick(() => {
+        this.$refs['dataForm'].clearValidate()
+      })
     },
     /**
-     * 执行修改操作
+     * 执行新建操作
      */
-    doUpdate() {
+    doCreate() {
       this.$refs['dataForm'].validate()
-        .then(() => ${this.className}Api.update(this.form))
+        .then(() => ${this.className}Api.create(this.form))
         .then(data => {
           this.formVisible = false
-          this.$common.showMsg('success', '修改成功')
-          this.$emit('updated', data)
+          this.$common.showMsg('success', '创建成功')
+          this.$emit('created', data)
         })
     }
   }

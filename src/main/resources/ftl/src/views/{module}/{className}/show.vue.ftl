@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import ${this.className}Api from '@/api/${this.className}'
+import ${this.className}Api from '@/api/${this.module?? ? then(this.module+"/","")}${this.className}'
 <#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
 </#if>
