@@ -52,8 +52,8 @@
 </template>
 
 <script>
-import ${this.className}Api from '@/api/${this.module?? ? then(this.module+"/","")}${this.className}'
-import ${othercName}Api from '@/api/${otherEntity.module?? ? then(otherEntity.module+"/","")}${othercName}'
+import ${this.className}Api from '@/api/${this.append(this.module, "/")}${this.className}'
+import ${othercName}Api from '@/api/${otherEntity.append(otherEntity.module, "/")}${othercName}'
 
 export default {
   name: '${otherCName}Setting',
