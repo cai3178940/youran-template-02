@@ -21,7 +21,7 @@
   </el-dialog>
 </template>
 <script>
-import ${this.className}Api from '@/api/${this.module?? ? then(this.module+"/","")}${this.className}'
+import ${this.className}Api from '@/api/${this.append(this.module, "/")}${this.className}'
 
 export default {
   name: '${this.classNameUpper}Import',
