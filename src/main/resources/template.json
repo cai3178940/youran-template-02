@@ -51,7 +51,7 @@
     "contextType" : 2,
     "fileType" : 1
   }, {
-    "fileName" : "__path.ftl",
+    "fileName" : "__dir.ftl",
     "fileDir" : "/src/views/{className}",
     "contextType" : 2,
     "fileType" : 4
