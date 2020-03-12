@@ -37,7 +37,7 @@
     "fileType" : 5
   }, {
     "fileName" : "{className}.js.ftl",
-    "fileDir" : "/mock",
+    "fileDir" : "/mock/{module}",
     "contextType" : 2,
     "fileType" : 1
   }, {
@@ -47,7 +47,7 @@
     "fileType" : 5
   }, {
     "fileName" : "{className}.js.ftl",
-    "fileDir" : "/src/api",
+    "fileDir" : "/src/api/{module}",
     "contextType" : 2,
     "fileType" : 1
   }, {
@@ -57,37 +57,37 @@
     "fileType" : 4
   }, {
     "fileName" : "add.vue.ftl",
-    "fileDir" : "/src/views/{className}",
+    "fileDir" : "/src/views/{module}/{className}",
     "contextType" : 2,
     "fileType" : 1
   }, {
     "fileName" : "edit.vue.ftl",
-    "fileDir" : "/src/views/{className}",
+    "fileDir" : "/src/views/{module}/{className}",
     "contextType" : 2,
     "fileType" : 1
   }, {
     "fileName" : "import.vue.ftl",
-    "fileDir" : "/src/views/{className}",
+    "fileDir" : "/src/views/{module}/{className}",
     "contextType" : 2,
     "fileType" : 1
   }, {
     "fileName" : "index.vue.ftl",
-    "fileDir" : "/src/views/{className}",
+    "fileDir" : "/src/views/{module}/{className}",
     "contextType" : 2,
     "fileType" : 1
   }, {
     "fileName" : "mtmAddRemove.ftl",
-    "fileDir" : "/src/views/{className}",
+    "fileDir" : "/src/views/{module}/{className}",
     "contextType" : 2,
     "fileType" : 1
   }, {
     "fileName" : "mtmSetting.ftl",
-    "fileDir" : "/src/views/{className}",
+    "fileDir" : "/src/views/{module}/{className}",
     "contextType" : 2,
     "fileType" : 1
   }, {
     "fileName" : "show.vue.ftl",
-    "fileDir" : "/src/views/{className}",
+    "fileDir" : "/src/views/{module}/{className}",
     "contextType" : 2,
     "fileType" : 1
   }, {

@@ -305,12 +305,12 @@ import ${othercName}Setting from './${othercName}Setting'
 <#if this.entityFeature.excelImport>
 import ${this.className}Import from './import'
 </#if>
-import ${this.className}Api from '@/api/${this.className}'
+import ${this.className}Api from '@/api/${this.append(this.module, "/")}${this.className}'
 <#if !importOtherEntitys.isEmpty()>
     <#list importOtherEntitys as foreignEntity>
         <#if foreignEntity == this.metaEntity><#break></#if>
         <#assign foreignClassName = foreignEntity.className?uncapFirst>
-import ${foreignClassName}Api from '@/api/${foreignClassName}'
+import ${foreignClassName}Api from '@/api/${this.append(foreignEntity.module, "/")}${foreignClassName}'
     </#list>
 </#if>
 <#if !importEnums.isEmpty()>
