@@ -24,12 +24,12 @@
 ${importApi(this.metaEntity)}
 
 export default {
-  name: '${this.classNameUpper}Import',
+  name: '${this.className}Import',
   data() {
     return {
       importFormLoading: false,
       importFormVisible: false,
-      importUrl: ${this.className}Api.getImportUrl()
+      importUrl: ${this.classNameLower}Api.getImportUrl()
     }
   },
   created: function() {
@@ -52,7 +52,7 @@ export default {
       this.importFormVisible = true
     },
     downloadTemplate() {
-      ${this.className}Api.downloadTemplate()
+      ${this.classNameLower}Api.downloadTemplate()
     }
   }
 }

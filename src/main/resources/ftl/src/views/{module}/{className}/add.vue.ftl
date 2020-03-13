@@ -39,7 +39,7 @@
                    filterable clearable>
         <#if field.foreignKey>
             <@justCall importOtherEntitys.add(field.foreignEntity)/>
-          <el-option v-for="item in options.${field.foreignEntity.className?uncapFirst}"
+          <el-option v-for="item in options.${lowerFirstWord(field.foreignEntity.className)}"
                      :key="item.key"
                      :label="item.value"
                      :value="item.key">
@@ -61,7 +61,7 @@
 <#list this.holds! as otherEntity,mtm>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
     <#if entityFeature.withinEntity>
-        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign othercName=lowerFirstWord(otherEntity.className)>
         <@justCall importOtherEntitys.add(otherEntity)/>
       <el-form-item label="${otherEntity.title}">
         <el-select v-model="form.${othercName}List"
@@ -111,7 +111,7 @@ function initFormBean() {
     <#list this.holds! as otherEntity,mtm>
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
         <#if entityFeature.withinEntity>
-            <#assign othercName=otherEntity.className?uncapFirst>
+            <#assign othercName=lowerFirstWord(otherEntity.className)>
     ${othercName}List: [],
         </#if>
     </#list>
@@ -121,7 +121,7 @@ function initFormBean() {
 }
 
 export default {
-  name: '${this.classNameUpper}Add',
+  name: '${this.className}Add',
   data() {
     return {
 <#if !importEnums.isEmpty()>
@@ -137,7 +137,7 @@ export default {
       options: {
     <@removeLastComma>
         <#list importOtherEntitys as foreignEntity>
-        ${foreignEntity.className?uncapFirst}: [],
+        ${lowerFirstWord(foreignEntity.className)}: [],
         </#list>
     </@removeLastComma>
       },
@@ -179,7 +179,7 @@ export default {
 <#if !importOtherEntitys.isEmpty()>
     <@removeLastComma>
         <#list importOtherEntitys as foreignEntity>
-            <#assign foreignClassName = foreignEntity.className?uncapFirst>
+            <#assign foreignClassName = lowerFirstWord(foreignEntity.className)>
       ${foreignClassName}Api.findOptions().then(data => { this.options.${foreignClassName} = data })
         </#list>
     </@removeLastComma>
@@ -194,7 +194,7 @@ export default {
      */
     doCreate() {
       this.$refs['dataForm'].validate()
-        .then(() => ${this.className}Api.create(this.form))
+        .then(() => ${this.classNameLower}Api.create(this.form))
         .then(data => {
           this.formVisible = false
           this.$common.showMsg('success', '创建成功')

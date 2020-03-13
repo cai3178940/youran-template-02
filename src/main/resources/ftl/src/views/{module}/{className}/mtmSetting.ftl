@@ -8,8 +8,8 @@
     <#if !entityFeature.set>
         <#continue>
     </#if>
-    <#assign otherCName=otherEntity.className?capFirst>
-    <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign otherCName=otherEntity.className>
+    <#assign othercName=lowerFirstWord(otherEntity.className)>
     <#assign otherId=otherEntity.pkField.jfieldName>
     <#--用于判断是否存在级联扩展-->
     <#assign index=getMtmCascadeEntityIndexForShow(otherEntity.entityId)>
@@ -82,7 +82,7 @@ export default {
      */
     handleShow(${this.id}) {
       ${othercName}Api.findOptions().then(data => { this.options.${othercName} = data })
-      ${this.className}Api.fetch${otherCName}List(${this.id})
+      ${this.classNameLower}Api.fetch${otherCName}List(${this.id})
         .then(data => {
           this.old = {
             ${this.id}: ${this.id},
@@ -101,7 +101,7 @@ export default {
      */
     doUpdate() {
       this.$refs['dataForm'].validate()
-        .then(() => ${this.className}Api.set${otherCName}(this.form.${this.id}, this.form.${othercName}List))
+        .then(() => ${this.classNameLower}Api.set${otherCName}(this.form.${this.id}, this.form.${othercName}List))
         .then(data => {
           this.formVisible = false
           this.$common.showMsg('success', '配置成功')

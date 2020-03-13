@@ -17,6 +17,11 @@
 <#local content><#nested></#local>
 ${CommonTemplateFunction.removeLastComma(content)}</#macro>
 
+<#-- 首个单词转小写 -->
+<#function lowerFirstWord value>
+    <#return "${CommonTemplateFunction.lowerFirstWord(value)}" >
+</#function>
+
 <#-- 根据常量名查找常量 -->
 <#function findConst constName>
     <#list this.metaConsts as const>
@@ -71,7 +76,7 @@ ${CommonTemplateFunction.removeLastComma(content)}</#macro>
 
 <#-- 导入api -->
 <#function importApi entity>
-    <#local className = entity.className?uncapFirst>
+    <#local className = lowerFirstWord(entity.className)>
     <#if entity.module?hasContent>
         <#return "import ${className}Api from '@/api/${entity.module}/${className}'">
     <#else>
@@ -90,7 +95,7 @@ ${CommonTemplateFunction.removeLastComma(content)}</#macro>
 
 <#-- 导入mock -->
 <#function importMock basePath entity>
-    <#local className = entity.className?uncapFirst>
+    <#local className = lowerFirstWord(entity.className)>
     <#if entity.module?hasContent>
         <#return "import ${className} from '${basePath}/${entity.module}/${className}'">
     <#else>
@@ -100,7 +105,7 @@ ${CommonTemplateFunction.removeLastComma(content)}</#macro>
 
 <#-- 导入view -->
 <#function importView entity>
-    <#local className = entity.className?uncapFirst>
+    <#local className = lowerFirstWord(entity.className)>
     <#if entity.module?hasContent>
         <#return "import('@/views/${entity.module}/${className}')">
     <#else>

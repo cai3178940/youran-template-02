@@ -58,12 +58,12 @@ export const constantRoutes = [
 <#list this.metaEntities as entity>
     <#if !entity.entityFeature.list><#continue></#if>
   {
-    path: '/${entity.className?uncapFirst}',
+    path: '/${lowerFirstWord(entity.className)}',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: '${entity.className?capFirst}',
+        name: '${entity.className}',
         component: () => ${importView(entity)},
         meta: { title: '${entity.title}管理', icon: 'table' }
       }

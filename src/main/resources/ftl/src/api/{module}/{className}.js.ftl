@@ -4,11 +4,11 @@ import request from '@/utils/request'
 import { downloadBlob } from '@/utils/download'
 </#if>
 <#if this.module?hasContent>
-const apiPath = '/${this.module}/${this.className}'
+const apiPath = '/${this.module}/${this.classNameLower}'
 <#else>
-const apiPath = '/${this.className}'
+const apiPath = '/${this.classNameLower}'
 </#if>
-const ${this.className}Api = {
+const ${this.classNameLower}Api = {
 <@removeLastComma>
     <#if this.entityFeature.save>
   /**
@@ -67,8 +67,8 @@ const ${this.className}Api = {
   },
     </#if>
     <#list this.holds! as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign otherCName=otherEntity.className>
+        <#assign othercName=lowerFirstWord(otherEntity.className)>
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
         <#if entityFeature.addRemove || entityFeature.set>
   /**
@@ -106,7 +106,7 @@ const ${this.className}Api = {
    */
   exportExcel(query) {
     return request.get(`${r'$'}{apiPath}/export`, { responseType: 'blob', params: query })
-      .then(res => downloadBlob(res, '${this.className}Export.xlsx'))
+      .then(res => downloadBlob(res, '${this.classNameLower}Export.xlsx'))
   },
     </#if>
     <#if this.entityFeature.excelImport>
@@ -115,7 +115,7 @@ const ${this.className}Api = {
    */
   downloadTemplate() {
     request.get(`${r'$'}{apiPath}/template`, { responseType: 'blob' })
-      .then(res => downloadBlob(res, '${this.className}Template.xlsx'))
+      .then(res => downloadBlob(res, '${this.classNameLower}Template.xlsx'))
   },
   /**
    * 获取【${this.title}】上传路径
@@ -126,4 +126,4 @@ const ${this.className}Api = {
     </#if>
 </@removeLastComma>
 }
-export default ${this.className}Api
+export default ${this.classNameLower}Api
