@@ -64,7 +64,7 @@ export const constantRoutes = [
       {
         path: 'index',
         name: '${entity.className?capFirst}',
-        component: () => import('@/views/${this.append(entity.module, "/")}${entity.className?uncapFirst}'),
+        component: () => ${importView(entity)},
         meta: { title: '${entity.title}管理', icon: 'table' }
       }
     ]

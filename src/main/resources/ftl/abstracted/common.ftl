@@ -68,3 +68,43 @@ ${CommonTemplateFunction.removeLastComma(content)}</#macro>
         <#return "blur">
     </#if>
 </#function>
+
+<#-- 导入api -->
+<#function importApi entity>
+    <#local className = entity.className?uncapFirst>
+    <#if entity.module?hasContent>
+        <#return "import ${className}Api from '@/api/${entity.module}/${className}'">
+    <#else>
+        <#return "import ${className}Api from '@/api/${className}'">
+    </#if>
+</#function>
+
+<#-- 获取模块目录的父目录 -->
+<#function getParentPathForModule entity>
+    <#if entity.module?hasContent>
+        <#return "..">
+    <#else>
+        <#return ".">
+    </#if>
+</#function>
+
+<#-- 导入mock -->
+<#function importMock basePath entity>
+    <#local className = entity.className?uncapFirst>
+    <#if entity.module?hasContent>
+        <#return "import ${className} from '${basePath}/${entity.module}/${className}'">
+    <#else>
+        <#return "import ${className} from '${basePath}/${className}'">
+    </#if>
+</#function>
+
+<#-- 导入view -->
+<#function importView entity>
+    <#local className = entity.className?uncapFirst>
+    <#if entity.module?hasContent>
+        <#return "import('@/views/${entity.module}/${className}')">
+    <#else>
+        <#return "import('@/views/${className}')">
+    </#if>
+</#function>
+

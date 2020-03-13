@@ -91,12 +91,12 @@
 </template>
 
 <script>
-import ${this.className}Api from '@/api/${this.append(this.module, "/")}${this.className}'
+${importApi(this.metaEntity)}
 <#if !importOtherEntitys.isEmpty()>
     <#list importOtherEntitys as foreignEntity>
-        <#if foreignEntity == this.metaEntity><#break></#if>
-        <#assign foreignClassName = foreignEntity.className?uncapFirst>
-import ${foreignClassName}Api from '@/api/${foreignEntity.append(foreignEntity.module, "/")}${foreignClassName}'
+        <#if foreignEntity != this.metaEntity>
+${importApi(foreignEntity)}
+        </#if>
     </#list>
 </#if>
 <#if !importEnums.isEmpty()>

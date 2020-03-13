@@ -35,19 +35,10 @@
     </#if>
 </#macro>
 import Mock from 'mockjs'
-<#if this.isNotEmpty(this.module)>
-import { <#if this.pageSign>paging, </#if>copy, getUrlPattern } from '../mock-util'
-<#else>
-import { <#if this.pageSign>paging, </#if>copy, getUrlPattern } from './mock-util'
-</#if>
+import { <#if this.pageSign>paging, </#if>copy, getUrlPattern } from '${getParentPathForModule(this.metaEntity)}/mock-util'
 <#-- 引入依赖的其他mock -->
 <#list this.holds! as otherEntity,mtm>
-    <#assign othercName=otherEntity.className?uncapFirst>
-<#if otherEntity.isNotEmpty(otherEntity.module)>
-import ${othercName} from '../${otherEntity.module}/${othercName}'
-<#else>
-import ${othercName} from './${othercName}'
-</#if>
+${importMock(getParentPathForModule(this.metaEntity), otherEntity)}
 </#list>
 
 /**
@@ -129,12 +120,17 @@ function removeById(list, ${this.id}) {
 }
 
 </#if>
+<#if this.module?hasContent>
+const modulePath = '${this.module}/${this.className}'
+<#else>
+const modulePath = '${this.className}'
+</#if>
 const reqMocks = [
 <@removeLastComma>
     <#if this.entityFeature.save>
   // 添加【${this.title}】
   {
-    url: getUrlPattern('${this.className}', false),
+    url: getUrlPattern(modulePath, false),
     type: 'post',
     response: ({ body }) => {
       body.${this.id} = Mock.mock(mockNewIdRule).${this.id}
@@ -146,7 +142,7 @@ const reqMocks = [
     <#if this.entityFeature.update>
   // 修改【${this.title}】
   {
-    url: getUrlPattern('${this.className}', false),
+    url: getUrlPattern(modulePath, false),
     type: 'put',
     response: ({ body }) => {
       const obj = data.list.find(item => item.${this.id} === body.${this.id})
@@ -158,7 +154,7 @@ const reqMocks = [
     <#if this.entityFeature.list>
   // ${this.pageSign?string('分页','列表')}查询【${this.title}】
   {
-    url: getUrlPattern('${this.className}', false),
+    url: getUrlPattern(modulePath, false),
     type: 'get',
     response: ({ query }) => {
         <#if this.pageSign>
@@ -177,7 +173,7 @@ const reqMocks = [
     <#if this.titleField??>
   // 查询【${this.title}】选项列表
   {
-    url: getUrlPattern('${this.className}', false, 'options'),
+    url: getUrlPattern(modulePath, false, 'options'),
     type: 'get',
     response: () => {
       return data.list.map(item => ({
@@ -190,10 +186,10 @@ const reqMocks = [
     <#if this.entityFeature.show>
   // 查看【${this.title}】详情
   {
-    url: getUrlPattern('${this.className}', true),
+    url: getUrlPattern(modulePath, true),
     type: 'get',
     response: ({ url }) => {
-      const ${this.id} = url.match(getUrlPattern('${this.className}', true))[1]
+      const ${this.id} = url.match(getUrlPattern(modulePath, true))[1]
       const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
       return copy(obj)
     }
@@ -202,10 +198,10 @@ const reqMocks = [
     <#if this.entityFeature.delete>
   // 删除单个【${this.title}】
   {
-    url: getUrlPattern('${this.className}', true),
+    url: getUrlPattern(modulePath, true),
     type: 'delete',
     response: ({ url }) => {
-      const ${this.id} = url.match(getUrlPattern('${this.className}', true))[1]
+      const ${this.id} = url.match(getUrlPattern(modulePath, true))[1]
       removeById(data.list, parseInt(${this.id}))
       return 1
     }
@@ -214,7 +210,7 @@ const reqMocks = [
     <#if this.entityFeature.deleteBatch>
   // 批量删除【${this.title}】
   {
-    url: getUrlPattern('${this.className}', false),
+    url: getUrlPattern(modulePath, false),
     type: 'delete',
     response: ({ body }) => {
       for (var ${this.id} of body) {
@@ -237,10 +233,10 @@ const reqMocks = [
             </#if>
   // 获取【${otherEntity.title}】关联
   {
-    url: getUrlPattern('${this.className}', true, '${othercName}'),
+    url: getUrlPattern(modulePath, true, '${othercName}'),
     type: 'get',
     response: ({ url }) => {
-      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
+      const ${this.id} = url.match(getUrlPattern(modulePath, true, '${othercName}'))[1]
       const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
             <#if justReturnOtherId>
       return copy(obj.${othercName}List.map(item => item.${otherId}))
@@ -253,10 +249,10 @@ const reqMocks = [
         <#if entityFeature.addRemove>
   // 添加【${otherEntity.title}】关联
   {
-    url: getUrlPattern('${this.className}', true, '${othercName}'),
+    url: getUrlPattern(modulePath, true, '${othercName}'),
     type: 'post',
     response: ({ url, body }) => {
-      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
+      const ${this.id} = url.match(getUrlPattern(modulePath, true, '${othercName}'))[1]
       const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
       ${othercName}.getMockData().list
         // 过滤出需要添加的
@@ -269,10 +265,10 @@ const reqMocks = [
   },
   // 移除【${otherEntity.title}】关联
   {
-    url: getUrlPattern('${this.className}', true, '${othercName}'),
+    url: getUrlPattern(modulePath, true, '${othercName}'),
     type: 'delete',
     response: ({ url, body }) => {
-      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
+      const ${this.id} = url.match(getUrlPattern(modulePath, true, '${othercName}'))[1]
       const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
       body.forEach(i => {
         const index = obj.${othercName}List.findIndex(j => j.${otherId} === i)
@@ -286,10 +282,10 @@ const reqMocks = [
         <#elseIf entityFeature.set>
   // 设置【${otherEntity.title}】关联
   {
-    url: getUrlPattern('${this.className}', true, '${othercName}'),
+    url: getUrlPattern(modulePath, true, '${othercName}'),
     type: 'put',
     response: ({ url, body }) => {
-      const ${this.id} = url.match(getUrlPattern('${this.className}', true, '${othercName}'))[1]
+      const ${this.id} = url.match(getUrlPattern(modulePath, true, '${othercName}'))[1]
       const obj = data.list.find(item => item.${this.id} === parseInt(${this.id}))
       const ${othercName}List = ${othercName}.getMockData().list
         .filter(i => body.findIndex(j => j === i.${otherId}) > -1)

@@ -31,8 +31,13 @@
     "contextType" : 1,
     "fileType" : 2
   }, {
+    "fileName" : "__dir.ftl",
+    "fileDir" : "/mock/{module}",
+    "contextType" : 2,
+    "fileType" : 4
+  }, {
     "fileName" : "__{className}.js.ftl",
-    "fileDir" : "/mock",
+    "fileDir" : "/mock/{module}",
     "contextType" : 2,
     "fileType" : 5
   }, {
@@ -41,8 +46,13 @@
     "contextType" : 2,
     "fileType" : 1
   }, {
+    "fileName" : "__dir.ftl",
+    "fileDir" : "/src/api/{module}",
+    "contextType" : 2,
+    "fileType" : 4
+  }, {
     "fileName" : "__{className}.js.ftl",
-    "fileDir" : "/src/api",
+    "fileDir" : "/src/api/{module}",
     "contextType" : 2,
     "fileType" : 5
   }, {
@@ -52,7 +62,12 @@
     "fileType" : 1
   }, {
     "fileName" : "__dir.ftl",
-    "fileDir" : "/src/views/{className}",
+    "fileDir" : "/src/views/{module}",
+    "contextType" : 2,
+    "fileType" : 4
+  }, {
+    "fileName" : "__dir.ftl",
+    "fileDir" : "/src/views/{module}/{className}",
     "contextType" : 2,
     "fileType" : 4
   }, {
