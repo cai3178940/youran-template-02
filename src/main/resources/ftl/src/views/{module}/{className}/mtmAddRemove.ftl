@@ -7,8 +7,8 @@
     <#if !entityFeature.addRemove>
         <#continue>
     </#if>
-    <#assign otherCName=otherEntity.className?capFirst>
-    <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign otherCName=otherEntity.className>
+    <#assign othercName=lowerFirstWord(otherEntity.className)>
     <#assign otherId=otherEntity.pkField.jfieldName>
     <#--定义代码内容-->
     <#assign code>
@@ -100,7 +100,7 @@ export default {
      * 查询表格数据
      */
     fetchList() {
-      return ${this.className}Api.fetch${otherCName}List(this.form.${this.id})
+      return ${this.classNameLower}Api.fetch${otherCName}List(this.form.${this.id})
         .then(data => {
           this.form.${othercName}ListRaw = data
         })
@@ -112,7 +112,7 @@ export default {
       if (!this.form.${othercName}List.length) {
         return
       }
-      ${this.className}Api.add${otherCName}(this.form.${this.id}, this.form.${othercName}List)
+      ${this.classNameLower}Api.add${otherCName}(this.form.${this.id}, this.form.${othercName}List)
         .then(data => {
           this.$common.showMsg('success', '添加成功')
           this.formUpdated = true
@@ -125,7 +125,7 @@ export default {
      */
     handleDeleteSingle(row) {
       return this.$common.confirm('是否确认移除')
-        .then(() => ${this.className}Api.remove${otherCName}(this.form.${this.id}, [row.${otherId}]))
+        .then(() => ${this.classNameLower}Api.remove${otherCName}(this.form.${this.id}, [row.${otherId}]))
         .then(() => {
           this.$common.showMsg('success', '移除成功')
           this.formUpdated = true

@@ -9,10 +9,10 @@ ${importMock(".", entity)}
 
 function initMockData() {
 <#list this.metaEntities as entity>
-  ${entity.className?uncapFirst}.initMockDataStage1()
+  ${lowerFirstWord(entity.className)}.initMockDataStage1()
 </#list>
 <#list this.metaEntities as entity>
-  ${entity.className?uncapFirst}.initMockDataStage2()
+  ${lowerFirstWord(entity.className)}.initMockDataStage2()
 </#list>
 }
 
@@ -20,7 +20,7 @@ const reqMocks = [
   ..._user,
 <@removeLastComma>
     <#list this.metaEntities as entity>
-  ...${entity.className?uncapFirst}.reqMocks,
+  ...${lowerFirstWord(entity.className)}.reqMocks,
     </#list>
 </@removeLastComma>
 ]

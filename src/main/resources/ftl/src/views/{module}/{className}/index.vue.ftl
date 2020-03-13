@@ -14,7 +14,7 @@
     <#-- 首先考虑外键的情况 -->
     <#if field.foreignKey>
         <@justCall importOtherEntitys.add(field.foreignEntity)/>
-        <#assign foreignClassName = field.foreignEntity.className?uncapFirst>
+        <#assign foreignClassName = lowerFirstWord(field.foreignEntity.className)>
       <el-select v-model="query.${name}" class="filter-item"
                  style="width:200px;" placeholder="${field.fieldDesc}"
                  filterable clearable<#if QueryType.isIn(field.queryType)> multiple</#if>>
@@ -208,7 +208,7 @@
     <#else>
         <#assign displayField = otherPkField>
     </#if>
-    <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign othercName=lowerFirstWord(otherEntity.className)>
       <el-table-column label="${otherEntity.title}" align="center">
         <template slot-scope="{row}">
           <span v-for="item in row.${othercName}List"
@@ -235,7 +235,7 @@
                      @click="handleDeleteSingle(row)" class="table-inner-button">删除</el-button>
     </#if>
     <#list this.holds! as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
+        <#assign otherCName=otherEntity.className>
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
         <#if entityFeature.addRemove>
           <el-button type="success" size="mini"
@@ -255,18 +255,18 @@
 </#if>
 <#if this.entityFeature.save>
     <!-- 新建表单 -->
-    <${this.className}-add ref="${this.className}Add" @created="doQueryList({<#if this.pageSign> page: 1 </#if>})"/>
+    <${this.classNameLower}-add ref="${this.classNameLower}Add" @created="doQueryList({<#if this.pageSign> page: 1 </#if>})"/>
 </#if>
 <#if this.entityFeature.update>
     <!-- 编辑表单 -->
-    <${this.className}-edit ref="${this.className}Edit" @updated="doQueryList({})"/>
+    <${this.classNameLower}-edit ref="${this.classNameLower}Edit" @updated="doQueryList({})"/>
 </#if>
 <#if this.entityFeature.show>
     <!-- 查看表单 -->
-    <${this.className}-show ref="${this.className}Show"/>
+    <${this.classNameLower}-show ref="${this.classNameLower}Show"/>
 </#if>
 <#list this.holds! as otherEntity,mtm>
-    <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign othercName=lowerFirstWord(otherEntity.className)>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
     <#if entityFeature.addRemove>
     <!-- 添加移除${otherEntity.title} -->
@@ -278,23 +278,23 @@
 </#list>
 <#if this.entityFeature.excelImport>
     <!-- 查看表单 -->
-    <${this.className}-import ref="${this.className}Import" @imported="doQueryList({<#if this.pageSign> page: 1 </#if>})"/>
+    <${this.classNameLower}-import ref="${this.classNameLower}Import" @imported="doQueryList({<#if this.pageSign> page: 1 </#if>})"/>
 </#if>
   </div>
 </template>
 
 <script>
 <#if this.entityFeature.save>
-import ${this.className}Add from './add'
+import ${this.classNameLower}Add from './add'
 </#if>
 <#if this.entityFeature.update>
-import ${this.className}Edit from './edit'
+import ${this.classNameLower}Edit from './edit'
 </#if>
 <#if this.entityFeature.show>
-import ${this.className}Show from './show'
+import ${this.classNameLower}Show from './show'
 </#if>
 <#list this.holds! as otherEntity,mtm>
-    <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign othercName=lowerFirstWord(otherEntity.className)>
     <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
     <#if entityFeature.addRemove>
 import ${othercName}AddRemove from './${othercName}AddRemove'
@@ -303,7 +303,7 @@ import ${othercName}Setting from './${othercName}Setting'
     </#if>
 </#list>
 <#if this.entityFeature.excelImport>
-import ${this.className}Import from './import'
+import ${this.classNameLower}Import from './import'
 </#if>
 ${importApi(this.metaEntity)}
 <#if !importOtherEntitys.isEmpty()>
@@ -321,23 +321,23 @@ import Pagination from '@/components/Pagination'
 </#if>
 
 export default {
-  name: '${this.classNameUpper}Table',
+  name: '${this.className}Table',
   components: {
 <@removeLastComma>
     <#if this.pageSign>
     Pagination,
     </#if>
     <#if this.entityFeature.save>
-    ${this.className}Add,
+    ${this.classNameLower}Add,
     </#if>
     <#if this.entityFeature.update>
-    ${this.className}Edit,
+    ${this.classNameLower}Edit,
     </#if>
     <#if this.entityFeature.show>
-    ${this.className}Show,
+    ${this.classNameLower}Show,
     </#if>
     <#list this.holds! as otherEntity,mtm>
-        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign othercName=lowerFirstWord(otherEntity.className)>
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
         <#if entityFeature.addRemove>
     ${othercName}AddRemove,
@@ -346,7 +346,7 @@ export default {
         </#if>
     </#list>
     <#if this.entityFeature.excelImport>
-    ${this.className}Import,
+    ${this.classNameLower}Import,
     </#if>
 </@removeLastComma>
   },
@@ -370,7 +370,7 @@ export default {
       options: {
     <@removeLastComma>
         <#list importOtherEntitys as foreignEntity>
-        ${foreignEntity.className?uncapFirst}: [],
+        ${lowerFirstWord(foreignEntity.className)}: [],
         </#list>
     </@removeLastComma>
       },
@@ -411,7 +411,7 @@ export default {
 <#if !importOtherEntitys.isEmpty()>
     <@removeLastComma>
         <#list importOtherEntitys as foreignEntity>
-            <#assign foreignClassName = foreignEntity.className?uncapFirst>
+            <#assign foreignClassName = lowerFirstWord(foreignEntity.className)>
     ${foreignClassName}Api.findOptions().then(data => { this.options.${foreignClassName} = data })
         </#list>
     </@removeLastComma>
@@ -473,7 +473,7 @@ export default {
       }
     </#if>
       this.listLoading = true
-      return ${this.className}Api.fetchList(this.query)
+      return ${this.classNameLower}Api.fetchList(this.query)
         .then(data => {
     <#if this.pageSign>
           this.list = data.list
@@ -492,7 +492,7 @@ export default {
      */
     handleDeleteSingle(row) {
       return this.$common.confirm('是否确认删除')
-        .then(() => ${this.className}Api.deleteById(row.${this.id}))
+        .then(() => ${this.classNameLower}Api.deleteById(row.${this.id}))
         .then(() => {
           this.$common.showMsg('success', '删除成功')
           return this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
@@ -509,7 +509,7 @@ export default {
         return
       }
       return this.$common.confirm('是否确认删除')
-        .then(() => ${this.className}Api.deleteBatch(this.selectItems.map(row => row.${this.id})))
+        .then(() => ${this.classNameLower}Api.deleteBatch(this.selectItems.map(row => row.${this.id})))
         .then(() => {
           this.$common.showMsg('success', '删除成功')
           return this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
@@ -521,7 +521,7 @@ export default {
      * 打开新建表单
      */
     handleCreate() {
-      this.$refs.${this.className}Add.handleCreate()
+      this.$refs.${this.classNameLower}Add.handleCreate()
     },
     </#if>
     <#if this.entityFeature.show>
@@ -529,7 +529,7 @@ export default {
      * 打开查看表单
      */
     handleShow(row) {
-      this.$refs.${this.className}Show.handleShow(row.${this.id})
+      this.$refs.${this.classNameLower}Show.handleShow(row.${this.id})
     },
     </#if>
     <#if this.entityFeature.update>
@@ -537,12 +537,12 @@ export default {
      * 打开编辑表单
      */
     handleUpdate(row) {
-      this.$refs.${this.className}Edit.handleUpdate(row.${this.id})
+      this.$refs.${this.classNameLower}Edit.handleUpdate(row.${this.id})
     },
     </#if>
     <#list this.holds! as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign otherCName=otherEntity.className>
+        <#assign othercName=lowerFirstWord(otherEntity.className)>
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
         <#if entityFeature.addRemove>
     /**
@@ -566,7 +566,7 @@ export default {
      */
     handleExport() {
       return this.$common.confirm('是否确认导出')
-        .then(() => ${this.className}Api.exportExcel(this.query))
+        .then(() => ${this.classNameLower}Api.exportExcel(this.query))
     },
     </#if>
     <#if this.entityFeature.excelImport>
@@ -574,7 +574,7 @@ export default {
      * 打开导入表单
      */
     handleImport() {
-      this.$refs.${this.className}Import.show()
+      this.$refs.${this.classNameLower}Import.show()
     },
     </#if>
 </@removeLastComma>

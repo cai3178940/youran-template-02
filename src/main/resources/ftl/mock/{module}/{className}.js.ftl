@@ -97,7 +97,7 @@ function initMockDataStage2() {
 <#if this.holds!?hasContent>
   for (const item of data.list) {
     <#list this.holds! as otherEntity,mtm>
-        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign othercName=lowerFirstWord(otherEntity.className)>
     item.${othercName}List = [Mock.Random.pick(${othercName}.getMockData().list)]
     </#list>
   }
@@ -121,9 +121,9 @@ function removeById(list, ${this.id}) {
 
 </#if>
 <#if this.module?hasContent>
-const modulePath = '${this.module}/${this.className}'
+const modulePath = '${this.module}/${this.classNameLower}'
 <#else>
-const modulePath = '${this.className}'
+const modulePath = '${this.classNameLower}'
 </#if>
 const reqMocks = [
 <@removeLastComma>
@@ -221,8 +221,8 @@ const reqMocks = [
   },
     </#if>
     <#list this.holds! as otherEntity,mtm>
-        <#assign otherCName=otherEntity.className?capFirst>
-        <#assign othercName=otherEntity.className?uncapFirst>
+        <#assign otherCName=otherEntity.className>
+        <#assign othercName=lowerFirstWord(otherEntity.className)>
         <#assign otherId=otherEntity.pkField.jfieldName>
         <#assign entityFeature=mtm.getEntityFeature(this.entityId)>
         <#if entityFeature.addRemove || entityFeature.set>

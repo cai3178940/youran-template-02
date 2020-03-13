@@ -38,7 +38,7 @@
 </#list>
 <#list mtmCascadeEntitiesForShow as otherEntity>
     <#assign mtmCascadeExts = groupMtmCascadeExtsForShow[otherEntity?index]>
-    <#assign othercName=otherEntity.className?uncapFirst>
+    <#assign othercName=lowerFirstWord(otherEntity.className)>
       <el-form-item label="${otherEntity.title}">
         <el-table :data="form.${othercName}List" style="width: 100%;"
                   size="mini" border>
@@ -78,7 +78,7 @@ import enums from '@/utils/enums'
 </#if>
 
 export default {
-  name: '${this.classNameUpper}Show',
+  name: '${this.className}Show',
 <#if !importEnums.isEmpty()>
   filters: {
     findEnumLabel: enums.findEnumLabel
@@ -110,7 +110,7 @@ export default {
      * 打开查看表单
      */
     handleShow(${this.id}) {
-      ${this.className}Api.fetchById(${this.id})
+      ${this.classNameLower}Api.fetchById(${this.id})
         .then(data => {
           this.form = data
           this.formVisible = true
