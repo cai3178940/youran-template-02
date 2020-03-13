@@ -3,8 +3,11 @@ import request from '@/utils/request'
 <#if this.entityFeature.excelExport || this.entityFeature.excelImport>
 import { downloadBlob } from '@/utils/download'
 </#if>
-
+<#if this.module?hasContent>
+const apiPath = '/${this.module}/${this.className}'
+<#else>
 const apiPath = '/${this.className}'
+</#if>
 const ${this.className}Api = {
 <@removeLastComma>
     <#if this.entityFeature.save>

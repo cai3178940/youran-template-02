@@ -45,8 +45,8 @@
 </template>
 
 <script>
-import ${this.className}Api from '@/api/${this.append(this.module, "/")}${this.className}'
-import ${othercName}Api from '@/api/${otherEntity.append(otherEntity.module, "/")}${othercName}'
+${importApi(this.metaEntity)}
+${importApi(otherEntity)}
 
 function initFormBean() {
   const formBean = {

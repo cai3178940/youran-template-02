@@ -4,8 +4,7 @@ import { param2Obj } from '../src/utils'
 
 import _user from './_user'
 <#list this.metaEntities as entity>
-    <#assign className=entity.className?uncapFirst>
-import ${className} from './${this.append(entity.module, "/")}${className}'
+${importMock(".", entity)}
 </#list>
 
 function initMockData() {
