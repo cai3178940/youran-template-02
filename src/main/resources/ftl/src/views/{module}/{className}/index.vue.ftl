@@ -47,7 +47,7 @@
         <#elseIf field.editType == EditType.DATE.getValue()>
       <el-date-picker v-model="query.${name}" type="date"
                       style="width:200px;" class="filter-item"
-                      value-format="yyyy-MM-dd HH:mm:ss"
+                      value-format="yyyy-MM-dd"
                       placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"></el-date-picker>
         <#elseIf field.editType == EditType.DATETIME.getValue()>
       <el-date-picker v-model="query.${name}" type="datetime"
@@ -68,24 +68,28 @@
         </#if>
     <#-- 最后考虑Between查询条件 -->
     <#else>
-        <#if field.jfieldType == JFieldType.DATE.javaType>
+        <#if field.jfieldType == JFieldType.DATE.javaType
+        || field.jfieldType == JFieldType.LOCALDATE.javaType
+        || field.jfieldType == JFieldType.LOCALDATETIME.javaType>
       <el-date-picker v-model="query.${name}Start"
             <#if field.editType == EditType.DATE.getValue()>
                       type="date"
+                      value-format="yyyy-MM-dd"
             <#else>
                       type="datetime"
+                      value-format="yyyy-MM-dd HH:mm:ss"
             </#if>
                       style="width:200px;" class="filter-item"
-                      value-format="yyyy-MM-dd HH:mm:ss"
                       placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"></el-date-picker>
       <el-date-picker v-model="query.${name}End"
             <#if field.editType == EditType.DATE.getValue()>
                       type="date"
+                      value-format="yyyy-MM-dd"
             <#else>
                       type="datetime"
+                      value-format="yyyy-MM-dd HH:mm:ss"
             </#if>
                       style="width:200px;" class="filter-item"
-                      value-format="yyyy-MM-dd HH:mm:ss"
                       placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,false)}"></el-date-picker>
         <#elseIf field.editType == EditType.NUMBER.getValue()>
       <el-input-number v-model="query.${name}Start" placeholder="${field.fieldDesc}${getRangeQueryTipSuffix(field,true)}"

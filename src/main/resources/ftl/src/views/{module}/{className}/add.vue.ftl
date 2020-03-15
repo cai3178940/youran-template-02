@@ -16,9 +16,15 @@
     <#elseIf field.editType == EditType.NUMBER.getValue()>
         <el-input-number v-model="form.${field.jfieldName}" style="width:100%;" controls-position="right"></el-input-number>
     <#elseIf field.editType == EditType.DATE.getValue()>
-        <el-date-picker v-model="form.${field.jfieldName}" type="date" placeholder="选择日期"></el-date-picker>
+        <el-date-picker v-model="form.${field.jfieldName}"
+                        type="date"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期"></el-date-picker>
     <#elseIf field.editType == EditType.DATETIME.getValue()>
-        <el-date-picker v-model="form.${field.jfieldName}" type="datetime" placeholder="选择日期时间"></el-date-picker>
+        <el-date-picker v-model="form.${field.jfieldName}"
+                        type="datetime"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        placeholder="选择日期时间"></el-date-picker>
     <#elseIf field.editType == EditType.RADIO.getValue()>
         <el-radio-group v-model="form.${field.jfieldName}">
         <#if field.jfieldType == JFieldType.BOOLEAN.javaType>
