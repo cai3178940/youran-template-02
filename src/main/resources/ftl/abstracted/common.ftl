@@ -34,7 +34,9 @@ ${CommonTemplateFunction.removeLastComma(content)}</#macro>
 <#-- 获取字段空值 -->
 <#function getFieldEmptyValue field>
     <#-- 日期类型不能用null -->
-    <#if field.jfieldType == JFieldType.DATE.javaType>
+    <#if field.jfieldType == JFieldType.DATE.javaType
+        || field.jfieldType == JFieldType.LOCALDATE.javaType
+        || field.jfieldType == JFieldType.LOCALDATETIME.javaType>
         <#return "''">
     <#elseIf field.editType == EditType.NUMBER.getValue()>
         <#return "undefined">

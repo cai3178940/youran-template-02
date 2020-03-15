@@ -28,8 +28,14 @@
               || field.jfieldType == JFieldType.FLOAT.javaType
               || field.jfieldType == JFieldType.BIGDECIMAL.javaType>
       '${name}|0-100.1-2': 1,
-    <#elseIf field.jfieldType == JFieldType.DATE.javaType>
+    <#elseIf field.jfieldType == JFieldType.DATE.javaType
+        || field.jfieldType == JFieldType.LOCALDATE.javaType
+        || field.jfieldType == JFieldType.LOCALDATETIME.javaType>
+        <#if field.editType == EditType.DATE.getValue()>
+      '${name}': '@date(yyyy-MM-dd)',
+        <#else>
       '${name}': '@date(yyyy-MM-dd) 00:00:00',
+        </#if>
     <#else>
       '${name}': '@word(1, ${[field.fieldLength, 10]?min})',
     </#if>
