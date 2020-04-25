@@ -64,12 +64,27 @@ export const constantRoutes = [
       {
         path: 'index',
         name: '${entity.className}',
-        component: () => ${importView(entity)},
+        component: () => ${importView(entity.className,entity.module)},
         meta: { title: '${entity.title}管理', icon: 'table' }
       }
     ]
   },
 </#list>
+<#list this.charts as chart>
+  {
+    path: '/${lowerFirstWord(chart.chartName)}',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '${chart.chartName}',
+        component: () => ${importView(chart.chartName,chart.module)},
+        meta: { title: '${chart.title}', icon: 'table' }
+      }
+    ]
+  },
+</#list>
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

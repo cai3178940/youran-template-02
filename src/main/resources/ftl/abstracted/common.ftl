@@ -106,12 +106,12 @@ ${CommonTemplateFunction.removeLastComma(content)}</#macro>
 </#function>
 
 <#-- 导入view -->
-<#function importView entity>
-    <#local className = lowerFirstWord(entity.className)>
-    <#if entity.module?hasContent>
-        <#return "import('@/views/${entity.module}/${className}')">
+<#function importView className module>
+    <#local name = lowerFirstWord(className)>
+    <#if module?hasContent>
+        <#return "import('@/views/${module}/${name}')">
     <#else>
-        <#return "import('@/views/${className}')">
+        <#return "import('@/views/${name}')">
     </#if>
 </#function>
 
