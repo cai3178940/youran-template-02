@@ -45,8 +45,8 @@
 </template>
 
 <script>
-${importApi(this.metaEntity)}
-${importApi(otherEntity)}
+${importApi(this.metaEntity.className,this.metaEntity.module)}
+${importApi(otherEntity.className,otherEntity.module)}
 
 function initFormBean() {
   const formBean = {

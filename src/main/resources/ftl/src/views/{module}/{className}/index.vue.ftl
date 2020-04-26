@@ -309,11 +309,11 @@ import ${othercName}Setting from './${othercName}Setting'
 <#if this.entityFeature.excelImport>
 import ${this.classNameLower}Import from './import'
 </#if>
-${importApi(this.metaEntity)}
+${importApi(this.metaEntity.className,this.metaEntity.module)}
 <#if !importOtherEntitys.isEmpty()>
     <#list importOtherEntitys as foreignEntity>
         <#if foreignEntity != this.metaEntity>
-${importApi(foreignEntity)}
+${importApi(foreignEntity.className,foreignEntity.module)}
         </#if>
     </#list>
 </#if>

@@ -21,7 +21,7 @@
   </el-dialog>
 </template>
 <script>
-${importApi(this.metaEntity)}
+${importApi(this.metaEntity.className,this.metaEntity.module)}
 
 export default {
   name: '${this.className}Import',

@@ -72,7 +72,7 @@
 </template>
 
 <script>
-${importApi(this.metaEntity)}
+${importApi(this.metaEntity.className,this.metaEntity.module)}
 <#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
 </#if>

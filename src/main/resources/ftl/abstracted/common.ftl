@@ -77,10 +77,10 @@ ${CommonTemplateFunction.removeLastComma(content)}</#macro>
 </#function>
 
 <#-- 导入api -->
-<#function importApi entity>
-    <#local className = lowerFirstWord(entity.className)>
-    <#if entity.module?hasContent>
-        <#return "import ${className}Api from '@/api/${entity.module}/${className}'">
+<#function importApi className module>
+    <#local className = lowerFirstWord(className)>
+    <#if module?hasContent>
+        <#return "import ${className}Api from '@/api/${module}/${className}'">
     <#else>
         <#return "import ${className}Api from '@/api/${className}'">
     </#if>

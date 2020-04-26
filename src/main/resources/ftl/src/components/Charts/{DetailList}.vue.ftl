@@ -1,45 +1,48 @@
 <#include "/abstracted/common.ftl">
 <#include "/abstracted/commonForChart.ftl">
+<#if !isChartType(ChartType.DETAIL_LIST)>
+    <@call this.skipCurrent()/>
+</#if>
 <template>
   <div :class="className" :style="{height:height,width:width}">
     <el-table v-loading="listLoading" :data="list"
               border stripe style="width: 100%;">
-
-      <el-table-column label="主键"
-                       prop="userId"
+<#list this.columnList as column>
+        <#assign sourceItem=column.sourceItem>
+        <#if sourceItem.custom>
+            <#--字段名-->
+            <#assign name=sourceItem.alias>
+            <#--字段标题-->
+            <#assign label=column.titleAlias>
+        <#else>
+            <#assign field=sourceItem.field>
+            <#if sourceItem.alias?hasContent>
+                <#assign name=sourceItem.alias>
+            <#else>
+                <#assign name=field.jfieldName>
+            </#if>
+            <#if column.titleAlias?hasContent>
+                <#assign label=column.titleAlias>
+            <#else>
+                <#assign label=field.fetchComment()?replace('\"','\\"')?replace('\n','\\n')>
+            </#if>
+        </#if>
+      <el-table-column label="${label}"
                        align="center">
         <template slot-scope="{row}">
-          <span>{{ row.userId }}</span>
+        <#-- 枚举字段特殊处理 -->
+        <#if !sourceItem.custom && field.dicType??>
+            <#assign const = findConst(field.dicType)>
+            <@justCall importEnums.add(const)/>
+            <#assign constName = const.constName?uncapFirst>
+          <span>{{ row.${name} | findEnumLabel(enums.${constName}) }}</span>
+        <#-- 普通字段直接展示 -->
+        <#else>
+          <span>{{ row.${name} }}</span>
+        </#if>
         </template>
       </el-table-column>
-      <el-table-column label="名称"
-                       prop="name"
-                       align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="性别"
-                       prop="sex"
-                       align="center" width="150">
-        <template slot-scope="{row}">
-          <span>{{ row.sex | findEnumLabel(enums.sex) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="注册时间"
-                       prop="regTime"
-                       align="center" width="100">
-        <template slot-scope="{row}">
-          <span>{{ row.regTime }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="部门名称"
-                       prop="deptName"
-                       align="center">
-        <template slot-scope="{row}">
-          <span>{{ row.deptName }}</span>
-        </template>
-      </el-table-column>
+    </#list>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="query.page"
                 :limit.sync="query.limit" @pagination="doQueryList"/>
@@ -47,13 +50,15 @@
 </template>
 
 <script>
-import threeTableApi from '@/api/system/threeTable'
+${importApi(this.chartName,this.module)}
 import Pagination from '@/components/Pagination'
+<#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
+</#if>
 import resize from './mixins/resize'
 
 export default {
-  name: 'ThreeTable',
+  name: '${this.chartName}',
   mixins: [resize],
   components: {
     Pagination
@@ -61,7 +66,7 @@ export default {
   props: {
     className: {
       type: String,
-      default: 'threeTable'
+      default: '${this.chartNameLower}'
     },
     width: {
       type: String,
@@ -78,7 +83,11 @@ export default {
   data() {
     return {
       enums: {
-        sex: enums.getSex()
+    <@removeLastComma>
+        <#list importEnums as const>
+        ${const.constName?uncapFirst}: enums.get${const.constName}(),
+        </#list>
+    </@removeLastComma>
       },
       list: [],
       total: 0,
@@ -104,7 +113,7 @@ export default {
         this.query.limit = limit
       }
       this.listLoading = true
-      return threeTableApi.fetchList(this.query)
+      return ${this.chartNameLower}Api.fetchList(this.query)
         .then(data => {
           this.list = data.list
           this.total = data.total

@@ -11,6 +11,11 @@
     "contextType" : 1,
     "fileType" : 2
   }, {
+    "fileName" : "commonForChart.ftl",
+    "fileDir" : "/abstracted",
+    "contextType" : 1,
+    "fileType" : 2
+  }, {
     "fileName" : "mtmCascadeExtsForList.ftl",
     "fileDir" : "/abstracted",
     "contextType" : 1,
@@ -59,6 +64,16 @@
     "fileName" : "{className}.js.ftl",
     "fileDir" : "/src/api/{module}",
     "contextType" : 2,
+    "fileType" : 1
+  }, {
+    "fileName" : "_{DetailList}.vue.ftl",
+    "fileDir" : "/src/components/Charts",
+    "contextType" : 4,
+    "fileType" : 5
+  }, {
+    "fileName" : "{DetailList}.vue.ftl",
+    "fileDir" : "/src/components/Charts",
+    "contextType" : 4,
     "fileType" : 1
   }, {
     "fileName" : "__dir.ftl",
@@ -278,6 +293,11 @@
   }, {
     "fileName" : "index.vue.ftl",
     "fileDir" : "/src/components/Breadcrumb",
+    "contextType" : 1,
+    "fileType" : 1
+  }, {
+    "fileName" : "resize.js.ftl",
+    "fileDir" : "/src/components/Charts/mixins",
     "contextType" : 1,
     "fileType" : 1
   }, {
