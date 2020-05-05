@@ -56,10 +56,20 @@
     "contextType" : 2,
     "fileType" : 4
   }, {
+    "fileName" : "__{chartName}.js.ftl",
+    "fileDir" : "/src/api/{module}",
+    "contextType" : 4,
+    "fileType" : 5
+  }, {
     "fileName" : "__{className}.js.ftl",
     "fileDir" : "/src/api/{module}",
     "contextType" : 2,
     "fileType" : 5
+  }, {
+    "fileName" : "{chartName}.js.ftl",
+    "fileDir" : "/src/api/{module}",
+    "contextType" : 4,
+    "fileType" : 1
   }, {
     "fileName" : "{className}.js.ftl",
     "fileDir" : "/src/api/{module}",
@@ -80,6 +90,16 @@
     "fileDir" : "/src/views/{module}",
     "contextType" : 2,
     "fileType" : 4
+  }, {
+    "fileName" : "__dir.ftl",
+    "fileDir" : "/src/views/{module}/{chartName}",
+    "contextType" : 4,
+    "fileType" : 4
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/views/{module}/{chartName}",
+    "contextType" : 4,
+    "fileType" : 1
   }, {
     "fileName" : "__dir.ftl",
     "fileDir" : "/src/views/{module}/{className}",
