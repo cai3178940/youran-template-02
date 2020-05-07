@@ -76,7 +76,7 @@
     "contextType" : 2,
     "fileType" : 1
   }, {
-    "fileName" : "_{DetailList}.vue.ftl",
+    "fileName" : "__{DetailList}.vue.ftl",
     "fileDir" : "/src/components/Charts",
     "contextType" : 4,
     "fileType" : 5
