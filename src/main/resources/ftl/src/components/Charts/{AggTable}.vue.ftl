@@ -73,10 +73,13 @@ export default {
     }
   },
   filters: {
+<#if !importEnums.isEmpty()>
     findEnumLabel: enums.findEnumLabel
+</#if>
   },
   data() {
     return {
+<#if !importEnums.isEmpty()>
       enums: {
     <@removeLastComma>
         <#list importEnums as const>
@@ -84,6 +87,7 @@ export default {
         </#list>
     </@removeLastComma>
       },
+</#if>
       list: [],
       total: 0,
       listLoading: true,
