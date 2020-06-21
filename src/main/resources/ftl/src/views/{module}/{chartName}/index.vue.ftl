@@ -2,7 +2,7 @@
 <#include "/abstracted/commonForChart.ftl">
 <template>
   <div class="chart-container">
-    <three-table height="100%" width="100%" />
+    <${CommonTemplateFunction.camelCaseToKebabCase(this.chartName, false)} height="100%" width="100%" />
   </div>
 </template>
 
