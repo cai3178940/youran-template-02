@@ -1,37 +1,22 @@
 <#include "/abstracted/common.ftl">
 <#include "/abstracted/commonForChart.ftl">
-<#if !isChartType(ChartType.DETAIL_LIST)>
+<#if !isChartType(ChartType.AGG_TABLE)>
     <@call this.skipCurrent()/>
 </#if>
 <template>
   <div :class="className" :style="{height:height,width:width}">
     <el-table v-loading="listLoading" :data="list"
               border stripe style="width: 100%;">
-<#list this.columnList as column>
-    <#assign sourceItem=column.sourceItem>
-    <#if sourceItem.custom>
-        <#--字段名-->
-        <#assign name=column.alias>
-        <#--字段标题-->
-        <#assign label=column.titleAlias>
-    <#else>
-        <#assign field=sourceItem.field>
-        <#if column.alias?hasContent>
-            <#assign name=column.alias>
-        <#else>
-            <#assign name=field.jfieldName>
-        </#if>
-        <#if column.titleAlias?hasContent>
-            <#assign label=column.titleAlias>
-        <#else>
-            <#assign label=field.fetchComment()?replace('\"','\\"')?replace('\n','\\n')>
-        </#if>
-    </#if>
+<#list this.dimensionList as chartItem>
+    <#assign dimension=chartItem.sourceItem>
+    <#assign field=dimension.field>
+    <#assign name=chartItem.alias>
+    <#assign label=chartItem.titleAlias>
       <el-table-column label="${label}"
                        align="center">
         <template slot-scope="{row}">
     <#-- 枚举字段特殊处理 -->
-    <#if !sourceItem.custom && field.dicType??>
+    <#if field.dicType??>
         <#assign const = findConst(field.dicType)>
         <@justCall importEnums.add(const)/>
         <#assign constName = const.constName?uncapFirst>
@@ -40,6 +25,16 @@
     <#else>
           <span>{{ row.${name} }}</span>
     </#if>
+        </template>
+      </el-table-column>
+</#list>
+<#list this.metricsList as chartItem>
+    <#assign name=chartItem.alias>
+    <#assign label=chartItem.titleAlias>
+      <el-table-column label="${label}"
+                       align="center">
+        <template slot-scope="{row}">
+          <span>{{ row.${name} }}</span>
         </template>
       </el-table-column>
 </#list>
