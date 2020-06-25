@@ -1,4 +1,3 @@
-<#include "/abstracted/common.ftl">
 <#include "/abstracted/commonForChart.ftl">
 import request from '@/utils/request'
 <#if this.module?hasContent>

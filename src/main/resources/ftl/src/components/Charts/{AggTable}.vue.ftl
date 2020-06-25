@@ -1,10 +1,9 @@
-<#include "/abstracted/common.ftl">
 <#include "/abstracted/commonForChart.ftl">
 <#if !isChartType(ChartType.AGG_TABLE)>
     <@call this.skipCurrent()/>
 </#if>
 <template>
-  <div :class="className" :style="{height:height,width:width}">
+  <div :style="{height:height,width:width}">
     <el-table v-loading="listLoading" :data="list"
               border stripe style="width: 100%;">
 <#list this.dimensionList as chartItem>
@@ -59,10 +58,6 @@ export default {
     Pagination
   },
   props: {
-    className: {
-      type: String,
-      default: '${this.chartNameLower}'
-    },
     width: {
       type: String,
       default: '200px'

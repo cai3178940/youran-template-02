@@ -1,19 +1,16 @@
-<#include "/abstracted/common.ftl">
 <#include "/abstracted/commonForChart.ftl">
 <#if !isChartType(ChartType.BAR_LINE)>
     <@call this.skipCurrent()/>
 </#if>
 <template>
-  <div :class="className" :style="{height:height,width:width}">
-    <el-table v-loading="listLoading" :data="list"
-              border stripe style="width: 100%;">
-    </el-table>
+  <div class="${this.chartNameLower}" :style="{height:height,width:width}">
+      <div class="barLine"/>
   </div>
 </template>
 
 <script>
 ${importApi(this.chartName,this.module)}
-import Pagination from '@/components/Pagination'
+import echarts from 'echarts'
 <#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
 </#if>
@@ -23,10 +20,6 @@ export default {
   name: '${this.chartName}',
   mixins: [resize],
   props: {
-    className: {
-      type: String,
-      default: '${this.chartNameLower}'
-    },
     width: {
       type: String,
       default: '200px'
@@ -38,8 +31,30 @@ export default {
   },
   data() {
     return {
-      list: [],
       listLoading: true,
+      option: {
+        title: {
+          text: '${this.title}'
+        },
+        legend: {},
+        tooltip: {},
+        dataset: {
+          source: []
+        },
+        xAxis: { type: 'category' },
+        yAxis: {},
+<#if barLineParamMode == 2>
+        series: [
+    <@removeLastComma>
+        <#list this.axisYList as axisY>
+          { type: '${axisY.seriesType}' },
+        </#list>
+    </@removeLastComma>
+        ]
+<#else>
+        series: []
+</#if>
+      },
       // 暂时没有查询参数
       query: {}
     }
@@ -55,12 +70,37 @@ export default {
       this.listLoading = true
       return ${this.chartNameLower}Api.fetchList(this.query)
         .then(data => {
-          this.list = data
+          this.option.dataset.source = data
+<#if barLineParamMode == 1>
+          const series = []
+          const header = data[0]
+          for (let i = 0; i < header.length - 1; i++) {
+            series.push({ type: '${this.axisYList[0].seriesType}' })
+          }
+          this.option.series = series
+</#if>
+          this.renderChart()
         })
         .finally(() => {
           this.listLoading = false
         })
+    },
+    /**
+    * 渲染图表
+    */
+    renderChart() {
+      const chartEl = this.$el.children[0]
+      this.chart = echarts.init(chartEl)
+      this.chart.setOption(this.option, true)
     }
   }
 }
 </script>
+<style lang="scss">
+.${this.chartNameLower} {
+    .barLine {
+        width: 100%;
+        height: 400px;
+    }
+}
+</style>

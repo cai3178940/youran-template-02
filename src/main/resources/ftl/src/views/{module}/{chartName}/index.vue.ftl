@@ -1,4 +1,3 @@
-<#include "/abstracted/common.ftl">
 <#include "/abstracted/commonForChart.ftl">
 <template>
   <div class="chart-container">
