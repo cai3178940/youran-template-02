@@ -1,10 +1,10 @@
 <#include "/abstracted/commonForChart.ftl">
-<#if !isChartType(ChartType.BAR_LINE)>
+<#if !isChartType(ChartType.PIE)>
     <@call this.skipCurrent()/>
 </#if>
 <template>
   <div class="${this.chartNameLower}" :style="{height:height,width:width}">
-      <div class="barLineChart"/>
+      <div class="pieChart"/>
   </div>
 </template>
 
@@ -36,24 +36,23 @@ export default {
         title: {
           text: '${this.title}'
         },
-        legend: {},
+        legend: {
+          type: 'scroll',
+          orient: 'vertical',
+          right: 10,
+          top: 20,
+          bottom: 20
+        },
         tooltip: {},
         dataset: {
           source: []
         },
-        xAxis: { type: 'category' },
-        yAxis: {},
-<#if barLineParamMode == 2>
         series: [
-    <@removeLastComma>
-        <#list this.axisYList as axisY>
-          { type: '${axisY.seriesType}' },
-        </#list>
-    </@removeLastComma>
+          {
+            center: ['40%', '50%'],
+            type: 'pie'
+          }
         ]
-<#else>
-        series: []
-</#if>
       },
       // 暂时没有查询参数
       query: {}
@@ -71,14 +70,6 @@ export default {
       return ${this.chartNameLower}Api.fetchList(this.query)
         .then(data => {
           this.option.dataset.source = data
-<#if barLineParamMode == 1>
-          const series = []
-          const header = data[0]
-          for (let i = 0; i < header.length - 1; i++) {
-            series.push({ type: '${this.axisYList[0].seriesType}' })
-          }
-          this.option.series = series
-</#if>
           this.renderChart()
         })
         .finally(() => {
@@ -98,7 +89,7 @@ export default {
 </script>
 <style lang="scss">
 .${this.chartNameLower} {
-    .barLineChart {
+    .pieChart {
         width: 100%;
         height: 400px;
     }

@@ -91,6 +91,11 @@
     "contextType" : 4,
     "fileType" : 5
   }, {
+    "fileName" : "__{Pie}.vue.ftl",
+    "fileDir" : "/src/components/Charts",
+    "contextType" : 4,
+    "fileType" : 5
+  }, {
     "fileName" : "{AggTable}.vue.ftl",
     "fileDir" : "/src/components/Charts",
     "contextType" : 4,
@@ -102,6 +107,11 @@
     "fileType" : 1
   }, {
     "fileName" : "{DetailList}.vue.ftl",
+    "fileDir" : "/src/components/Charts",
+    "contextType" : 4,
+    "fileType" : 1
+  }, {
+    "fileName" : "{Pie}.vue.ftl",
     "fileDir" : "/src/components/Charts",
     "contextType" : 4,
     "fileType" : 1
