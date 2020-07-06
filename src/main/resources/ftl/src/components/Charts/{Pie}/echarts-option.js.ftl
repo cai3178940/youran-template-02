@@ -4,6 +4,6 @@
 </#if>
 const option = ${this.optionTemplate?replace(r"${source}","[]")}
 
-export function getOption () {
+export function getOption() {
   return JSON.parse(JSON.stringify(option))
 }
