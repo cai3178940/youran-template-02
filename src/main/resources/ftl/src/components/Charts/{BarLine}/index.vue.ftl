@@ -14,7 +14,8 @@ import echarts from 'echarts'
 <#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
 </#if>
-import resize from './mixins/resize'
+import resize from '../mixins/resize'
+import getOption from './echarts-option'
 
 export default {
   name: '${this.chartName}',
@@ -32,29 +33,7 @@ export default {
   data() {
     return {
       listLoading: true,
-      option: {
-        title: {
-          text: '${this.title}'
-        },
-        legend: {},
-        tooltip: {},
-        dataset: {
-          source: []
-        },
-        xAxis: { type: 'category' },
-        yAxis: {},
-<#if barLineParamMode == 2>
-        series: [
-    <@removeLastComma>
-        <#list this.axisYList as axisY>
-          { type: '${axisY.seriesType}' },
-        </#list>
-    </@removeLastComma>
-        ]
-<#else>
-        series: []
-</#if>
-      },
+      option: getOption(),
       // 暂时没有查询参数
       query: {}
     }

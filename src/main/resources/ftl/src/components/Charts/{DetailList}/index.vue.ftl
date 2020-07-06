@@ -54,7 +54,7 @@ import Pagination from '@/components/Pagination'
 <#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
 </#if>
-import resize from './mixins/resize'
+import resize from '../mixins/resize'
 
 export default {
   name: '${this.chartName}',

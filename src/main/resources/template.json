@@ -76,43 +76,53 @@
     "contextType" : 2,
     "fileType" : 1
   }, {
-    "fileName" : "__{AggTable}.vue.ftl",
-    "fileDir" : "/src/components/Charts",
+    "fileName" : "__dir.ftl",
+    "fileDir" : "/src/components/Charts/{AggTable}",
     "contextType" : 4,
-    "fileType" : 5
+    "fileType" : 4
   }, {
-    "fileName" : "__{BarLine}.vue.ftl",
-    "fileDir" : "/src/components/Charts",
-    "contextType" : 4,
-    "fileType" : 5
-  }, {
-    "fileName" : "__{DetailList}.vue.ftl",
-    "fileDir" : "/src/components/Charts",
-    "contextType" : 4,
-    "fileType" : 5
-  }, {
-    "fileName" : "__{Pie}.vue.ftl",
-    "fileDir" : "/src/components/Charts",
-    "contextType" : 4,
-    "fileType" : 5
-  }, {
-    "fileName" : "{AggTable}.vue.ftl",
-    "fileDir" : "/src/components/Charts",
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/components/Charts/{AggTable}",
     "contextType" : 4,
     "fileType" : 1
   }, {
-    "fileName" : "{BarLine}.vue.ftl",
-    "fileDir" : "/src/components/Charts",
+    "fileName" : "__dir.ftl",
+    "fileDir" : "/src/components/Charts/{BarLine}",
+    "contextType" : 4,
+    "fileType" : 4
+  }, {
+    "fileName" : "echarts-option.js.ftl",
+    "fileDir" : "/src/components/Charts/{BarLine}",
     "contextType" : 4,
     "fileType" : 1
   }, {
-    "fileName" : "{DetailList}.vue.ftl",
-    "fileDir" : "/src/components/Charts",
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/components/Charts/{BarLine}",
     "contextType" : 4,
     "fileType" : 1
   }, {
-    "fileName" : "{Pie}.vue.ftl",
-    "fileDir" : "/src/components/Charts",
+    "fileName" : "__dir.ftl",
+    "fileDir" : "/src/components/Charts/{DetailList}",
+    "contextType" : 4,
+    "fileType" : 4
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/components/Charts/{DetailList}",
+    "contextType" : 4,
+    "fileType" : 1
+  }, {
+    "fileName" : "__dir.ftl",
+    "fileDir" : "/src/components/Charts/{Pie}",
+    "contextType" : 4,
+    "fileType" : 4
+  }, {
+    "fileName" : "echarts-option.js.ftl",
+    "fileDir" : "/src/components/Charts/{Pie}",
+    "contextType" : 4,
+    "fileType" : 1
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/components/Charts/{Pie}",
     "contextType" : 4,
     "fileType" : 1
   }, {

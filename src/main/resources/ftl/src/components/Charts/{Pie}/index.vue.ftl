@@ -14,7 +14,8 @@ import echarts from 'echarts'
 <#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
 </#if>
-import resize from './mixins/resize'
+import resize from '../mixins/resize'
+import getOption from './echarts-option'
 
 export default {
   name: '${this.chartName}',
@@ -32,28 +33,7 @@ export default {
   data() {
     return {
       listLoading: true,
-      option: {
-        title: {
-          text: '${this.title}'
-        },
-        legend: {
-          type: 'scroll',
-          orient: 'vertical',
-          right: 10,
-          top: 20,
-          bottom: 20
-        },
-        tooltip: {},
-        dataset: {
-          source: []
-        },
-        series: [
-          {
-            center: ['40%', '50%'],
-            type: 'pie'
-          }
-        ]
-      },
+      option: getOption(),
       // 暂时没有查询参数
       query: {}
     }
