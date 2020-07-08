@@ -15,7 +15,7 @@ import echarts from 'echarts'
 import enums from '@/utils/enums'
 </#if>
 import resize from '../mixins/resize'
-import getOption from './echarts-option'
+import { getOption } from './echarts-option'
 
 export default {
   name: '${this.chartName}',
