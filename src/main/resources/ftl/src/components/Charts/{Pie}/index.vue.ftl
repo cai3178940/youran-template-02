@@ -35,7 +35,8 @@ export default {
       listLoading: true,
       option: getOption(),
       // 暂时没有查询参数
-      query: {}
+      query: {},
+      chart: null
     }
   },
   created() {
@@ -71,7 +72,7 @@ export default {
 .${this.chartNameLower} {
     .pieChart {
         width: 100%;
-        height: 400px;
+        height: 100%;
     }
 }
 </style>
