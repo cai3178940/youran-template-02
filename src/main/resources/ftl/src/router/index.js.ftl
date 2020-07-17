@@ -84,6 +84,20 @@ export const constantRoutes = [
     ]
   },
 </#list>
+<#list this.dashboards as dashboard>
+  {
+    path: '/${lowerFirstWord(dashboard.name)}',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: '${dashboard.name}',
+        component: () => ${importView(dashboard.name,dashboard.module)},
+        meta: { title: '${dashboard.title}', icon: 'table' }
+      }
+    ]
+  },
+</#list>
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }

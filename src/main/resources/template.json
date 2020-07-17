@@ -16,6 +16,11 @@
     "contextType" : 1,
     "fileType" : 2
   }, {
+    "fileName" : "commonForDashboard.ftl",
+    "fileDir" : "/abstracted",
+    "contextType" : 1,
+    "fileType" : 2
+  }, {
     "fileName" : "mtmCascadeExtsForList.ftl",
     "fileDir" : "/abstracted",
     "contextType" : 1,
@@ -179,6 +184,16 @@
     "fileName" : "show.vue.ftl",
     "fileDir" : "/src/views/{module}/{className}",
     "contextType" : 2,
+    "fileType" : 1
+  }, {
+    "fileName" : "__dir.ftl",
+    "fileDir" : "/src/views/{module}/{dashboardName}",
+    "contextType" : 5,
+    "fileType" : 4
+  }, {
+    "fileName" : "index.vue.ftl",
+    "fileDir" : "/src/views/{module}/{dashboardName}",
+    "contextType" : 5,
     "fileType" : 1
   }, {
     "fileName" : "mock-util.js.ftl",

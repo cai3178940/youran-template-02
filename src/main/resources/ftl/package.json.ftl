@@ -25,6 +25,7 @@
     "path-to-regexp": "2.4.0",
     "qs": "^6.7.0",
     "vue": "2.6.10",
+    "vue-grid-layout": "^2.3.7",
     "vue-router": "3.0.6",
     "vuex": "3.1.0"
   },

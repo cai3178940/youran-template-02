@@ -4,6 +4,7 @@
 [#-- @ftlvariable name=".dataModel" type="com.youran.generate.template.context.BaseContext"--]
 [#-- @ftlvariable name=".dataModel" type="com.youran.generate.template.context.ConstContext"--]
 [#-- @ftlvariable name=".dataModel" type="com.youran.generate.template.context.EntityContext"--]
+[#-- @ftlvariable name=".dataModel" type="com.youran.generate.template.context.chart.DashboardContext"--]
 [#-- @ftlvariable name=".dataModel" type="com.youran.generate.template.context.chart.AggTableContext"--]
 [#-- @ftlvariable name=".dataModel" type="com.youran.generate.template.context.chart.BarLineContext"--]
 [#-- @ftlvariable name=".dataModel" type="com.youran.generate.template.context.chart.DetailListContext"--]
