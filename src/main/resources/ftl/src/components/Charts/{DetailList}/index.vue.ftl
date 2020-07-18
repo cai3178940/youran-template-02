@@ -56,11 +56,9 @@ import Pagination from '@/components/Pagination'
 <#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
 </#if>
-import resize from '../mixins/resize'
 
 export default {
   name: '${this.chartName}',
-  mixins: [resize],
   components: {
     Pagination
   },
@@ -74,11 +72,11 @@ export default {
       default: '200px'
     }
   },
-  filters: {
 <#if !importEnums.isEmpty()>
+  filters: {
     findEnumLabel: enums.findEnumLabel
-</#if>
   },
+</#if>
   data() {
     return {
 <#if !importEnums.isEmpty()>

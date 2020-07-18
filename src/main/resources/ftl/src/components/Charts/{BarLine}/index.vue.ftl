@@ -14,12 +14,11 @@ import echarts from 'echarts'
 <#if !importEnums.isEmpty()>
 import enums from '@/utils/enums'
 </#if>
-import resize from '../mixins/resize'
 import { getOption } from './echarts-option'
+import { getChartSizeInBox } from '@/utils/chart-util'
 
 export default {
   name: '${this.chartName}',
-  mixins: [resize],
   props: {
     width: {
       type: String,
@@ -71,9 +70,10 @@ export default {
       this.chart.setOption(this.option, true)
     },
     resize() {
+      const [width, height] = getChartSizeInBox(this.$parent.$el)
       this.chart.resize({
-        width: this.$parent.$el.clientWidth - 20,
-        height: this.$parent.$el.clientHeight - 20
+        width,
+        height
       })
     }
   },

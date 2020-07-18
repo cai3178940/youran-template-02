@@ -95,7 +95,16 @@ div:focus {
 }
 
 .vue-grid-item {
+  .el-card__header {
+    height: 30px;
+    line-height:30px;
+    padding: 0px 10px;
+  }
   .el-card__body {
     padding: 0px;
+  }
+  .chartTitle {
+    color: #303133;
+    margin: 3px;
   }
 }

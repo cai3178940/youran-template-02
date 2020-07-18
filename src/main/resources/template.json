@@ -361,11 +361,6 @@
     "contextType" : 1,
     "fileType" : 1
   }, {
-    "fileName" : "resize.js.ftl",
-    "fileDir" : "/src/components/Charts/mixins",
-    "contextType" : 1,
-    "fileType" : 1
-  }, {
     "fileName" : "index.vue.ftl",
     "fileDir" : "/src/components/Hamburger",
     "contextType" : 1,
@@ -572,6 +567,11 @@
     "fileType" : 1
   }, {
     "fileName" : "auth.js.ftl",
+    "fileDir" : "/src/utils",
+    "contextType" : 1,
+    "fileType" : 1
+  }, {
+    "fileName" : "chart-util.js.ftl",
     "fileDir" : "/src/utils",
     "contextType" : 1,
     "fileType" : 1
