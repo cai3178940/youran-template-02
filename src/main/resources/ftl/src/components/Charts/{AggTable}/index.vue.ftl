@@ -39,7 +39,7 @@
       </el-table-column>
 </#list>
     </el-table>
-    <pagination v-show="total>0" :total="total" :page.sync="query.page"
+    <pagination v-show="total>0 && total>query.limit" :total="total" :page.sync="query.page"
                 :limit.sync="query.limit" @pagination="doQueryList"
                 small/>
   </div>

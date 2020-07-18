@@ -12,28 +12,22 @@
   >
 <#list this.layout as item>
     <#if item.chart??>
+        <#assign isTable = item.chart.chartType == ChartType.AGG_TABLE.getValue()
+                || item.chart.chartType == ChartType.DETAIL_LIST.getValue()>
     <grid-item :x="${item.x}"
                :y="${item.y}"
                :w="${item.w}"
                :h="${item.h}"
                i="${item.chart.chartName}">
-        <#if item.showCard>
-      <el-card class="box-card" style="height:100%;">
-            <#if item.showTitle>
+      <el-card class="box-card${isTable?string(' card-table','')}${item.showCard?string('',' card-hidden')}"
+               style="height:100%;"${item.showCard?string('',' shadow="never"')}>
+        <#if item.showTitle>
         <div slot="header">
           <span style="white-space:nowrap;">${item.chart.title}</span>
         </div>
-            </#if>
+        </#if>
         <${CommonTemplateFunction.camelCaseToKebabCase(item.chart.chartName, false)} height="100%" width="100%" />
       </el-card>
-        <#else>
-            <#if item.showTitle>
-      <div class="chartTitle">
-        <span style="white-space:nowrap;">${item.chart.title}</span>
-      </div>
-            </#if>
-      <${CommonTemplateFunction.camelCaseToKebabCase(item.chart.chartName, false)} height="100%" width="100%" />
-        </#if>
     </grid-item>
     <#else>
     <grid-item :x="${item.x}"

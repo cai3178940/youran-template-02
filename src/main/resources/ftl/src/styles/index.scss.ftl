@@ -103,8 +103,13 @@ div:focus {
   .el-card__body {
     padding: 0px;
   }
-  .chartTitle {
-    color: #303133;
-    margin: 3px;
+  .card-hidden {
+    border-style: none;
+    .el-card__header {
+      border-style: none;
+    }
+  }
+  .card-table {
+    overflow-y: auto;
   }
 }
