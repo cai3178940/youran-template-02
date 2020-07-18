@@ -137,16 +137,6 @@
     "fileType" : 4
   }, {
     "fileName" : "__dir.ftl",
-    "fileDir" : "/src/views/{module}/{chartName}",
-    "contextType" : 4,
-    "fileType" : 4
-  }, {
-    "fileName" : "index.vue.ftl",
-    "fileDir" : "/src/views/{module}/{chartName}",
-    "contextType" : 4,
-    "fileType" : 1
-  }, {
-    "fileName" : "__dir.ftl",
     "fileDir" : "/src/views/{module}/{className}",
     "contextType" : 2,
     "fileType" : 4

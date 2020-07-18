@@ -8,6 +8,7 @@
     :isDraggable="false"
     :isResizable="false"
     :autoSize="true"
+    style="height: calc(100vh - 50px); overflow-x: hidden;"
   >
 <#list this.layout as item>
     <#if item.chart??>

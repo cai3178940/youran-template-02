@@ -5,7 +5,8 @@
 <template>
   <div :style="{height:height,width:width}">
     <el-table v-loading="listLoading" :data="list"
-              border stripe style="width: 100%;">
+              border stripe style="width: 100%;"
+              size="mini">
 <#list this.dimensionList as chartItem>
     <#assign dimension=chartItem.sourceItem>
     <#assign field=dimension.field>
@@ -39,7 +40,8 @@
 </#list>
     </el-table>
     <pagination v-show="total>0" :total="total" :page.sync="query.page"
-                :limit.sync="query.limit" @pagination="doQueryList"/>
+                :limit.sync="query.limit" @pagination="doQueryList"
+                small/>
   </div>
 </template>
 

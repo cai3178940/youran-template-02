@@ -39,9 +39,6 @@ export default {
       chart: null
     }
   },
-  created() {
-    this.doQueryList()
-  },
   methods: {
     /**
      * 执行列表数据查询
@@ -72,7 +69,21 @@ export default {
       const chartEl = this.$el.children[0]
       this.chart = echarts.init(chartEl)
       this.chart.setOption(this.option, true)
+    },
+    resize() {
+      this.chart.resize({
+        width: this.$parent.$el.clientWidth - 20,
+        height: this.$parent.$el.clientHeight - 20
+      })
     }
+  },
+  mounted() {
+    this.doQueryList()
+      .then(() => {
+        setTimeout(() => {
+          this.resize()
+        }, 100)
+      })
   }
 }
 </script>

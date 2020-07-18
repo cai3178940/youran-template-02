@@ -70,20 +70,6 @@ export const constantRoutes = [
     ]
   },
 </#list>
-<#list this.charts as chart>
-  {
-    path: '/${lowerFirstWord(chart.chartName)}',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: '${chart.chartName}',
-        component: () => ${importView(chart.chartName,chart.module)},
-        meta: { title: '${chart.title}', icon: 'table' }
-      }
-    ]
-  },
-</#list>
 <#list this.dashboards as dashboard>
   {
     path: '/${lowerFirstWord(dashboard.name)}',

@@ -93,3 +93,9 @@ div:focus {
   margin-top: 2px;
   margin-bottom: 2px;
 }
+
+.vue-grid-item {
+  .el-card__body {
+    padding: 0px;
+  }
+}
