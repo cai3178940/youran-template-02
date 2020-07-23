@@ -44,9 +44,18 @@
       </el-table-column>
 </#list>
     </el-table>
-    <pagination v-show="total>0 && total>query.limit" :total="total" :page.sync="query.page"
+<#if this.excelExport!false>
+    <el-button size="mini" type="text"
+               icon="el-icon-download"
+               style="float: right;margin-right: 10px;"
+               @click="handleExport">
+      excel导出
+    </el-button>
+</#if>
+    <pagination v-show="total>0" :total="total" :page.sync="query.page"
                 :limit.sync="query.limit" @pagination="doQueryList"
-                small/>
+                layout="prev, pager, next"
+                hide-on-single-page small/>
   </div>
 </template>
 
@@ -93,7 +102,7 @@ export default {
       listLoading: true,
       query: {
         page: 1,
-        limit: 10
+        limit: ${this.defaultPageSize}
       }
     }
   },
@@ -101,6 +110,7 @@ export default {
     this.doQueryList({ page: 1 })
   },
   methods: {
+<@removeLastComma>
     /**
      * 执行列表查询
      */
@@ -120,7 +130,17 @@ export default {
         .finally(() => {
           this.listLoading = false
         })
-    }
+    },
+    <#if this.excelExport!false>
+    /**
+     * 导出excel
+     */
+    handleExport() {
+      return this.$common.confirm('是否确认导出')
+        .then(() => ${this.chartNameLower}Api.exportExcel(this.query))
+    },
+    </#if>
+</@removeLastComma>
   }
 }
 </script>
