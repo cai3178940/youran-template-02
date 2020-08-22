@@ -7,7 +7,9 @@
   [<#lt>
         <@removeLastComma>
             <#list this.axisYList as axisY>
-    { type: '${axisY.seriesType}' },
+    {
+${buildBarLineSeries(axisY,'      ')}
+    },
             </#list>
         </@removeLastComma>
   ]<#rt>

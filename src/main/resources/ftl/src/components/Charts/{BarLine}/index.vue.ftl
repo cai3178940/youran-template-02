@@ -51,7 +51,9 @@ export default {
           const series = []
           const header = data[0]
           for (let i = 0; i < header.length - 1; i++) {
-            series.push({ type: '${this.axisYList[0].seriesType}' })
+            series.push({
+${buildBarLineSeries(this.axisYList[0],'              ')}
+            })
           }
           this.option.series = series
 </#if>
