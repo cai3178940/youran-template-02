@@ -1,8 +1,8 @@
 const baseURL = process.env.VUE_APP_BASE_API
 
-export function paging(list, page, limit) {
-  const endIndex = page * limit
-  const startIndex = (page - 1) * limit
+export function paging(list, pageNo, pageSize) {
+  const endIndex = pageNo * pageSize
+  const startIndex = (pageNo - 1) * pageSize
   return list.slice(startIndex, endIndex)
 }
 

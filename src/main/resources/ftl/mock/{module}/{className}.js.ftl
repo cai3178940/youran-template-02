@@ -165,7 +165,7 @@ const reqMocks = [
     response: ({ query }) => {
         <#if this.pageSign>
       // 列表分页
-      const page = paging(data.list, query.page, query.limit)
+      const page = paging(data.list, query.pageNo, query.pageSize)
       return {
         total: data.list.length,
         list: copy(page)

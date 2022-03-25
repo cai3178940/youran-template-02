@@ -2,7 +2,7 @@
   <div :class="{'hidden':hidden}" class="pagination-container">
     <el-pagination
       :background="background"
-      :current-page.sync="currentPage"
+      :current-page.sync="pageNo"
       :page-size.sync="pageSize"
       :layout="layout"
       :page-sizes="pageSizes"
@@ -24,11 +24,11 @@ export default {
       required: true,
       type: Number
     },
-    page: {
+    pageNo: {
       type: Number,
       default: 1
     },
-    limit: {
+    pageSize: {
       type: Number,
       default: 20
     },
@@ -55,33 +55,15 @@ export default {
       default: false
     }
   },
-  computed: {
-    currentPage: {
-      get() {
-        return this.page
-      },
-      set(val) {
-        this.$emit('update:page', val)
-      }
-    },
-    pageSize: {
-      get() {
-        return this.limit
-      },
-      set(val) {
-        this.$emit('update:limit', val)
-      }
-    }
-  },
   methods: {
-    handleSizeChange(val) {
-      this.$emit('pagination', { page: this.currentPage, limit: val })
+    handleSizeChange(pageSize) {
+      this.$emit('pagination', { pageNo: this.pageNo, pageSize: pageSize })
       if (this.autoScroll) {
         scrollTo(0, 800)
       }
     },
-    handleCurrentChange(val) {
-      this.$emit('pagination', { page: val, limit: this.pageSize })
+    handleCurrentChange(pageNo) {
+      this.$emit('pagination', { pageNo: pageNo, pageSize: this.pageSize })
       if (this.autoScroll) {
         scrollTo(0, 800)
       }

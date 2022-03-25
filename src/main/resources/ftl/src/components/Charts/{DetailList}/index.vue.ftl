@@ -52,8 +52,8 @@
       excel导出
     </el-button>
 </#if>
-    <pagination v-show="total>0" :total="total" :page.sync="query.page"
-                :limit.sync="query.limit" @pagination="doQueryList"
+    <pagination v-show="total>0" :total="total" :pageNo.sync="query.pageNo"
+                :pageSize.sync="query.pageSize" @pagination="doQueryList"
                 layout="prev, pager, next"
                 hide-on-single-page small/>
   </div>
@@ -101,8 +101,8 @@ export default {
       total: 0,
       listLoading: true,
       query: {
-        page: 1,
-        limit: ${this.defaultPageSize}
+        pageNo: 1,
+        pageSize: ${this.defaultPageSize}
       }
     }
   },
@@ -114,12 +114,12 @@ export default {
     /**
      * 执行列表查询
      */
-    doQueryList({ page, limit }) {
-      if (page) {
-        this.query.page = page
+    doQueryList({ pageNo, pageSize }) {
+      if (pageNo) {
+        this.query.pageNo = pageNo
       }
-      if (limit) {
-        this.query.limit = limit
+      if (pageSize) {
+        this.query.pageSize = pageSize
       }
       this.listLoading = true
       return ${this.chartNameLower}Api.fetchList(this.query)

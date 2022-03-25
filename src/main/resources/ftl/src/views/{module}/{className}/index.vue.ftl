@@ -254,12 +254,12 @@
 </#if>
     </el-table>
 <#if this.pageSign>
-    <pagination v-show="total>0" :total="total" :page.sync="query.page"
-                :limit.sync="query.limit" @pagination="doQueryList"/>
+    <pagination v-show="total>0" :total="total" :pageNo.sync="query.pageNo"
+                :pageSize.sync="query.pageSize" @pagination="doQueryList"/>
 </#if>
 <#if this.entityFeature.save>
     <!-- 新建表单 -->
-    <${this.classNameLower}-add ref="${this.classNameLower}Add" @created="doQueryList({<#if this.pageSign> page: 1 </#if>})"/>
+    <${this.classNameLower}-add ref="${this.classNameLower}Add" @created="doQueryList({<#if this.pageSign> pageNo: 1 </#if>})"/>
 </#if>
 <#if this.entityFeature.update>
     <!-- 编辑表单 -->
@@ -282,7 +282,7 @@
 </#list>
 <#if this.entityFeature.excelImport>
     <!-- 查看表单 -->
-    <${this.classNameLower}-import ref="${this.classNameLower}Import" @imported="doQueryList({<#if this.pageSign> page: 1 </#if>})"/>
+    <${this.classNameLower}-import ref="${this.classNameLower}Import" @imported="doQueryList({<#if this.pageSign> pageNo: 1 </#if>})"/>
 </#if>
   </div>
 </template>
@@ -386,8 +386,8 @@ export default {
       query: {
     <@removeLastComma>
         <#if this.pageSign>
-        page: 1,
-        limit: 10,
+        pageNo: 1,
+        pageSize: 10,
         </#if>
         <#list this.queryFields as id,field>
             <#if QueryType.isIn(field.queryType)>
@@ -411,7 +411,7 @@ export default {
     }
   },
   created() {
-    this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
+    this.doQueryList(<#if this.pageSign>{ pageNo: 1 }</#if>)
 <#if !importOtherEntitys.isEmpty()>
     <@removeLastComma>
         <#list importOtherEntitys as foreignEntity>
@@ -462,18 +462,18 @@ export default {
      * 触发搜索操作
      */
     handleQuery() {
-      this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
+      this.doQueryList(<#if this.pageSign>{ pageNo: 1 }</#if>)
     },
     /**
      * 执行列表查询
      */
-    doQueryList(<#if this.pageSign>{ page, limit }</#if>) {
+    doQueryList(<#if this.pageSign>{ pageNo, pageSize }</#if>) {
     <#if this.pageSign>
-      if (page) {
-        this.query.page = page
+      if (pageNo) {
+        this.query.pageNo = pageNo
       }
-      if (limit) {
-        this.query.limit = limit
+      if (pageSize) {
+        this.query.pageSize = pageSize
       }
     </#if>
       this.listLoading = true
@@ -499,7 +499,7 @@ export default {
         .then(() => ${this.classNameLower}Api.deleteById(row.${this.id}))
         .then(() => {
           this.$common.showMsg('success', '删除成功')
-          return this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
+          return this.doQueryList(<#if this.pageSign>{ pageNo: 1 }</#if>)
         })
     },
     </#if>
@@ -516,7 +516,7 @@ export default {
         .then(() => ${this.classNameLower}Api.deleteBatch(this.selectItems.map(row => row.${this.id})))
         .then(() => {
           this.$common.showMsg('success', '删除成功')
-          return this.doQueryList(<#if this.pageSign>{ page: 1 }</#if>)
+          return this.doQueryList(<#if this.pageSign>{ pageNo: 1 }</#if>)
         })
     },
     </#if>
